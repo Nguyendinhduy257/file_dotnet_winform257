@@ -1,0 +1,12 @@
+# Tệp do người dùng Visual Studio tự tạo
+*.csproj.user
+*.sln.docstates
+*.suo
+
+# Bỏ qua các thư mục build chính
+[Bb]in/
+[Oo]bj/
+
+# Bỏ qua các thư mục khác của .NET
+.vs/
+.vscode/

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36408.4 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "schedule_set_up_app", "schedule_set_up_app.csproj", "{900B1032-C7FE-4A34-A4AA-FDC35C142217}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{900B1032-C7FE-4A34-A4AA-FDC35C142217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{900B1032-C7FE-4A34-A4AA-FDC35C142217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{900B1032-C7FE-4A34-A4AA-FDC35C142217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{900B1032-C7FE-4A34-A4AA-FDC35C142217}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {929F3B34-DB1A-45E9-946A-1E18F1D19332}
+	EndGlobalSection
+EndGlobal
