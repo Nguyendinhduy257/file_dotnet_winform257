@@ -30,31 +30,60 @@
         {
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             button1 = new Button();
+            button2 = new Button();
+            label1 = new Label();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new Point(134, 176);
+            button1.Font = new Font("Segoe UI", 14F);
+            button1.Location = new Point(675, 413);
             button1.Name = "button1";
-            button1.Size = new Size(131, 40);
+            button1.Size = new Size(260, 132);
             button1.TabIndex = 0;
-            button1.Text = "button1";
+            button1.Text = "Login";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Font = new Font("Segoe UI", 14.1428576F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Location = new Point(1081, 413);
+            button2.Name = "button2";
+            button2.Size = new Size(260, 132);
+            button2.TabIndex = 1;
+            button2.Text = "Sign-up";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 32F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(536, 126);
+            label1.Name = "label1";
+            label1.Size = new Size(1047, 100);
+            label1.TabIndex = 2;
+            label1.Text = "Vui lòng chọn cách đăng nhập";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(2061, 832);
+            Controls.Add(label1);
+            Controls.Add(button2);
             Controls.Add(button1);
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Button button1;
+        private Button button2;
+        private Label label1;
     }
 }
