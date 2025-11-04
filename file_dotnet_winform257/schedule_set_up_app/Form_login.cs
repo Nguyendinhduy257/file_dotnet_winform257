@@ -37,10 +37,6 @@ namespace schedule_set_up_app
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            //tạo đường dẫn
-            string appPath = Application.StartupPath;
-            string lock_close_path = Path.Combine(appPath, "img_logo", "Icon_lock_closed.png");
-            string lock_open_path = Path.Combine(appPath, "img_logo", "Icon_lock_open.png");
             try
             {
                 if (textBox_pass.UseSystemPasswordChar == true)
@@ -68,14 +64,17 @@ namespace schedule_set_up_app
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
+            guna2Button1.BorderThickness = 3;
             DialogResult result = MessageBox.Show("Bạn muốn thoát Form Login?", "Xác Nhận Thoát?", MessageBoxButtons.YesNo, MessageBoxIcon.Information,MessageBoxDefaultButton.Button2);
             if (result ==DialogResult.Yes)
             {
                 this.Close();
+                
             }
             else
             {
                 //Không làm gì cả, đóng messageBox
+                guna2Button1.BorderThickness = 1;
             }
         }
 
@@ -133,10 +132,6 @@ namespace schedule_set_up_app
                 // Lấy tên người dùng từ TextBox
                 string username = textBox_username.Text;
 
-                // CODE CŨ (có thể của bạn là):
-                // Form_TrangChu frmHome = new Form_TrangChu(); 
-
-                // CODE MỚI: Truyền "username" vào hàm khởi tạo
                 form_trang_chu frmHome = new form_trang_chu(username);
 
                 frmHome.Show();

@@ -171,6 +171,8 @@
             // guna2Button1
             // 
             guna2Button1.Animated = true;
+            guna2Button1.BorderRadius = 10;
+            guna2Button1.BorderThickness = 1;
             guna2Button1.CustomizableEdges = customizableEdges1;
             guna2Button1.DisabledState.BorderColor = Color.DarkGray;
             guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -190,6 +192,8 @@
             // guna2Button2
             // 
             guna2Button2.Animated = true;
+            guna2Button2.BorderRadius = 15;
+            guna2Button2.BorderThickness = 2;
             guna2Button2.CustomizableEdges = customizableEdges3;
             guna2Button2.DisabledState.BorderColor = Color.DarkGray;
             guna2Button2.DisabledState.CustomBorderColor = Color.DarkGray;

@@ -20,9 +20,10 @@ namespace schedule_set_up_app
         {
             InitializeComponent();
             this.tenNguoiDung = username;
-            this.tenNguoiDung=this.tenNguoiDung.ToUpper();
+            //Viết Hoa cả tên để: Dễ nhận biết
+            this.tenNguoiDung = this.tenNguoiDung.ToUpper();
         }
- 
+
         // khai báo 2 hàm mặc định màu highlight của trang chủ
         private Color highlightColor = Color.AliceBlue;
         private Color defaultColor = Color.White;
@@ -56,11 +57,11 @@ namespace schedule_set_up_app
             // Label  (Tên người dùng)
             label_ten_nguoi_dung.Text = this.tenNguoiDung; // Tên đã .ToUpper()
             label_ten_nguoi_dung.Font = new Font(label_ten_nguoi_dung.Font, FontStyle.Bold); // In đậm
-            label_ten_nguoi_dung.ForeColor = Color.Red; // (Ví dụ)
-            label_ten_nguoi_dung.AutoSize = true; // Phải AutoSize
+            label_ten_nguoi_dung.ForeColor = Color.Red;
+            label_ten_nguoi_dung.AutoSize = true;
 
             // Label 3
-            label4.Text = ", Cùng lập lịch nào!";
+            label4.Text = ", cùng lập lịch nào (´｡• ◡ •｡`) ~♡💖";
             label4.AutoSize = true; // Phải AutoSize
             //thử nghiệm highlight thứ mà bạn click chuột
             // Lấy ngày hôm nay
@@ -180,6 +181,7 @@ namespace schedule_set_up_app
 
         private void btn_close_Click(object sender, EventArgs e)
         {
+            btn_close.BorderThickness = 3;
             DialogResult ketqua = MessageBox.Show("Bạn chắc chắn muốn Đăng Xuất", "Xác Nhận Đăng Xuất?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (ketqua == DialogResult.Yes)
             {
@@ -190,11 +192,41 @@ namespace schedule_set_up_app
             else
             {
                 //không có gì xảy ra cả
+                btn_close.BorderThickness=1;
             }
         }
 
         private void form_trang_chu_FormClosing(object sender, FormClosingEventArgs e)
         {
+        }
+
+        private void pictureBox2_MouseEnter(object sender, EventArgs e)
+        {
+            to_report_form_main.BackColor = Color.LightGreen;
+        }
+
+        private void pictureBox2_MouseLeave(object sender, EventArgs e)
+        {
+            to_report_form_main.BackColor = Color.DarkSeaGreen;
+        }
+
+        private void to_report_form_main_Click(object sender, EventArgs e)
+        {
+            // Lấy control đã được click (chính là cái PictureBox màu xanh)
+            Control control = (Control)sender;
+
+            // Lấy vị trí góc dưới bên trái của PictureBox
+            Point pt = new Point(0, control.Height);
+
+            // Hiển thị menu (contextMenuStrip1) của bạn tại vị trí đó
+            contextMenuStrip1.Show(control, pt);
+        }
+
+        //truy cập form_report khi click
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Form_Report_khachHang_ Report=new Form_Report_khachHang_();
+            Report.Show();
         }
     }
 }
