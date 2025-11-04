@@ -1,3 +1,5 @@
+﻿using System.Globalization;
+
 namespace schedule_set_up_app.form;
 
 
@@ -12,6 +14,12 @@ internal static class Program
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
         ApplicationConfiguration.Initialize();
-        Form1: Application.Run(new Form1());
+        // Tạo một "Văn hóa" (Culture) mới là Tiếng Việt
+        CultureInfo ci = new CultureInfo("vi-VN");
+
+        // Cài đặt nó làm văn hóa mặc định cho luồng (thread) này
+        Thread.CurrentThread.CurrentCulture = ci;
+        Thread.CurrentThread.CurrentUICulture = ci;
+    Form1: Application.Run(new Form1());
     }
 }

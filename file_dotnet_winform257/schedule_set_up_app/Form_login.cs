@@ -4,9 +4,6 @@ namespace schedule_set_up_app
 {
     public partial class Form1 : Form
     {
-        private Color originalColor;      // Biến để lưu màu gốc
-        private Color targetColor;        // Màu sắc mà nút đang hướng tới
-        private int animationStep = 25;   // Tốc độ chuyển màu (càng lớn càng nhanh)
         public Form1()
         {
             InitializeComponent();
@@ -26,8 +23,6 @@ namespace schedule_set_up_app
         {
             this.ActiveControl = null;
             textBox_pass.UseSystemPasswordChar = true;
-            //originalColor = button_close1.BackColor;
-            targetColor = originalColor;
         }
 
 
@@ -135,9 +130,16 @@ namespace schedule_set_up_app
             }
             else if(isPasswordValid==true&&isUsernameValid==true&&isErrorFound==false)
             {
-                // Nếu KHÔNG có lỗi -> Mở Form Trang chủ
-                form_trang_chu trang_chu = new form_trang_chu();
-                trang_chu.Show();
+                // Lấy tên người dùng từ TextBox
+                string username = textBox_username.Text;
+
+                // CODE CŨ (có thể của bạn là):
+                // Form_TrangChu frmHome = new Form_TrangChu(); 
+
+                // CODE MỚI: Truyền "username" vào hàm khởi tạo
+                form_trang_chu frmHome = new form_trang_chu(username);
+
+                frmHome.Show();
                 this.Hide();
             }
         }
@@ -147,10 +149,10 @@ namespace schedule_set_up_app
         {
             //tắt timer1
             timer1.Stop();
-            //tắt errorProvider sau 1 thời gian thông báo
+            //tắt errorProvider sau 1 thời gian (8 giây) thông báo
             errorProvider1.Clear();
             errorProvider2.Clear();
-            //tắt label thông báo lỗi sau 1 thời gian thông báo
+            //tắt label thông báo lỗi sau 1 thời gian (8 giây) thông báo
             label3.Visible=false;
             label4.Visible=false;
         }
