@@ -280,7 +280,6 @@
         private TextBox textBox_username;
         private Panel panel1;
         private Panel panel2;
-        private Button button_close1;
         private Label label2;
         private LinkLabel linkLabel1;
         private System.Windows.Forms.Timer timer1;
