@@ -73,7 +73,15 @@ namespace schedule_set_up_app
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            DialogResult result = MessageBox.Show("Bạn muốn thoát Form Login?", "Xác Nhận Thoát?", MessageBoxButtons.YesNo, MessageBoxIcon.Information,MessageBoxDefaultButton.Button2);
+            if (result ==DialogResult.Yes)
+            {
+                this.Close();
+            }
+            else
+            {
+                //Không làm gì cả, đóng messageBox
+            }
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)
