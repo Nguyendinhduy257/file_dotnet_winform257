@@ -63,6 +63,36 @@ namespace schedule_set_up_app.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_arrow_to_report {
+            get {
+                object obj = ResourceManager.GetObject("icon_arrow_to_report", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_edit {
+            get {
+                object obj = ResourceManager.GetObject("icon_edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_form_report {
+            get {
+                object obj = ResourceManager.GetObject("icon_form_report", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Icon_lock_closed {
             get {
                 object obj = ResourceManager.GetObject("Icon_lock_closed", resourceCulture);
@@ -76,6 +106,26 @@ namespace schedule_set_up_app.Properties {
         internal static System.Drawing.Bitmap Icon_lock_open {
             get {
                 object obj = ResourceManager.GetObject("Icon_lock_open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_lock_question {
+            get {
+                object obj = ResourceManager.GetObject("icon_lock-question", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_sign_up {
+            get {
+                object obj = ResourceManager.GetObject("icon_sign_up", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

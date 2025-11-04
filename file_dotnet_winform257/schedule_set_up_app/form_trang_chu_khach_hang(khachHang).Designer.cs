@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -79,12 +80,19 @@
             label2 = new Label();
             label_ten_nguoi_dung = new Label();
             label4 = new Label();
+            to_report_form_main = new PictureBox();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            thêmSửaXóaProfileToolStripMenuItem = new ToolStripMenuItem();
+            panel5 = new Panel();
             panel1.SuspendLayout();
             panel4.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)to_report_form_main).BeginInit();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -184,6 +192,7 @@
             panel3.Controls.Add(btn_wednesday);
             panel3.Controls.Add(btn_tuesday);
             panel3.Controls.Add(btn_monday);
+            panel3.Cursor = Cursors.Hand;
             panel3.Location = new Point(0, 21);
             panel3.Name = "panel3";
             panel3.Size = new Size(2269, 124);
@@ -191,6 +200,8 @@
             // 
             // btn_next_week
             // 
+            btn_next_week.BorderRadius = 10;
+            btn_next_week.BorderThickness = 2;
             btn_next_week.CustomizableEdges = customizableEdges1;
             btn_next_week.DisabledState.BorderColor = Color.DarkGray;
             btn_next_week.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -209,6 +220,8 @@
             // 
             // btn_previous_week
             // 
+            btn_previous_week.BorderRadius = 10;
+            btn_previous_week.BorderThickness = 2;
             btn_previous_week.CustomizableEdges = customizableEdges3;
             btn_previous_week.DisabledState.BorderColor = Color.DarkGray;
             btn_previous_week.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -227,6 +240,7 @@
             // 
             // btn_saturday
             // 
+            btn_saturday.BorderRadius = 10;
             btn_saturday.CustomizableEdges = customizableEdges5;
             btn_saturday.DisabledState.BorderColor = Color.DarkGray;
             btn_saturday.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -245,6 +259,7 @@
             // 
             // btn_sunday
             // 
+            btn_sunday.BorderRadius = 10;
             btn_sunday.CustomizableEdges = customizableEdges7;
             btn_sunday.DisabledState.BorderColor = Color.DarkGray;
             btn_sunday.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -263,6 +278,7 @@
             // 
             // btn_friday
             // 
+            btn_friday.BorderRadius = 10;
             btn_friday.CustomizableEdges = customizableEdges9;
             btn_friday.DisabledState.BorderColor = Color.DarkGray;
             btn_friday.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -281,6 +297,7 @@
             // 
             // btn_thursday
             // 
+            btn_thursday.BorderRadius = 10;
             btn_thursday.CustomizableEdges = customizableEdges11;
             btn_thursday.DisabledState.BorderColor = Color.DarkGray;
             btn_thursday.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -299,6 +316,7 @@
             // 
             // btn_wednesday
             // 
+            btn_wednesday.BorderRadius = 10;
             btn_wednesday.CustomizableEdges = customizableEdges13;
             btn_wednesday.DisabledState.BorderColor = Color.DarkGray;
             btn_wednesday.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -317,6 +335,7 @@
             // 
             // btn_tuesday
             // 
+            btn_tuesday.BorderRadius = 10;
             btn_tuesday.CustomizableEdges = customizableEdges15;
             btn_tuesday.DisabledState.BorderColor = Color.DarkGray;
             btn_tuesday.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -335,6 +354,7 @@
             // 
             // btn_monday
             // 
+            btn_monday.BorderRadius = 10;
             btn_monday.CustomizableEdges = customizableEdges17;
             btn_monday.DisabledState.BorderColor = Color.DarkGray;
             btn_monday.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -355,13 +375,15 @@
             // 
             panel2.Controls.Add(Btn_today);
             panel2.Controls.Add(dateTimePicker1);
-            panel2.Location = new Point(24, 97);
+            panel2.Location = new Point(452, 121);
             panel2.Name = "panel2";
-            panel2.Size = new Size(2269, 122);
+            panel2.Size = new Size(1393, 122);
             panel2.TabIndex = 2;
             // 
             // Btn_today
             // 
+            Btn_today.BorderRadius = 10;
+            Btn_today.Cursor = Cursors.Hand;
             Btn_today.CustomizableEdges = customizableEdges19;
             Btn_today.DisabledState.BorderColor = Color.DarkGray;
             Btn_today.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -370,7 +392,7 @@
             Btn_today.FillColor = Color.RoyalBlue;
             Btn_today.Font = new Font("Segoe UI", 14F);
             Btn_today.ForeColor = Color.White;
-            Btn_today.Location = new Point(1424, 34);
+            Btn_today.Location = new Point(954, 41);
             Btn_today.Name = "Btn_today";
             Btn_today.ShadowDecoration.CustomizableEdges = customizableEdges20;
             Btn_today.Size = new Size(215, 51);
@@ -380,10 +402,11 @@
             // 
             // dateTimePicker1
             // 
+            dateTimePicker1.Cursor = Cursors.Hand;
             dateTimePicker1.CustomFormat = "dddd, 'Day 'dd, 'Month 'MMMM , yyyy";
             dateTimePicker1.Font = new Font("Segoe UI", 14F);
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.Location = new Point(663, 34);
+            dateTimePicker1.Location = new Point(193, 41);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(727, 51);
             dateTimePicker1.TabIndex = 0;
@@ -403,6 +426,9 @@
             // btn_close
             // 
             btn_close.Animated = true;
+            btn_close.BorderRadius = 15;
+            btn_close.BorderThickness = 1;
+            btn_close.Cursor = Cursors.Hand;
             btn_close.CustomizableEdges = customizableEdges21;
             btn_close.DisabledState.BorderColor = Color.DarkGray;
             btn_close.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -410,11 +436,11 @@
             btn_close.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_close.FillColor = Color.LightCoral;
             btn_close.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btn_close.ForeColor = Color.DarkMagenta;
-            btn_close.Location = new Point(2078, 12);
+            btn_close.ForeColor = Color.Black;
+            btn_close.Location = new Point(2067, 3);
             btn_close.Name = "btn_close";
             btn_close.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            btn_close.Size = new Size(215, 79);
+            btn_close.Size = new Size(215, 88);
             btn_close.TabIndex = 4;
             btn_close.Text = "Đăng Xuất";
             btn_close.Click += btn_close_Click;
@@ -434,12 +460,13 @@
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.BorderStyle = BorderStyle.Fixed3D;
             flowLayoutPanel1.Controls.Add(label2);
             flowLayoutPanel1.Controls.Add(label_ten_nguoi_dung);
             flowLayoutPanel1.Controls.Add(label4);
             flowLayoutPanel1.Location = new Point(205, 23);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(1209, 52);
+            flowLayoutPanel1.Size = new Size(1167, 52);
             flowLayoutPanel1.TabIndex = 6;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -473,6 +500,52 @@
             label4.TabIndex = 2;
             label4.Text = "label4";
             // 
+            // to_report_form_main
+            // 
+            to_report_form_main.BackColor = Color.DarkSeaGreen;
+            to_report_form_main.BorderStyle = BorderStyle.FixedSingle;
+            to_report_form_main.Cursor = Cursors.Hand;
+            to_report_form_main.Image = Properties.Resources.icon_arrow_to_report;
+            to_report_form_main.Location = new Point(24, 97);
+            to_report_form_main.Name = "to_report_form_main";
+            to_report_form_main.Size = new Size(175, 48);
+            to_report_form_main.SizeMode = PictureBoxSizeMode.CenterImage;
+            to_report_form_main.TabIndex = 7;
+            to_report_form_main.TabStop = false;
+            to_report_form_main.Click += to_report_form_main_Click;
+            to_report_form_main.MouseEnter += pictureBox2_MouseEnter;
+            to_report_form_main.MouseLeave += pictureBox2_MouseLeave;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.ImageScalingSize = new Size(28, 28);
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, thêmSửaXóaProfileToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(301, 76);
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Image = Properties.Resources.icon_form_report;
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(300, 36);
+            toolStripMenuItem1.Text = "To Report";
+            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            // 
+            // thêmSửaXóaProfileToolStripMenuItem
+            // 
+            thêmSửaXóaProfileToolStripMenuItem.Image = Properties.Resources.icon_edit;
+            thêmSửaXóaProfileToolStripMenuItem.Name = "thêmSửaXóaProfileToolStripMenuItem";
+            thêmSửaXóaProfileToolStripMenuItem.Size = new Size(300, 36);
+            thêmSửaXóaProfileToolStripMenuItem.Text = "Thêm/Sửa/Xóa profile";
+            // 
+            // panel5
+            // 
+            panel5.BackColor = Color.Teal;
+            panel5.Location = new Point(204, 71);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(1168, 5);
+            panel5.TabIndex = 8;
+            // 
             // form_trang_chu
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
@@ -480,6 +553,8 @@
             AutoScroll = true;
             ClientSize = new Size(2305, 1104);
             ControlBox = false;
+            Controls.Add(panel5);
+            Controls.Add(to_report_form_main);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(pictureBox1);
             Controls.Add(btn_close);
@@ -499,6 +574,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)to_report_form_main).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -534,5 +611,10 @@
         private Label label2;
         private Label label_ten_nguoi_dung;
         private Label label4;
+        private PictureBox to_report_form_main;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem thêmSửaXóaProfileToolStripMenuItem;
+        private Panel panel5;
     }
 }
