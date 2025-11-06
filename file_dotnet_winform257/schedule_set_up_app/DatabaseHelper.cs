@@ -30,7 +30,7 @@ public static class DatabaseHelper
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@User", username);
-                cmd.Parameters.AddWithValue("@Pass", password);
+                cmd.Parameters.AddWithValue("@Pass", password); 
 
                 try
                 {
@@ -64,42 +64,29 @@ public static class DatabaseHelper
             {
                 conn.Open();
 
-                // Câu 1: Kiểm tra xem Username đã tồn tại chưa?
                 using (SqlCommand cmdCheck = new SqlCommand(queryCheck, conn))
                 {
                     cmdCheck.Parameters.AddWithValue("@User", username);
                     int userCount = (int)cmdCheck.ExecuteScalar();
 
                     if (userCount > 0)
-                    {
-                        // Đừng show MessageBox ở đây! Chỉ trả về mã trạng thái
-                        return "UsernameExists";
-                    }
+                        return "EXISTED";
                 }
 
-                // Câu 2: Nếu chưa tồn tại, thêm User mới
                 using (SqlCommand cmdRegister = new SqlCommand(queryRegister, conn))
                 {
                     cmdRegister.Parameters.AddWithValue("@User", username);
                     cmdRegister.Parameters.AddWithValue("@Pass", password);
                     cmdRegister.Parameters.AddWithValue("@Role", role);
 
-                    int rowsAffected = cmdRegister.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-                        return "Success"; // Đăng ký thành công
-                    }
-                    else
-                    {
-                        return "Error"; // Lỗi không xác định
-                    }
+                    int rows = cmdRegister.ExecuteNonQuery();
+                    return rows > 0 ? "SUCCESS" : "FAILED";
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi CSDL khi đăng ký: " + ex.Message);
-                return "Error"; // Lỗi ngoại lệ
+                return "ERROR";
             }
         }
     }

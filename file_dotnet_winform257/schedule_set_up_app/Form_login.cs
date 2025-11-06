@@ -153,7 +153,7 @@ namespace schedule_set_up_app
             else if (role == "Admin")
             {
                 // ĐĂNG NHẬP ADMIN
-                Form_trang_chu_admin form_Trang_Chu_Admin = new Form_trang_chu_admin();
+                Form_trang_chu_admin form_Trang_Chu_Admin = new Form_trang_chu_admin(username);
                 form_Trang_Chu_Admin.Show();
                 this.Hide();
             }
