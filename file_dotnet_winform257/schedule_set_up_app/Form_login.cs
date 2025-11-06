@@ -80,9 +80,11 @@ namespace schedule_set_up_app
 
         private void guna2Button2_Click(object sender, EventArgs e)
         {
-
             // 1. Xóa mọi thông báo lỗi cũ (nếu có)
             errorProvider1.Clear();
+            errorProvider2.Clear(); // Thêm cho errorProvider2
+            label3.Visible = false; // mặc định Ẩn label lỗi
+            label4.Visible = false; // mặc định Ẩn label lỗi
 
             // 2. Tạo các biến cờ để kiểm tra
             bool isUsernameValid = true;
@@ -121,25 +123,48 @@ namespace schedule_set_up_app
                 isPasswordValid = false;
                 isErrorFound = true;
             }
-            // 5. NẾU TẤT CẢ ĐỀU HỢP LỆ -> MỞ FORM TRANG CHỦ
+
+            // 5. NẾU CÓ LỖI VALIDATE (Lỗi trống/dấu cách) -> DỪNG LẠI
             if (isErrorFound == true)
             {
-                // Nếu CÓ LỖI -> Bắt đầu đếm 8 giây, sau đó tắt thông báo lỗi sau 1 thời gian chạy
-                timer1.Start(); 
+                // Nếu CÓ LỖI -> Bắt đầu đếm 8 giây, sau đó tắt thông báo lỗi
+                timer1.Start();
+                return; // Dừng lại, không chạy code kiểm tra CSDL
             }
-            else if(isPasswordValid==true&&isUsernameValid==true&&isErrorFound==false)
+
+            // 6. NẾU KHÔNG CÓ LỖI VALIDATE -> TIẾN HÀNH KIỂM TRA CSDL
+            // Lấy dữ liệu từ TextBox
+            string username = textBox_username.Text;
+            string password = textBox_pass.Text; // Lấy mật khẩu
+
+            // GỌI HÀM KIỂM TRA (từ DatabaseHelper.cs)
+            string role = DatabaseHelper.CheckLogin(username, password);
+
+            // Xử lý kết quả trả về
+            if (role == "User")
             {
-                // Lấy tên người dùng từ TextBox
-                string username = textBox_username.Text;
+                // ĐĂNG NHẬP thành công có ROLE="User"
 
-                form_trang_chu frmHome = new form_trang_chu(username);
-
-                frmHome.Show();
+                // Mở Form trang chủ của khách hàng
+                form_trang_chu form_Khach = new form_trang_chu(username);
+                form_Khach.Show();
                 this.Hide();
             }
+            else if (role == "Admin")
+            {
+                // ĐĂNG NHẬP ADMIN
+                Form_trang_chu_admin form_Trang_Chu_Admin = new Form_trang_chu_admin();
+                form_Trang_Chu_Admin.Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Sai Tên Đăng Nhập Hoặc Mật Khẩu","Thông báo Sai",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
         }
-        
 
+
+    //tắt thông báo sau 8s thông báo
         private void timer1_Tick(object sender, EventArgs e)
         {
             //tắt timer1

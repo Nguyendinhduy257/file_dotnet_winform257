@@ -21,6 +21,8 @@ namespace schedule_set_up_app
         {
             // 1. Xóa mọi thông báo lỗi cũ (nếu có)
             errorProvider1.Clear();
+            errorProvider2.Clear();
+            errorProvider3.Clear();
 
             // 2. Tạo các biến cờ để kiểm tra
             bool isUsernameValid = true;
@@ -60,6 +62,7 @@ namespace schedule_set_up_app
                 isErrorFound = true;
             }
             //5. Kiểm tra mật khẩu confirm(Password confirm)
+            // 5. Kiểm tra mật khẩu confirm(Password confirm)
             if (string.IsNullOrWhiteSpace(textBox_pass_confirm.Text))
             {
                 errorProvider3.SetError(textBox_pass_confirm, "Vui lòng nhập mật khẩu xác thực");
@@ -68,7 +71,9 @@ namespace schedule_set_up_app
                 isPasswordValid = false;
                 isErrorFound = true;
             }
-            else if (string.Compare(textBox_pass.Text, textBox_pass_confirm.Text) != 0)
+            // (Kiểm tra 'textBox_pass' có trống không TRƯỚC khi so sánh)
+            // ĐÂY LÀ PHẦN SO SÁNH HAI MẬT KHẨU
+            else if (string.IsNullOrWhiteSpace(textBox_pass.Text) == false && string.Compare(textBox_pass.Text, textBox_pass_confirm.Text) != 0)
             {
                 errorProvider3.SetError(textBox_pass_confirm, "Mật khẩu xác thực không khớp");
                 label2.Visible = true;
@@ -81,16 +86,47 @@ namespace schedule_set_up_app
             {
                 // Nếu CÓ LỖI -> Bắt đầu đếm 8 giây, sau đó tắt thông báo lỗi sau 1 thời gian chạy
                 timer1.Start();
+                return;
             }
-            //nếu tất cả đều thỏa mãn ĐK, thông báo hiện lên và quay về form Login để viết lại
-            else if (isPasswordValid == true && isUsernameValid == true && isErrorFound == false)
+            // Lấy dữ liệu từ TextBox
+            string username = textBox_username.Text;
+            string password = textBox_pass.Text;
+
+            // GỌI HÀM ĐĂNG KÝ (Hàm mới trả về string)
+            // Mặc định đăng ký là "User", --> admin là tài khoản duy nhất; chỉ admin mới có quyền trao Role cho User khác là "Admin"
+            string registrationStatus = DatabaseHelper.RegisterUser(username, password, "User");
+
+            // Xử lý các "mã trạng thái" trả về
+            if (registrationStatus == "Success")
             {
-                MessageBox.Show("Bạn đã đăng ký thành công, Đang quay trở về Form Login","Xác Nhận Thành Công",MessageBoxButtons.OK, MessageBoxIcon.Information);
-                // Lấy tên người dùng từ TextBox
-                string username = textBox_username.Text;
+                // ĐĂNG KÝ THÀNH CÔNG
+                MessageBox.Show("Bạn đã đăng ký thành công, Đang quay trở về Form Login", "Xác Nhận Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 Form1 form = new Form1();
                 form.Show();
                 this.Hide();
+            }
+            else if (registrationStatus == "UsernameExists")
+            {
+                // ĐÂY LÀ YÊU CẦU CỦA BẠN: TÀI KHOẢN ĐÃ TỒN TẠI
+                DialogResult result = MessageBox.Show("Tên đăng nhập này đã tồn tại.\nBạn có muốn quay lại trang Login không?","Tài khoản đã tồn tại",
+                    MessageBoxButtons.OKCancel,  
+                    MessageBoxIcon.Warning);    
+
+                // Kiểm tra xem người dùng nhấn OK hay Cancel
+                if (result == DialogResult.OK)
+                {
+                    // Nếu nhấn OK -> Quay về Form1 (Login)
+                    Form1 form = new Form1();
+                    form.Show();
+                    this.Hide();
+                }
+                // Nếu nhấn Cancel -> Không làm gì cả, ở lại form đăng ký
+            }
+            else
+            {
+                // LỖI KHÁC
+                MessageBox.Show("Đăng ký thất bại do lỗi hệ thống. Vui lòng thử lại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -179,6 +215,7 @@ namespace schedule_set_up_app
 
         private void form_sign_up_Load(object sender, EventArgs e)
         {
+            //đặt mã hóa mật khẩu ngay khi khởi chạy
             textBox_pass.UseSystemPasswordChar = true;
             textBox_pass_confirm.UseSystemPasswordChar = true;
         }
