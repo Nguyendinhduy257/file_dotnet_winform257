@@ -11,7 +11,7 @@ namespace schedule_set_up_app
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form_login());
+            Application.Run(new Form_quan_ly_dich_vu_nhaCungCapDichVu_());
         }
     }
 }
