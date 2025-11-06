@@ -90,4 +90,212 @@ public static class DatabaseHelper
             }
         }
     }
+
+    // HÀM LẤY SỐ LIỆU CHO BIỂU ĐỒ
+    public static Dictionary<DateTime, int> GetAppointmentCountsForCurrentWeek()
+    {
+        var counts = new Dictionary<DateTime, int>();
+
+        // tạo logic chỉ tính ngày trong tuần hiện tại
+        DateTime homNay = DateTime.Today;
+        int daysToSubtract = 0;
+        if (homNay.DayOfWeek == DayOfWeek.Sunday) { daysToSubtract = 6; }
+        else { daysToSubtract = (int)homNay.DayOfWeek - (int)DayOfWeek.Monday; }
+        DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract); // (Thứ 2)
+        DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7); // (Thứ 2 tuần sau)
+
+        //thay đổi bảng truy vấn bất cứ khi nào ta muốn đổi "LichHen" thành tên bảng đã tạo trong CSDL
+        string query = @"
+        SELECT 
+            CAST(ThoiGianBatDau AS DATE) AS Ngay, 
+            COUNT(*) AS SoLuong
+        FROM 
+            LichHen
+        WHERE 
+            ThoiGianBatDau >= @NgayDauTuan AND ThoiGianBatDau < @NgaySauChuNhat
+        GROUP BY 
+            CAST(ThoiGianBatDau AS DATE);
+        ";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@NgayDauTuan", ngayDauTuan);
+                cmd.Parameters.AddWithValue("@NgaySauChuNhat", ngaySauChuNhat);
+                try
+                {
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            counts.Add((DateTime)reader["Ngay"], (int)reader["SoLuong"]);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu biểu đồ tuần: " + ex.Message);
+                }
+            }
+        }
+        return counts;
+    }
+    public static Dictionary<string, int> GetAppointmentCountsByTimeOfDay()
+    {
+        var counts = new Dictionary<string, int>();
+        //thử nghiệm tạo biểu đồ tròn hiển thị có bao nhiêu phần trăm khách đặt vào các buổi sáng,chiều,tối; trong tuần hiện tại
+        //  tạo logic chỉ lấy dữ liệu của tuần hiện tại
+        DateTime homNay = DateTime.Today;
+        int daysToSubtract = 0;
+        if (homNay.DayOfWeek == DayOfWeek.Sunday) { daysToSubtract = 6; }
+        else { daysToSubtract = (int)homNay.DayOfWeek - (int)DayOfWeek.Monday; }
+        DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract);
+        DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7);
+
+        // Câu lệnh SQL này dùng CASE để phân loại giờ (HOUR)
+        string query = @"
+        SELECT 
+            -- 1. Phân loại
+            CASE
+                WHEN DATEPART(HOUR, ThoiGianBatDau) BETWEEN 0 AND 11 THEN 'BuoiSang'
+                WHEN DATEPART(HOUR, ThoiGianBatDau) BETWEEN 12 AND 17 THEN 'BuoiChieu'
+                ELSE 'BuoiToi'
+            END AS Buoi,
+            
+            -- 2. Đếm
+            COUNT(*) AS SoLuong
+        FROM
+            LichHen
+        WHERE
+            ThoiGianBatDau >= @NgayDauTuan AND ThoiGianBatDau < @NgaySauChuNhat
+        GROUP BY
+            -- 3. Nhóm theo phân loại
+            CASE
+                WHEN DATEPART(HOUR, ThoiGianBatDau) BETWEEN 0 AND 11 THEN 'BuoiSang'
+                WHEN DATEPART(HOUR, ThoiGianBatDau) BETWEEN 12 AND 17 THEN 'BuoiChieu'
+                ELSE 'BuoiToi'
+            END;
+        ";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@NgayDauTuan", ngayDauTuan);
+                cmd.Parameters.AddWithValue("@NgaySauChuNhat", ngaySauChuNhat);
+                try
+                {
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Thêm vào Dictionary (Ví dụ: Key="BuoiSang", Value=5)
+                            counts.Add((string)reader["Buoi"], (int)reader["SoLuong"]);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lấy dữ liệu biểu đồ tròn: " + ex.Message);
+                }
+            }
+        }
+        return counts;
+    }
+    // 1. ĐẾM TỔNG SỐ LỊCH HẸN TRONG TUẦN HIỆN TẠI
+    public static int GetTotalAppointmentsCurrentWeek()
+    {
+        int count = 0;
+
+        // Logic lấy ngày đầu tuần
+        DateTime homNay = DateTime.Today;
+        int daysToSubtract = (homNay.DayOfWeek == DayOfWeek.Sunday) ? 6 : (int)homNay.DayOfWeek - (int)DayOfWeek.Monday;
+        DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract);
+        DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7);
+
+        string query = @"
+        SELECT COUNT(*) 
+        FROM LichHen
+        WHERE ThoiGianBatDau >= @NgayDauTuan AND ThoiGianBatDau < @NgaySauChuNhat;
+    ";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@NgayDauTuan", ngayDauTuan);
+                cmd.Parameters.AddWithValue("@NgaySauChuNhat", ngaySauChuNhat);
+                try
+                {
+                    conn.Open();
+                    count = (int)cmd.ExecuteScalar(); // Lấy 1 con số duy nhất
+                }
+                catch (Exception ex) { MessageBox.Show("Lỗi đếm tổng lịch hẹn: " + ex.Message); }
+            }
+        }
+        return count;
+    }
+
+
+    // 2. ĐẾM SỐ LỊCH HẸN CHỜ DUYỆT (TRẠNG THÁI KHÔNG PHẢI LÀ 'Đã đặt')
+    public static int GetPendingAppointmentCount()
+    {
+        int count = 0;
+        string query = "SELECT COUNT(*) FROM LichHen WHERE TrangThai != @TrangThaiDaDat";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                // (Dùng N'...' để hỗ trợ Tiếng Việt có dấu)
+                cmd.Parameters.AddWithValue("@TrangThaiDaDat", "Đã đặt");
+                try
+                {
+                    conn.Open();
+                    count = (int)cmd.ExecuteScalar();
+                }
+                catch (Exception ex) { MessageBox.Show("Lỗi đếm lịch chờ: " + ex.Message); }
+            }
+        }
+        return count;
+    }
+
+
+    // 3. ĐẾM SỐ TÀI KHOẢN MỚI TRONG TUẦN NÀY
+    public static int GetNewAccountsCurrentWeek()
+    {
+        int count = 0;
+
+        // Logic lấy ngày đầu tuần
+        DateTime homNay = DateTime.Today;
+        int daysToSubtract = (homNay.DayOfWeek == DayOfWeek.Sunday) ? 6 : (int)homNay.DayOfWeek - (int)DayOfWeek.Monday;
+        DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract);
+        DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7);
+
+        // (Quan trọng: Giả sử bạn có cột 'NgayTao' trong bảng 'TaiKhoan')
+        string query = @"
+        SELECT COUNT(*) 
+        FROM TaiKhoan
+        WHERE NgayTao >= @NgayDauTuan AND NgayTao < @NgaySauChuNhat;
+    ";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@NgayDauTuan", ngayDauTuan);
+                cmd.Parameters.AddWithValue("@NgaySauChuNhat", ngaySauChuNhat);
+                try
+                {
+                    conn.Open();
+                    count = (int)cmd.ExecuteScalar();
+                }
+                catch (Exception ex) { MessageBox.Show("Lỗi đếm tài khoản mới: " + ex.Message); }
+            }
+        }
+        return count;
+    }
 }

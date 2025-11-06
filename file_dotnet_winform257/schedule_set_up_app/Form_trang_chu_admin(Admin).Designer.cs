@@ -69,15 +69,13 @@
             panel1 = new Panel();
             chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            label3 = new Label();
-            label1 = new Label();
-            lb_thong_ke_tong_lap_lich = new Label();
             btn_thong_ke_tai_khoan_moi = new Guna.UI2.WinForms.Guna2Button();
             btn_thong_ke_danh_sach_cho_duyet = new Guna.UI2.WinForms.Guna2Button();
             btn_thong_ke_lap_lich = new Guna.UI2.WinForms.Guna2Button();
             contextMenuStrip1 = new ContextMenuStrip(components);
             profileToolStripMenuItem = new ToolStripMenuItem();
             xemReportUserToolStripMenuItem = new ToolStripMenuItem();
+            timer1 = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -230,9 +228,6 @@
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(panel1);
-            splitContainer2.Panel2.Controls.Add(label3);
-            splitContainer2.Panel2.Controls.Add(label1);
-            splitContainer2.Panel2.Controls.Add(lb_thong_ke_tong_lap_lich);
             splitContainer2.Panel2.Controls.Add(btn_thong_ke_tai_khoan_moi);
             splitContainer2.Panel2.Controls.Add(btn_thong_ke_danh_sach_cho_duyet);
             splitContainer2.Panel2.Controls.Add(btn_thong_ke_lap_lich);
@@ -381,57 +376,24 @@
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.BackColor = Color.Green;
-            label3.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            label3.ForeColor = SystemColors.ButtonHighlight;
-            label3.Location = new Point(1382, 182);
-            label3.Name = "label3";
-            label3.Size = new Size(559, 62);
-            label3.TabIndex = 5;
-            label3.Text = "Tổng lập lịch trong tuần";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.BackColor = Color.DarkOrange;
-            label1.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            label1.ForeColor = SystemColors.ButtonHighlight;
-            label1.Location = new Point(719, 182);
-            label1.Name = "label1";
-            label1.Size = new Size(559, 62);
-            label1.TabIndex = 4;
-            label1.Text = "Tổng lập lịch trong tuần";
-            // 
-            // lb_thong_ke_tong_lap_lich
-            // 
-            lb_thong_ke_tong_lap_lich.AutoSize = true;
-            lb_thong_ke_tong_lap_lich.BackColor = Color.FromArgb(94, 148, 255);
-            lb_thong_ke_tong_lap_lich.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
-            lb_thong_ke_tong_lap_lich.ForeColor = SystemColors.ButtonHighlight;
-            lb_thong_ke_tong_lap_lich.Location = new Point(68, 182);
-            lb_thong_ke_tong_lap_lich.Name = "lb_thong_ke_tong_lap_lich";
-            lb_thong_ke_tong_lap_lich.Size = new Size(559, 62);
-            lb_thong_ke_tong_lap_lich.TabIndex = 3;
-            lb_thong_ke_tong_lap_lich.Text = "Tổng lập lịch trong tuần";
-            // 
             // btn_thong_ke_tai_khoan_moi
             // 
             btn_thong_ke_tai_khoan_moi.Animated = true;
             btn_thong_ke_tai_khoan_moi.BorderRadius = 10;
             btn_thong_ke_tai_khoan_moi.BorderThickness = 1;
+            btn_thong_ke_tai_khoan_moi.CheckedState.FillColor = Color.Green;
             btn_thong_ke_tai_khoan_moi.CustomizableEdges = customizableEdges11;
             btn_thong_ke_tai_khoan_moi.DisabledState.BorderColor = Color.DarkGray;
             btn_thong_ke_tai_khoan_moi.DisabledState.CustomBorderColor = Color.DarkGray;
             btn_thong_ke_tai_khoan_moi.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btn_thong_ke_tai_khoan_moi.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_thong_ke_tai_khoan_moi.FillColor = Color.Green;
-            btn_thong_ke_tai_khoan_moi.Font = new Font("Segoe UI", 30F);
+            btn_thong_ke_tai_khoan_moi.Font = new Font("Segoe UI", 30F, FontStyle.Bold);
             btn_thong_ke_tai_khoan_moi.ForeColor = Color.White;
+            btn_thong_ke_tai_khoan_moi.HoverState.FillColor = Color.Green;
             btn_thong_ke_tai_khoan_moi.Location = new Point(1339, 15);
             btn_thong_ke_tai_khoan_moi.Name = "btn_thong_ke_tai_khoan_moi";
+            btn_thong_ke_tai_khoan_moi.PressedColor = Color.Transparent;
             btn_thong_ke_tai_khoan_moi.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btn_thong_ke_tai_khoan_moi.Size = new Size(642, 245);
             btn_thong_ke_tai_khoan_moi.TabIndex = 2;
@@ -442,6 +404,7 @@
             btn_thong_ke_danh_sach_cho_duyet.Animated = true;
             btn_thong_ke_danh_sach_cho_duyet.BorderRadius = 10;
             btn_thong_ke_danh_sach_cho_duyet.BorderThickness = 1;
+            btn_thong_ke_danh_sach_cho_duyet.CheckedState.FillColor = Color.DarkOrange;
             btn_thong_ke_danh_sach_cho_duyet.CustomizableEdges = customizableEdges13;
             btn_thong_ke_danh_sach_cho_duyet.DisabledState.BorderColor = Color.DarkGray;
             btn_thong_ke_danh_sach_cho_duyet.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -450,6 +413,7 @@
             btn_thong_ke_danh_sach_cho_duyet.FillColor = Color.DarkOrange;
             btn_thong_ke_danh_sach_cho_duyet.Font = new Font("Segoe UI", 30F, FontStyle.Bold);
             btn_thong_ke_danh_sach_cho_duyet.ForeColor = Color.White;
+            btn_thong_ke_danh_sach_cho_duyet.HoverState.FillColor = Color.DarkOrange;
             btn_thong_ke_danh_sach_cho_duyet.Location = new Point(681, 15);
             btn_thong_ke_danh_sach_cho_duyet.Name = "btn_thong_ke_danh_sach_cho_duyet";
             btn_thong_ke_danh_sach_cho_duyet.ShadowDecoration.CustomizableEdges = customizableEdges14;
@@ -462,6 +426,7 @@
             btn_thong_ke_lap_lich.Animated = true;
             btn_thong_ke_lap_lich.BorderRadius = 10;
             btn_thong_ke_lap_lich.BorderThickness = 1;
+            btn_thong_ke_lap_lich.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
             btn_thong_ke_lap_lich.CustomizableEdges = customizableEdges15;
             btn_thong_ke_lap_lich.DisabledState.BorderColor = Color.DarkGray;
             btn_thong_ke_lap_lich.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -469,6 +434,7 @@
             btn_thong_ke_lap_lich.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_thong_ke_lap_lich.Font = new Font("Segoe UI", 30F, FontStyle.Bold);
             btn_thong_ke_lap_lich.ForeColor = Color.White;
+            btn_thong_ke_lap_lich.HoverState.FillColor = Color.FromArgb(94, 148, 255);
             btn_thong_ke_lap_lich.Location = new Point(21, 15);
             btn_thong_ke_lap_lich.Name = "btn_thong_ke_lap_lich";
             btn_thong_ke_lap_lich.ShadowDecoration.CustomizableEdges = customizableEdges16;
@@ -495,6 +461,11 @@
             xemReportUserToolStripMenuItem.Size = new Size(241, 36);
             xemReportUserToolStripMenuItem.Text = "Xem Report User";
             // 
+            // timer1
+            // 
+            timer1.Interval = 60000;
+            timer1.Tick += timer1_Tick;
+            // 
             // Form_trang_chu_admin
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
@@ -517,7 +488,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             splitContainer2.Panel1.ResumeLayout(false);
             splitContainer2.Panel2.ResumeLayout(false);
-            splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
@@ -548,14 +518,12 @@
         private Guna.UI2.WinForms.Guna2Button btn_quan_ly_lich_hen;
         private Guna.UI2.WinForms.Guna2Button btn_quan_ly_user;
         private Guna.UI2.WinForms.Guna2Button btn_setting;
-        private Guna.UI2.WinForms.Guna2Button btn_thong_ke_tai_khoan_moi;
-        private Guna.UI2.WinForms.Guna2Button btn_thong_ke_danh_sach_cho_duyet;
-        private Guna.UI2.WinForms.Guna2Button btn_thong_ke_lap_lich;
-        private Label label3;
-        private Label label1;
-        private Label lb_thong_ke_tong_lap_lich;
         private Panel panel1;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.Timer timer1;
+        private Guna.UI2.WinForms.Guna2Button btn_thong_ke_tai_khoan_moi;
+        private Guna.UI2.WinForms.Guna2Button btn_thong_ke_danh_sach_cho_duyet;
+        private Guna.UI2.WinForms.Guna2Button btn_thong_ke_lap_lich;
     }
 }

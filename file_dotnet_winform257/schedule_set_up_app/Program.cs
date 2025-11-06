@@ -21,6 +21,6 @@ internal static class Program
         // Cài đặt nó làm văn hóa mặc định cho luồng (thread) này
         Thread.CurrentThread.CurrentCulture = ci;
         Thread.CurrentThread.CurrentUICulture = ci;
-    Form1: Application.Run(new Form1());
+        Application.Run(new Form1());
     }
 }
