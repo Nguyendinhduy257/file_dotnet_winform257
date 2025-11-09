@@ -15,6 +15,9 @@ namespace schedule_set_up_app
     public partial class Form_trang_chu_admin : Form
     {
         public string tenNguoiDung;
+        private DataTable dtFullLichSu;
+        // Biến này sẽ giữ control "Quản lý User"
+        private UC_QuanLyUser ucQuanLyUser;
         public Form_trang_chu_admin(string username)
         {
             InitializeComponent();
@@ -45,6 +48,10 @@ namespace schedule_set_up_app
             LoadChartBuoi();
             //gọi hàm chứa dữ liệu của 3 thống kê tổng quát
             UpdateAllStatistics();
+            //gọi hàm load dữ liệu lịch sử đặt lịch
+            LoadLichSuDataGridView();
+            // Bật khu vực chọn (row header) và ô chọn tất cả trong DâtaGridView
+            guna2DataGridView1.RowHeadersVisible = true;
         }
         private void LoadChartCurrentWeek()
         {
@@ -58,7 +65,7 @@ namespace schedule_set_up_app
             chart1.ChartAreas.Add(chartArea1);
 
             // ÉP TRỤC X,Y SANG DẠNG CHỮ (STRING)
-            chartArea1.AxisX.Interval = 1; 
+            chartArea1.AxisX.Interval = 1;
             chartArea1.AxisY.Interval = 1;
             chartArea1.AxisY.Maximum = 10;
 
@@ -183,13 +190,31 @@ namespace schedule_set_up_app
 
         private void btn_quan_ly_user_Click(object sender, EventArgs e)
         {
-            Form_quan_ly_users form_Quan_Ly_Users = new Form_quan_ly_users();
-            form_Quan_Ly_Users.TopLevel = false;
-            form_Quan_Ly_Users.FormBorderStyle = FormBorderStyle.None;
-            form_Quan_Ly_Users.BackColor = Color.Blue;
-            form_Quan_Ly_Users.Dock = DockStyle.Fill;
-            panel1.Controls.Add(form_Quan_Ly_Users);
+            //Form_quan_ly_users form_Quan_Ly_Users = new Form_quan_ly_users();
+            //form_Quan_Ly_Users.TopLevel = false;
+            //form_Quan_Ly_Users.FormBorderStyle = FormBorderStyle.None;
+            //form_Quan_Ly_Users.BackColor = Color.Blue;
+            //form_Quan_Ly_Users.Dock = DockStyle.Fill;
+            //panel1.Controls.Add(form_Quan_Ly_Users);
+            // 1. Ẩn panel Tổng quan đi
+            panel_tong_quat.Visible = false;
+
+            // 2. Kiểm tra xem UC_QuanLyUser đã được tạo chưa
+            if (ucQuanLyUser == null)
+            {
+                // Nếu chưa, tạo nó LẦN ĐẦU TIÊN
+                ucQuanLyUser = new UC_QuanLyUser();
+                ucQuanLyUser.Dock = DockStyle.Fill;
+
+                // Thêm nó vào Panel2 (nó đang bị "ẩn" đằng sau panelTongQuan)
+                splitContainer2.Panel2.Controls.Add(ucQuanLyUser);
+            }
+
+            // 3. Hiển thị nó và đưa lên trên cùng
+            ucQuanLyUser.Visible = true;
+            ucQuanLyUser.BringToFront();
         }
+
 
         private void to_report_form_main_Click(object sender, EventArgs e)
         {
@@ -202,7 +227,7 @@ namespace schedule_set_up_app
             // Hiển thị menu (contextMenuStrip1) của bạn tại vị trí đó
             contextMenuStrip1.Show(control, pt);
         }
-        //Kiểm tra CSDL với mỗi 5 giây, có dữ liệu nào được cập nhật vào trong bảng LichHen không?
+        //Kiểm tra CSDL với mỗi 5 phút, có dữ liệu nào được cập nhật vào trong bảng LichHen không?
         //Nếu có cập nhật, thì cập nhật luôn cả 2 biểu đồ cột và tròn nữa
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -210,6 +235,236 @@ namespace schedule_set_up_app
             LoadChartBuoi();
             // LoadDataGridView();  //bảng dự phòng
             UpdateAllStatistics();
+            LoadLichSuDataGridView();
+        }
+        private void LoadLichSuDataGridView()
+        {
+            ////  Lấy dữ liệu từ CSDL
+            //DataTable data = DatabaseHelper.GetLichSuDatLich();
+
+            // Lấy dữ liệu 1 lần
+            dtFullLichSu = DatabaseHelper.GetLichSuDatLich();
+
+            ////  Gán vào DataGridView
+            //guna2DataGridView1.DataSource = data;
+
+            // Gán vào DataGridView
+            guna2DataGridView1.DataSource = dtFullLichSu;
+
+            // Sửa tên cột cho đẹp
+            // Đảm bảo DataGridView không tự động tạo cột
+            guna2DataGridView1.AutoGenerateColumns = false;
+            if (dtFullLichSu.Rows.Count > 0)
+            {
+                guna2DataGridView1.Columns["ID"].HeaderText = "Mã \n(Want to Sort?)";
+                guna2DataGridView1.Columns["Username_KhachHang"].HeaderText = "Khách Hàng \n(Want to Sort?)";
+                guna2DataGridView1.Columns["ThoiGianBatDau"].HeaderText = "Thời Gian Hẹn \n(Want to sort?)";
+                guna2DataGridView1.Columns["NoiDung"].HeaderText = "Nội Dung \n(Want to sort?)";
+                guna2DataGridView1.Columns["TrangThai"].HeaderText = "Trạng Thái \n(Want to sort?)";
+            }
+
+            // Chỉnh độ rộng cột cho đẹp
+            guna2DataGridView1.Columns["NoiDung"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        }
+
+        private void guna2DataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            // 1. Kiểm tra xem có chọn hàng nào không
+            if (guna2DataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn ít nhất một hàng để xóa.");
+                return;
+            }
+
+            int soHangChon = guna2DataGridView1.SelectedRows.Count;
+
+            // 2. Hộp thoại XÁC NHẬN
+            DialogResult confirm = MessageBox.Show($"Bạn có chắc chắn muốn xóa {soHangChon} lịch hẹn đã chọn?",
+                                                 "Xác nhận xóa",
+                                                 MessageBoxButtons.YesNo,
+                                                 MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.Yes)
+            {
+                int soHangXoaThanhCong = 0;
+
+                // 3. Lặp qua các hàng đã chọn và xóa
+                // Phải lặp ngược để tránh lỗi index
+                for (int i = guna2DataGridView1.SelectedRows.Count - 1; i >= 0; i--)
+                {
+                    DataGridViewRow row = guna2DataGridView1.SelectedRows[i];
+
+                    // Giả sử cột (Name) của ID là "ID"
+                    int idCanXoa = Convert.ToInt32(row.Cells["ID"].Value);
+
+                    if (DatabaseHelper.DeleteLichHen(idCanXoa))
+                    {
+                        soHangXoaThanhCong++;
+                    }
+                }
+
+                MessageBox.Show($"Đã xóa thành công {soHangXoaThanhCong} / {soHangChon} lịch hẹn.");
+
+                // 4. Tải lại dữ liệu
+                LoadLichSuDataGridView();
+            }
+        }
+
+        private void btnChinhSua_Click(object sender, EventArgs e)
+        {
+            // 1. Chỉ cho phép chọn 1 hàng để sửa
+            if (guna2DataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một hàng để chỉnh sửa.");
+                return;
+            }
+            if (guna2DataGridView1.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Chỉ có thể chỉnh sửa một hàng mỗi lần.");
+                return;
+            }
+
+            // 2. Lấy ID của hàng được chọn
+            DataGridViewRow selectedRow = guna2DataGridView1.SelectedRows[0];
+            int idCanSua = Convert.ToInt32(selectedRow.Cells["ID"].Value);
+
+            // 3. (Việc của bạn) Mở Form sửa
+            // Bạn cần tạo một Form mới (ví dụ: Form_SuaLichHen)
+            // Form này nhận ID vào và tải dữ liệu lên
+
+            // Ví dụ:
+            //Form_SuaLichHen formSua = new Form_SuaLichHen(idCanSua);
+            //formSua.Show(); // Hiển thị form
+
+            MessageBox.Show("Đang mở form chỉnh sửa cho ID = " + idCanSua);
+
+            // 4. Tải lại bảng sau khi formSua đóng lại
+            LoadLichSuDataGridView();
+        }
+        // Thử nghiệm tìm kiếm không phân biệt chữ có dấu
+        public static string RemoveAccents(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return text;
+
+            text = text.ToLower();
+            string[] arr1 = new string[] { "á", "à", "ả", "ã", "ạ", "â", "ấ", "ầ", "ẩ", "ẫ", "ậ", "ă", "ắ", "ằ", "ẳ", "ẵ", "ặ",
+                                            "đ",
+                                            "é", "è", "ẻ", "ẽ", "ẹ", "ê", "ế", "ề", "ể", "ễ", "ệ",
+                                            "í", "ì", "ỉ", "ĩ", "ị",
+                                            "ó", "ò", "ỏ", "õ", "ọ", "ô", "ố", "ồ", "ổ", "ỗ", "ộ", "ơ", "ớ", "ờ", "ở", "ỡ", "ợ",
+                                            "ú", "ù", "ủ", "ũ", "ụ", "ư", "ứ", "ừ", "ử", "ữ", "ự",
+                                            "ý", "ỳ", "ỷ", "ỹ", "ỵ",};
+            string[] arr2 = new string[] { "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a",
+                                            "d",
+                                            "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e",
+                                            "i", "i", "i", "i", "i",
+                                            "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o", "o",
+                                            "u", "u", "u", "u", "u", "u", "u", "u", "u", "u", "u",
+                                            "y", "y", "y", "y", "y",};
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                text = text.Replace(arr1[i], arr2[i]);
+            }
+            return text;
+        }
+        //hàm thực hiện tìm kiếm
+        private void PerformSearch()
+        {
+            // Lấy từ khóa, bỏ dấu, chuyển về chữ thường
+            string keyword = RemoveAccents(txtTimKiem.Text.Trim());
+
+            // Nếu từ khóa trống, hiển thị lại bảng đầy đủ
+            if (string.IsNullOrEmpty(keyword))
+            {
+                guna2DataGridView1.DataSource = dtFullLichSu;
+                return;
+            }
+
+            // Tạo bảng mới để chứa kết quả lọc
+            DataTable dtFiltered = dtFullLichSu.Clone(); // Copy cấu trúc
+
+            // Lọc dữ liệu bằng C# (vì RowFilter không hỗ trợ bỏ dấu)
+            foreach (DataRow row in dtFullLichSu.Rows)
+            {
+                string username = RemoveAccents(row["Username_KhachHang"].ToString());
+                string noidung = RemoveAccents(row["NoiDung"].ToString());
+                string trangthai = RemoveAccents(row["TrangThai"].ToString());
+
+                // Kiểm tra xem có chứa từ khóa không
+                if (username.Contains(keyword) ||
+                    noidung.Contains(keyword) ||
+                    trangthai.Contains(keyword))
+                {
+                    dtFiltered.ImportRow(row); // Nếu khớp, thêm vào bảng lọc
+                }
+            }
+
+            // Hiển thị kết quả đã lọc
+            guna2DataGridView1.DataSource = dtFiltered;
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            // Dừng timer (nếu đang chạy) và tìm kiếm ngay
+            //Nếu người dùng nhấn nút tìm kiếm thì sẽ ra lệnh tìm tiếm luôn
+
+            searchTimer.Stop();
+            PerformSearch();
+        }
+
+        private void txtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+            // Mỗi khi gõ, reset và khởi động lại timer
+            // Nếu không nhấn "tìm kiếm" sau 3 giây, timer sẽ tự động thông báo thực hiện tìm kiếm
+            //Nếu người dùng nhấn nút tìm kiếm thì sẽ ra lệnh tìm tiếm luôn
+            searchTimer.Stop();
+            searchTimer.Start(); // Timer sẽ tick sau 3 giây(3000ms)
+        }
+
+        private void searchTimer_Tick(object sender, EventArgs e)
+        {
+            // nếu Hết 3 giây, thông báo tự động tìm kiếm
+            searchTimer.Stop();
+            PerformSearch();
+        }
+
+        private void btn_reload_Click(object sender, EventArgs e)
+        {
+            // 1. Xóa nội dung tìm kiếm (nếu có)
+            txtTimKiem.Clear();
+
+            // 2. Tải lại toàn bộ dữ liệu gốc từ CSDL
+            LoadLichSuDataGridView();
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Wa..ha..ha quả là một chức năng tình huống ngu ngốc (ᵕ—ᴗ—)💧💦... - Đình Zuy", "Tôi thật ngu ngốc ¯\\_ (ᵕ—ᴗ—)_/¯", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
+
+        private void button_tong_quan_Click(object sender, EventArgs e)
+        {
+            // 1. Ẩn UC_QuanLyUser đi (nếu nó tồn tại)
+            if (ucQuanLyUser != null)
+            {
+                ucQuanLyUser.Visible = false;
+                ucQuanLyUser.SendToBack();
+            }
+
+            // 2. "Khôi phục" bằng cách hiển thị lại panelTongQuan
+            panel_tong_quat.Visible = true;
+            panel_tong_quat.BringToFront();
+        }
+
+        private void panel_tong_quat_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

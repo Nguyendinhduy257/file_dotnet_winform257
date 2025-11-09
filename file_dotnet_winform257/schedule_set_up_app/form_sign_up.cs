@@ -25,8 +25,8 @@ namespace schedule_set_up_app
             errorProvider3.Clear();
 
             // 2. Tạo các biến cờ để kiểm tra
-            bool isUsernameValid = true;
-            bool isPasswordValid = true;
+            //bool isUsernameValid = true;
+            //bool isPasswordValid = true;
             bool isErrorFound = false;
 
             // 3. KIỂM TRA TÊN NGƯỜI DÙNG (USERNAME)
@@ -37,7 +37,7 @@ namespace schedule_set_up_app
                 errorProvider1.SetError(textBox_username, "Vui lòng nhập tên người dùng!");
                 label3.Text = "Vui lòng nhập tên người dùng";
                 label3.Visible = true;
-                isUsernameValid = false;
+                //isUsernameValid = false;
                 isErrorFound = true;
             }
             // 3b. (Chỉ kiểm tra nếu không trống) Kiểm tra có dấu cách không
@@ -46,7 +46,7 @@ namespace schedule_set_up_app
                 errorProvider1.SetError(textBox_username, "Tên người dùng không được chứa dấu cách!");
                 label3.Text = "Tên người dùng không được chứa SPACE";
                 label3.Visible = true;
-                isUsernameValid = false;
+                //isUsernameValid = false;
                 isErrorFound = true;
             }
 
@@ -58,7 +58,7 @@ namespace schedule_set_up_app
                 errorProvider2.SetError(textBox_pass, "Vui lòng nhập mật khẩu!");
                 label4.Text = "Vui lòng nhập mật khẩu";
                 label4.Visible = true;
-                isPasswordValid = false;
+                //isPasswordValid = false;
                 isErrorFound = true;
             }
             //5. Kiểm tra mật khẩu confirm(Password confirm)
@@ -68,7 +68,7 @@ namespace schedule_set_up_app
                 errorProvider3.SetError(textBox_pass_confirm, "Vui lòng nhập mật khẩu xác thực");
                 label2.Text = "Vui lòng nhập mật khẩu xác thực";
                 label2.Visible = true;
-                isPasswordValid = false;
+                //isPasswordValid = false;
                 isErrorFound = true;
             }
             // (Kiểm tra 'textBox_pass' có trống không TRƯỚC khi so sánh)
@@ -78,7 +78,7 @@ namespace schedule_set_up_app
                 errorProvider3.SetError(textBox_pass_confirm, "Mật khẩu xác thực không khớp");
                 label2.Visible = true;
                 label2.Text = "Mật khẩu xác thực phải trùng với mật khẩu phía trên";
-                isPasswordValid = false;
+                //isPasswordValid = false;
                 isErrorFound = true;
             }
             // 6. NẾU TẤT CẢ ĐỀU HỢP LỆ -> MỞ FORM Login
