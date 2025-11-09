@@ -1,7 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 using System;
+using System.Data;
+using System.IO;
 using System.Windows.Forms;
 
 public static class DatabaseHelper
@@ -240,7 +241,7 @@ public static class DatabaseHelper
     }
 
 
-    // 2. ĐẾM SỐ LỊCH HẸN CHỜ DUYỆT (TRẠNG THÁI KHÔNG PHẢI LÀ 'Đã đặt')
+    // 2. ĐẾM SỐ LỊCH HẸN CHỜ DUYỆT (TRẠNG THÁI KHÔNG PHẢI LÀ 'Đã đặt (đã duyệt)')
     public static int GetPendingAppointmentCount()
     {
         int count = 0;
@@ -250,8 +251,9 @@ public static class DatabaseHelper
         {
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                // (Dùng N'...' để hỗ trợ Tiếng Việt có dấu)
-                cmd.Parameters.AddWithValue("@TrangThaiDaDat", "Đã đặt");
+                // SỬA DÒNG NÀY:
+                cmd.Parameters.AddWithValue("@TrangThaiDaDat", "Đã duyệt");
+
                 try
                 {
                     conn.Open();
@@ -297,5 +299,69 @@ public static class DatabaseHelper
             }
         }
         return count;
+    }
+    // (Trong file DatabaseHelper.cs)
+
+    // Hàm này lấy TOÀN BỘ lịch sử để hiển thị lên GridView
+    public static DataTable GetLichSuDatLich()
+    {
+        DataTable dt = new DataTable();
+
+        //sắp xếp theo mới nhất lên DatagridView
+        string query = @"
+        SELECT 
+            ID, 
+            Username_KhachHang, 
+            ThoiGianBatDau, 
+            NoiDung, 
+            TrangThai 
+        FROM 
+            LichHen 
+        ORDER BY 
+            ThoiGianBatDau DESC"; // Sắp xếp theo ngày mới nhất
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                try
+                {
+                    conn.Open();
+                    // Dùng SqlDataAdapter để lấy dữ liệu về DataTable
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt); // Đổ dữ liệu vào dt
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải lịch sử: " + ex.Message);
+                }
+            }
+        }
+        return dt; // Trả về bảng dữ liệu
+    }
+    //xóa dữ liệu trong bảng
+    public static bool DeleteLichHen(int lichHenID)
+    {
+        int rowsAffected = 0;
+        string query = "DELETE FROM LichHen WHERE ID = @LichHenID";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@LichHenID", lichHenID);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xóa lịch hẹn: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        return rowsAffected > 0;
     }
 }

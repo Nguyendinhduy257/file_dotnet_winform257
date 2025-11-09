@@ -87,8 +87,8 @@ namespace schedule_set_up_app
             label4.Visible = false; // mặc định Ẩn label lỗi
 
             // 2. Tạo các biến cờ để kiểm tra
-            bool isUsernameValid = true;
-            bool isPasswordValid = true;
+            //bool isUsernameValid = true;
+            //bool isPasswordValid = true;
             bool isErrorFound = false;
 
             // 3. KIỂM TRA TÊN NGƯỜI DÙNG (USERNAME)
@@ -99,7 +99,7 @@ namespace schedule_set_up_app
                 errorProvider1.SetError(textBox_username, "Vui lòng nhập tên người dùng!");
                 label3.Text = "Vui lòng nhập tên người dùng";
                 label3.Visible = true;
-                isUsernameValid = false;
+                //isUsernameValid = false;
                 isErrorFound = true;
             }
             // 3b. (Chỉ kiểm tra nếu không trống) Kiểm tra có dấu cách không
@@ -108,7 +108,7 @@ namespace schedule_set_up_app
                 errorProvider1.SetError(textBox_username, "Tên người dùng không được chứa dấu cách!");
                 label3.Text = "Tên người dùng không được chứa SPACE";
                 label3.Visible = true;
-                isUsernameValid = false;
+                //isUsernameValid = false;
                 isErrorFound = true;
             }
 
@@ -120,7 +120,7 @@ namespace schedule_set_up_app
                 errorProvider2.SetError(textBox_pass, "Vui lòng nhập mật khẩu!");
                 label4.Text = "Vui lòng nhập mật khẩu";
                 label4.Visible = true;
-                isPasswordValid = false;
+                //isPasswordValid = false;
                 isErrorFound = true;
             }
 

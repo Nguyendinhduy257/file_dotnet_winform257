@@ -63,6 +63,26 @@ namespace schedule_set_up_app.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap add_icon {
+            get {
+                object obj = ResourceManager.GetObject("add_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete_icon {
+            get {
+                object obj = ResourceManager.GetObject("delete_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_arrow_to_report {
             get {
                 object obj = ResourceManager.GetObject("icon_arrow_to_report", resourceCulture);
@@ -146,6 +166,26 @@ namespace schedule_set_up_app.Properties {
         internal static System.Drawing.Bitmap mdi_calendar_time__1_ {
             get {
                 object obj = ResourceManager.GetObject("mdi_calendar-time (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reload_icon {
+            get {
+                object obj = ResourceManager.GetObject("reload_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sreach_icon {
+            get {
+                object obj = ResourceManager.GetObject("sreach_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
