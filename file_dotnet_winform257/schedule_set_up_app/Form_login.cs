@@ -143,6 +143,8 @@ namespace schedule_set_up_app
             // Xử lý kết quả trả về
             if (role == "User")
             {
+                //lưu tên đăng nhập
+                UserSession.SetUser(username);
                 // ĐĂNG NHẬP thành công có ROLE="User"
 
                 // Mở Form trang chủ của khách hàng
@@ -152,6 +154,8 @@ namespace schedule_set_up_app
             }
             else if (role == "Admin")
             {
+                //lưu tên đăng nhập
+                UserSession.SetUser(username);
                 // ĐĂNG NHẬP ADMIN
                 Form_trang_chu_admin form_Trang_Chu_Admin = new Form_trang_chu_admin(username);
                 form_Trang_Chu_Admin.Show();
