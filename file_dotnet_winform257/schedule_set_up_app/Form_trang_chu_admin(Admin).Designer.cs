@@ -540,7 +540,7 @@
             guna2DataGridView1.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = Color.White;
             guna2DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 14F);
             dataGridViewCellStyle2.ForeColor = Color.Yellow;
@@ -812,21 +812,23 @@
             contextMenuStrip1.ImageScalingSize = new Size(28, 28);
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { profileToolStripMenuItem, xemReportUserToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(337, 146);
+            contextMenuStrip1.Size = new Size(349, 108);
             // 
             // profileToolStripMenuItem
             // 
             profileToolStripMenuItem.Font = new Font("Segoe UI", 14F);
+            profileToolStripMenuItem.Image = Properties.Resources.icon_edit;
             profileToolStripMenuItem.Name = "profileToolStripMenuItem";
-            profileToolStripMenuItem.Size = new Size(336, 52);
+            profileToolStripMenuItem.Size = new Size(348, 52);
             profileToolStripMenuItem.Text = "         Profile";
             profileToolStripMenuItem.Click += profileToolStripMenuItem_Click;
             // 
             // xemReportUserToolStripMenuItem
             // 
             xemReportUserToolStripMenuItem.Font = new Font("Segoe UI", 14F);
+            xemReportUserToolStripMenuItem.Image = Properties.Resources.My_booking;
             xemReportUserToolStripMenuItem.Name = "xemReportUserToolStripMenuItem";
-            xemReportUserToolStripMenuItem.Size = new Size(336, 52);
+            xemReportUserToolStripMenuItem.Size = new Size(348, 52);
             xemReportUserToolStripMenuItem.Text = "Xem Report User";
             // 
             // timer1
