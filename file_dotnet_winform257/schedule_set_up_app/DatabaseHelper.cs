@@ -251,7 +251,6 @@ public static class DatabaseHelper
         {
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                // SỬA DÒNG NÀY:
                 cmd.Parameters.AddWithValue("@TrangThaiDaDat", "Đã duyệt");
 
                 try
@@ -277,7 +276,6 @@ public static class DatabaseHelper
         DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract);
         DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7);
 
-        // (Quan trọng: Giả sử bạn có cột 'NgayTao' trong bảng 'TaiKhoan')
         string query = @"
         SELECT COUNT(*) 
         FROM TaiKhoan
@@ -358,6 +356,112 @@ public static class DatabaseHelper
                 catch (Exception ex)
                 {
                     MessageBox.Show("Lỗi khi xóa lịch hẹn: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        return rowsAffected > 0;
+    }
+    //Lấy các thông tin Họ tên, pass,... từ CSDL để tự động hiện lên form_profile
+    public static DataTable GetTaiKhoanDetails(string username)
+    {
+        DataTable dt = new DataTable();
+        string query = "SELECT Password, Hoten, Email, Role FROM TaiKhoan WHERE Username = @Username";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải chi tiết tài khoản: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
+
+    // HÀM MỚI 2: Cập nhật tài khoản (cho Form_Profile)
+    public static bool UpdateTaiKhoan(string username, string newPassword, string newHoten, string newEmail)
+    {
+        int rowsAffected = 0;
+        string query = @"
+        UPDATE TaiKhoan 
+        SET Password = @Password, Hoten = @Hoten, Email = @Email 
+        WHERE Username = @Username";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@Password", newPassword);
+                cmd.Parameters.AddWithValue("@Hoten", newHoten);
+                cmd.Parameters.AddWithValue("@Email", newEmail);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật tài khoản: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        return rowsAffected > 0;
+    }
+    //đếm tài khoản Admin, nếu chỉ còn lại duy nhất 1 tài khoản thuộc Role Admin --> tuyệt đối cấm xóa
+    public static int GetAdminAccountCount()
+    {
+        int count = 0;
+        string query = "SELECT COUNT(*) FROM TaiKhoan WHERE Role = 'Admin'";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                try
+                {
+                    conn.Open();
+                    count = (int)cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi đếm tài khoản admin: " + ex.Message);
+                }
+            }
+        }
+        return count;
+    }
+
+    // HÀM thực hiện Xóa tài khoản (cho Form_Profile)
+    public static bool DeleteTaiKhoan(string username)
+    {
+        int rowsAffected = 0;
+        string query = "DELETE FROM TaiKhoan WHERE Username = @Username";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xóa tài khoản: " + ex.Message);
                     return false;
                 }
             }

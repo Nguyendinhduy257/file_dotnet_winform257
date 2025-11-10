@@ -197,6 +197,10 @@ namespace schedule_set_up_app
             //form_Quan_Ly_Users.Dock = DockStyle.Fill;
             //panel1.Controls.Add(form_Quan_Ly_Users);
             // 1. Ẩn panel Tổng quan đi
+            button_tong_quan.BorderThickness = 1;
+            btn_quan_ly_lich_hen.BorderThickness = 1;
+            btn_quan_ly_user.BorderThickness = 3;
+            btn_setting.BorderThickness = 1;
             panel_tong_quat.Visible = false;
 
             // 2. Kiểm tra xem UC_QuanLyUser đã được tạo chưa
@@ -224,10 +228,10 @@ namespace schedule_set_up_app
             // Lấy vị trí góc dưới bên trái của PictureBox
             Point pt = new Point(0, control.Height);
 
-            // Hiển thị menu (contextMenuStrip1) của bạn tại vị trí đó
+            // Hiển thị menu (contextMenuStrip1) dưới đó
             contextMenuStrip1.Show(control, pt);
         }
-        //Kiểm tra CSDL với mỗi 5 phút, có dữ liệu nào được cập nhật vào trong bảng LichHen không?
+        //Kiểm tra CSDL với mỗi 1 phút, có dữ liệu nào được cập nhật vào trong bảng LichHen không?
         //Nếu có cập nhật, thì cập nhật luôn cả 2 biểu đồ cột và tròn nữa
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -450,6 +454,10 @@ namespace schedule_set_up_app
 
         private void button_tong_quan_Click(object sender, EventArgs e)
         {
+            button_tong_quan.BorderThickness = 3;
+            btn_quan_ly_lich_hen.BorderThickness = 1;
+            btn_quan_ly_user.BorderThickness = 1;
+            btn_setting.BorderThickness = 1;
             // 1. Ẩn UC_QuanLyUser đi (nếu nó tồn tại)
             if (ucQuanLyUser != null)
             {
@@ -465,6 +473,31 @@ namespace schedule_set_up_app
         private void panel_tong_quat_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btn_quan_ly_lich_hen_Click(object sender, EventArgs e)
+        {
+            button_tong_quan.BorderThickness = 1;
+            btn_quan_ly_lich_hen.BorderThickness = 3;
+            btn_quan_ly_user.BorderThickness = 1;
+            btn_setting.BorderThickness = 1;
+        }
+
+        private void btn_setting_Click(object sender, EventArgs e)
+        {
+            button_tong_quan.BorderThickness = 1;
+            btn_quan_ly_lich_hen.BorderThickness = 1;
+            btn_quan_ly_user.BorderThickness = 1;
+            btn_setting.BorderThickness = 3;
+
+            form_profile form_profile_tai_khoan = new form_profile();
+            form_profile_tai_khoan.ShowDialog();
+        }
+
+        private void profileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            form_profile form_profile_tai_khoan = new form_profile();
+            form_profile_tai_khoan.ShowDialog();
         }
     }
 }
