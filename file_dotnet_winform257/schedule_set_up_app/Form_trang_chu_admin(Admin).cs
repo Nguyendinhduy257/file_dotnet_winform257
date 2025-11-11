@@ -321,7 +321,7 @@ namespace schedule_set_up_app
 
         private void btnChinhSua_Click(object sender, EventArgs e)
         {
-            // 1. Chỉ cho phép chọn 1 hàng để sửa
+            // 1. Chỉ cho phép chọn 1 hàng để sửa ,nếu chọn nhiều hơn 1 hoặc chưa chọn hàng nào cả thì báo lỗi NGAY LẬP TỨC
             if (guna2DataGridView1.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Vui lòng chọn một hàng để chỉnh sửa.");
@@ -337,15 +337,11 @@ namespace schedule_set_up_app
             DataGridViewRow selectedRow = guna2DataGridView1.SelectedRows[0];
             int idCanSua = Convert.ToInt32(selectedRow.Cells["ID"].Value);
 
-            // 3. (Việc của bạn) Mở Form sửa
-            // Bạn cần tạo một Form mới (ví dụ: Form_SuaLichHen)
-            // Form này nhận ID vào và tải dữ liệu lên
-
             // Ví dụ:
-            //Form_SuaLichHen formSua = new Form_SuaLichHen(idCanSua);
-            //formSua.Show(); // Hiển thị form
+            Form_SuaLichHen formSua = new Form_SuaLichHen(idCanSua);
+            formSua.ShowDialog(); // Hiển thị form
 
-            MessageBox.Show("Đang mở form chỉnh sửa cho ID = " + idCanSua);
+            //MessageBox.Show("Đang mở form chỉnh sửa cho ID = " + idCanSua);
 
             // 4. Tải lại bảng sau khi formSua đóng lại
             LoadLichSuDataGridView();
