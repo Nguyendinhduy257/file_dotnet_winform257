@@ -105,7 +105,6 @@ public static class DatabaseHelper
         DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract); // (Thứ 2)
         DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7); // (Thứ 2 tuần sau)
 
-        //thay đổi bảng truy vấn bất cứ khi nào ta muốn đổi "LichHen" thành tên bảng đã tạo trong CSDL
         string query = @"
         SELECT 
             CAST(ThoiGianBatDau AS DATE) AS Ngay, 
@@ -388,7 +387,7 @@ public static class DatabaseHelper
         return dt;
     }
 
-    // HÀM MỚI 2: Cập nhật tài khoản (cho Form_Profile)
+    // HÀM Cập nhật tài khoản (cho Form_Profile)
     public static bool UpdateTaiKhoan(string username, string newPassword, string newHoten, string newEmail)
     {
         int rowsAffected = 0;
@@ -462,6 +461,117 @@ public static class DatabaseHelper
                 catch (Exception ex)
                 {
                     MessageBox.Show("Lỗi khi xóa tài khoản: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        return rowsAffected > 0;
+    }
+    //Hàm lấy chi tiết lịch hẹn theo ID (lấy tất cả từ LichHen)
+    public static DataTable GetLichHenDetailsByID(int lichHenID)
+    {
+        DataTable dt = new DataTable();
+        // Lấy tất cả thông tin
+        string query = "SELECT * FROM LichHen WHERE ID = @ID";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ID", lichHenID);
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải chi tiết lịch hẹn: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
+    // HÀM cập nhật lịch hẹn (quyền hạn cho Admin)
+    public static bool UpdateLichHen_Admin(int lichHenID, DateTime thoiGianMoi, string trangThaiMoi)
+    {
+        int rowsAffected = 0;
+        string query = @"
+        UPDATE LichHen 
+        SET 
+            ThoiGianBatDau = @ThoiGian, 
+            TrangThai = @TrangThai 
+        WHERE ID = @ID";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ThoiGian", thoiGianMoi);
+                cmd.Parameters.AddWithValue("@TrangThai", trangThaiMoi);
+                cmd.Parameters.AddWithValue("@ID", lichHenID);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật lịch hẹn: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        return rowsAffected > 0;
+    }
+
+    // HÀM Lấy TOÀN BỘ thông tin tài khoản (cho Admin xem trên datagridview)
+    public static DataTable GetAllTaiKhoan()
+    {
+        DataTable dt = new DataTable();
+        // Lấy tất cả trừ mật khẩu
+        string query = "SELECT Username, Hoten, Email, Role, NgayTao FROM TaiKhoan";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải danh sách tài khoản: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
+
+    // HÀM Cập nhật VAI TRÒ (Role: User/ Admin --> do Admin thực hiện)
+    public static bool UpdateUserRole(string username, string newRole)
+    {
+        int rowsAffected = 0;
+        string query = "UPDATE TaiKhoan SET Role = @Role WHERE Username = @Username";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Role", newRole);
+                cmd.Parameters.AddWithValue("@Username", username);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật vai trò: " + ex.Message);
                     return false;
                 }
             }

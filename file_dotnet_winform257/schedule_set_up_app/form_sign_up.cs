@@ -97,7 +97,7 @@ namespace schedule_set_up_app
             string registrationStatus = DatabaseHelper.RegisterUser(username, password, "User");
 
             // Xử lý các "mã trạng thái" trả về
-            if (registrationStatus == "Success")
+            if (registrationStatus == "SUCCESS")
             {
                 // ĐĂNG KÝ THÀNH CÔNG
                 MessageBox.Show("Bạn đã đăng ký thành công, Đang quay trở về Form Login", "Xác Nhận Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -106,7 +106,7 @@ namespace schedule_set_up_app
                 form.Show();
                 this.Hide();
             }
-            else if (registrationStatus == "UsernameExists")
+            else if (registrationStatus == "EXISTED")
             {
                 // ĐÂY LÀ YÊU CẦU CỦA BẠN: TÀI KHOẢN ĐÃ TỒN TẠI
                 DialogResult result = MessageBox.Show("Tên đăng nhập này đã tồn tại.\nBạn có muốn quay lại trang Login không?","Tài khoản đã tồn tại",

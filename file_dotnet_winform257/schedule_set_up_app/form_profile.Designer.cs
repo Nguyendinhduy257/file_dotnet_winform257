@@ -53,6 +53,7 @@
             guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
             btn_turn_back = new Guna.UI2.WinForms.Guna2Button();
             guna2CirclePictureBox1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            panel1 = new Panel();
             label1 = new Label();
             txtHoten = new Guna.UI2.WinForms.Guna2TextBox();
             lb_Password = new Label();
@@ -66,7 +67,6 @@
             txtUsername = new Guna.UI2.WinForms.Guna2TextBox();
             btn_hide_pass_confirm = new Guna.UI2.WinForms.Guna2Button();
             btn_hide_pass = new Guna.UI2.WinForms.Guna2Button();
-            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -105,14 +105,16 @@
             splitContainer1.Panel2.Controls.Add(txtUsername);
             splitContainer1.Panel2.Controls.Add(btn_hide_pass_confirm);
             splitContainer1.Panel2.Controls.Add(btn_hide_pass);
-            splitContainer1.Size = new Size(1398, 922);
+            splitContainer1.Size = new Size(1421, 922);
             splitContainer1.SplitterDistance = 422;
             splitContainer1.TabIndex = 0;
             // 
             // guna2Button2
             // 
+            guna2Button2.Animated = true;
             guna2Button2.BorderRadius = 20;
             guna2Button2.BorderThickness = 1;
+            guna2Button2.Cursor = Cursors.Hand;
             guna2Button2.CustomizableEdges = customizableEdges1;
             guna2Button2.DisabledState.BorderColor = Color.DarkGray;
             guna2Button2.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -131,8 +133,10 @@
             // 
             // btn_turn_back
             // 
+            btn_turn_back.Animated = true;
             btn_turn_back.BorderRadius = 20;
             btn_turn_back.BorderThickness = 1;
+            btn_turn_back.Cursor = Cursors.Hand;
             btn_turn_back.CustomizableEdges = customizableEdges3;
             btn_turn_back.DisabledState.BorderColor = Color.DarkGray;
             btn_turn_back.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -163,6 +167,14 @@
             guna2CirclePictureBox1.TabIndex = 0;
             guna2CirclePictureBox1.TabStop = false;
             // 
+            // panel1
+            // 
+            panel1.BackColor = Color.Teal;
+            panel1.Location = new Point(4, 3);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1384, 5);
+            panel1.TabIndex = 13;
+            // 
             // label1
             // 
             label1.Font = new Font("Segoe UI", 14F);
@@ -177,6 +189,7 @@
             // 
             txtHoten.Animated = true;
             txtHoten.BorderRadius = 15;
+            txtHoten.Cursor = Cursors.Hand;
             txtHoten.CustomizableEdges = customizableEdges6;
             txtHoten.DefaultText = "";
             txtHoten.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -190,11 +203,10 @@
             txtHoten.Margin = new Padding(5, 6, 5, 6);
             txtHoten.Name = "txtHoten";
             txtHoten.PlaceholderText = "";
-            txtHoten.ReadOnly = true;
             txtHoten.SelectedText = "";
             txtHoten.ShadowDecoration.CustomizableEdges = customizableEdges7;
             txtHoten.Size = new Size(600, 89);
-            txtHoten.TabIndex = 9;
+            txtHoten.TabIndex = 6;
             // 
             // lb_Password
             // 
@@ -238,8 +250,10 @@
             // 
             // guna2Button1
             // 
+            guna2Button1.Animated = true;
             guna2Button1.BorderRadius = 20;
             guna2Button1.BorderThickness = 1;
+            guna2Button1.Cursor = Cursors.Hand;
             guna2Button1.CustomizableEdges = customizableEdges8;
             guna2Button1.DisabledState.BorderColor = Color.DarkGray;
             guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -251,7 +265,7 @@
             guna2Button1.Name = "guna2Button1";
             guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges9;
             guna2Button1.Size = new Size(315, 79);
-            guna2Button1.TabIndex = 4;
+            guna2Button1.TabIndex = 8;
             guna2Button1.Text = "Lưu thay đổi";
             guna2Button1.Click += guna2Button1_Click;
             // 
@@ -259,6 +273,7 @@
             // 
             txtEmail.Animated = true;
             txtEmail.BorderRadius = 15;
+            txtEmail.Cursor = Cursors.Hand;
             txtEmail.CustomizableEdges = customizableEdges10;
             txtEmail.DefaultText = "";
             txtEmail.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -275,11 +290,12 @@
             txtEmail.SelectedText = "";
             txtEmail.ShadowDecoration.CustomizableEdges = customizableEdges11;
             txtEmail.Size = new Size(600, 89);
-            txtEmail.TabIndex = 3;
+            txtEmail.TabIndex = 7;
             // 
             // txtConfirmPassword
             // 
             txtConfirmPassword.Animated = true;
+            txtConfirmPassword.Cursor = Cursors.Hand;
             txtConfirmPassword.CustomizableEdges = customizableEdges12;
             txtConfirmPassword.DefaultText = "";
             txtConfirmPassword.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -296,11 +312,12 @@
             txtConfirmPassword.SelectedText = "";
             txtConfirmPassword.ShadowDecoration.CustomizableEdges = customizableEdges13;
             txtConfirmPassword.Size = new Size(600, 89);
-            txtConfirmPassword.TabIndex = 2;
+            txtConfirmPassword.TabIndex = 5;
             // 
             // txtPassword
             // 
             txtPassword.Animated = true;
+            txtPassword.Cursor = Cursors.Hand;
             txtPassword.CustomizableEdges = customizableEdges14;
             txtPassword.DefaultText = "";
             txtPassword.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -317,7 +334,7 @@
             txtPassword.SelectedText = "";
             txtPassword.ShadowDecoration.CustomizableEdges = customizableEdges15;
             txtPassword.Size = new Size(600, 89);
-            txtPassword.TabIndex = 1;
+            txtPassword.TabIndex = 4;
             // 
             // txtUsername
             // 
@@ -340,7 +357,7 @@
             txtUsername.SelectedText = "";
             txtUsername.ShadowDecoration.CustomizableEdges = customizableEdges17;
             txtUsername.Size = new Size(600, 89);
-            txtUsername.TabIndex = 0;
+            txtUsername.TabIndex = 3;
             txtUsername.TextChanged += guna2TextBox1_TextChanged;
             // 
             // btn_hide_pass_confirm
@@ -385,19 +402,11 @@
             btn_hide_pass.TabIndex = 12;
             btn_hide_pass.Click += guna2Button4_Click;
             // 
-            // panel1
-            // 
-            panel1.BackColor = Color.Teal;
-            panel1.Location = new Point(3, 3);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(1366, 5);
-            panel1.TabIndex = 13;
-            // 
             // form_profile
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1398, 922);
+            ClientSize = new Size(1421, 922);
             Controls.Add(splitContainer1);
             Name = "form_profile";
             StartPosition = FormStartPosition.CenterScreen;
