@@ -293,11 +293,11 @@ namespace schedule_set_up_app
             // Sửa tên cột cho đẹp
             if (dtFullLichSu.Rows.Count > 0)
             {
-                guna2DataGridView1.Columns["ID"].HeaderText = "Mã \n(Want to Sort?)";
-                guna2DataGridView1.Columns["Username_KhachHang"].HeaderText = "Khách Hàng \n(Want to Sort?)";
-                guna2DataGridView1.Columns["ThoiGianBatDau"].HeaderText = "Thời Gian Hẹn \n(Want to sort?)";
-                guna2DataGridView1.Columns["NoiDung"].HeaderText = "Nội Dung \n(Want to sort?)";
-                guna2DataGridView1.Columns["TrangThai"].HeaderText = "Trạng Thái \n(Want to sort?)";
+                guna2DataGridView1.Columns["ID"].HeaderText = "Mã ID                  📶↕️";
+                guna2DataGridView1.Columns["Username_KhachHang"].HeaderText = "Khách Hàng     📶↕️";
+                guna2DataGridView1.Columns["ThoiGianBatDau"].HeaderText = "Thời Gian Hẹn     📶↕️";
+                guna2DataGridView1.Columns["NoiDung"].HeaderText = "Nội Dung            📶↕️";
+                guna2DataGridView1.Columns["TrangThai"].HeaderText = "Trạng Thái          📶↕️";
             }
 
             // Chỉnh độ rộng cột cho đẹp
@@ -511,6 +511,8 @@ namespace schedule_set_up_app
             btn_quan_ly_lich_hen.BorderThickness = 3;
             btn_quan_ly_user.BorderThickness = 1;
             btn_setting.BorderThickness = 1;
+            Form_quan_ly_lich_Admin_ form_Quan_Ly_Lich_Admin_ = new Form_quan_ly_lich_Admin_();
+            form_Quan_Ly_Lich_Admin_.ShowDialog();
         }
 
         private void btn_setting_Click(object sender, EventArgs e)
