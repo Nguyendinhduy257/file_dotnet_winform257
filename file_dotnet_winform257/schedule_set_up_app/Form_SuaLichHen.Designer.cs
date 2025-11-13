@@ -36,11 +36,8 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             txtUsername = new Guna.UI2.WinForms.Guna2TextBox();
             txtNoiDung = new Guna.UI2.WinForms.Guna2TextBox();
-            dtpThoiGianHen = new Guna.UI2.WinForms.Guna2DateTimePicker();
             cmbTrangThai = new Guna.UI2.WinForms.Guna2ComboBox();
             btnLuuThayDoi = new Guna.UI2.WinForms.Guna2Button();
             lb_username = new Label();
@@ -49,6 +46,7 @@
             lb_trang_thai = new Label();
             lb_tieu_de = new Label();
             panel1 = new Panel();
+            dtpThoiGianHen1 = new DateTimePicker();
             SuspendLayout();
             // 
             // txtUsername
@@ -96,34 +94,12 @@
             txtNoiDung.Size = new Size(600, 169);
             txtNoiDung.TabIndex = 1;
             // 
-            // dtpThoiGianHen
-            // 
-            dtpThoiGianHen.Animated = true;
-            dtpThoiGianHen.BorderRadius = 20;
-            dtpThoiGianHen.BorderThickness = 1;
-            dtpThoiGianHen.Checked = true;
-            dtpThoiGianHen.Cursor = Cursors.Hand;
-            dtpThoiGianHen.CustomFormat = "dd/MM/yyyy HH:mm";
-            dtpThoiGianHen.CustomizableEdges = customizableEdges5;
-            dtpThoiGianHen.Font = new Font("Segoe UI", 9F);
-            dtpThoiGianHen.Format = DateTimePickerFormat.Custom;
-            dtpThoiGianHen.Location = new Point(316, 432);
-            dtpThoiGianHen.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
-            dtpThoiGianHen.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
-            dtpThoiGianHen.Name = "dtpThoiGianHen";
-            dtpThoiGianHen.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            dtpThoiGianHen.ShowUpDown = true;
-            dtpThoiGianHen.Size = new Size(600, 106);
-            dtpThoiGianHen.TabIndex = 2;
-            dtpThoiGianHen.TextAlign = HorizontalAlignment.Center;
-            dtpThoiGianHen.Value = new DateTime(2025, 11, 11, 20, 31, 30, 877);
-            // 
             // cmbTrangThai
             // 
             cmbTrangThai.BackColor = Color.Transparent;
             cmbTrangThai.BorderRadius = 20;
             cmbTrangThai.Cursor = Cursors.Hand;
-            cmbTrangThai.CustomizableEdges = customizableEdges7;
+            cmbTrangThai.CustomizableEdges = customizableEdges5;
             cmbTrangThai.DrawMode = DrawMode.OwnerDrawFixed;
             cmbTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTrangThai.FocusedColor = Color.FromArgb(94, 148, 255);
@@ -132,24 +108,26 @@
             cmbTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cmbTrangThai.ItemHeight = 50;
             cmbTrangThai.Items.AddRange(new object[] { "chưa duyệt", "đã duyệt" });
-            cmbTrangThai.Location = new Point(314, 565);
+            cmbTrangThai.Location = new Point(314, 535);
             cmbTrangThai.Name = "cmbTrangThai";
-            cmbTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            cmbTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges6;
             cmbTrangThai.Size = new Size(602, 56);
             cmbTrangThai.TabIndex = 3;
             // 
             // btnLuuThayDoi
             // 
-            btnLuuThayDoi.CustomizableEdges = customizableEdges9;
+            btnLuuThayDoi.BorderRadius = 20;
+            btnLuuThayDoi.BorderThickness = 1;
+            btnLuuThayDoi.CustomizableEdges = customizableEdges7;
             btnLuuThayDoi.DisabledState.BorderColor = Color.DarkGray;
             btnLuuThayDoi.DisabledState.CustomBorderColor = Color.DarkGray;
             btnLuuThayDoi.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnLuuThayDoi.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnLuuThayDoi.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             btnLuuThayDoi.ForeColor = Color.White;
-            btnLuuThayDoi.Location = new Point(472, 656);
+            btnLuuThayDoi.Location = new Point(452, 623);
             btnLuuThayDoi.Name = "btnLuuThayDoi";
-            btnLuuThayDoi.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnLuuThayDoi.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnLuuThayDoi.Size = new Size(315, 79);
             btnLuuThayDoi.TabIndex = 4;
             btnLuuThayDoi.Text = "Xác nhận Sửa";
@@ -178,9 +156,9 @@
             // lb_chinh_datetime
             // 
             lb_chinh_datetime.Font = new Font("Segoe UI", 14F);
-            lb_chinh_datetime.Location = new Point(71, 432);
+            lb_chinh_datetime.Location = new Point(71, 438);
             lb_chinh_datetime.Name = "lb_chinh_datetime";
-            lb_chinh_datetime.Size = new Size(237, 106);
+            lb_chinh_datetime.Size = new Size(237, 76);
             lb_chinh_datetime.TabIndex = 7;
             lb_chinh_datetime.Text = "Thời gian hẹn";
             lb_chinh_datetime.TextAlign = ContentAlignment.MiddleCenter;
@@ -188,7 +166,7 @@
             // lb_trang_thai
             // 
             lb_trang_thai.Font = new Font("Segoe UI", 14F);
-            lb_trang_thai.Location = new Point(71, 565);
+            lb_trang_thai.Location = new Point(71, 535);
             lb_trang_thai.Name = "lb_trang_thai";
             lb_trang_thai.Size = new Size(237, 56);
             lb_trang_thai.TabIndex = 8;
@@ -197,12 +175,12 @@
             // 
             // lb_tieu_de
             // 
-            lb_tieu_de.Font = new Font("Segoe UI", 16F, FontStyle.Bold | FontStyle.Italic);
+            lb_tieu_de.Font = new Font("Segoe UI", 15F, FontStyle.Bold | FontStyle.Italic);
             lb_tieu_de.Location = new Point(12, 47);
             lb_tieu_de.Name = "lb_tieu_de";
             lb_tieu_de.Size = new Size(1021, 51);
             lb_tieu_de.TabIndex = 9;
-            lb_tieu_de.Text = "Chỉnh sửa thời gian theo mong muốn của bạn 📝🔧\r\n";
+            lb_tieu_de.Text = "📝 Chỉnh sửa lịch hẹn của User theo mong muốn của bạn🔧\r\n";
             lb_tieu_de.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel1
@@ -213,11 +191,24 @@
             panel1.Size = new Size(1024, 5);
             panel1.TabIndex = 10;
             // 
+            // dtpThoiGianHen1
+            // 
+            dtpThoiGianHen1.Cursor = Cursors.Hand;
+            dtpThoiGianHen1.CustomFormat = "dd/MM/yyyy HH:mm";
+            dtpThoiGianHen1.Font = new Font("Segoe UI", 22F);
+            dtpThoiGianHen1.Format = DateTimePickerFormat.Custom;
+            dtpThoiGianHen1.Location = new Point(316, 438);
+            dtpThoiGianHen1.Name = "dtpThoiGianHen1";
+            dtpThoiGianHen1.ShowUpDown = true;
+            dtpThoiGianHen1.Size = new Size(600, 76);
+            dtpThoiGianHen1.TabIndex = 11;
+            // 
             // Form_SuaLichHen
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1038, 789);
+            Controls.Add(dtpThoiGianHen1);
             Controls.Add(panel1);
             Controls.Add(lb_tieu_de);
             Controls.Add(lb_trang_thai);
@@ -226,7 +217,6 @@
             Controls.Add(lb_username);
             Controls.Add(btnLuuThayDoi);
             Controls.Add(cmbTrangThai);
-            Controls.Add(dtpThoiGianHen);
             Controls.Add(txtNoiDung);
             Controls.Add(txtUsername);
             Name = "Form_SuaLichHen";
@@ -248,5 +238,7 @@
         private Label lb_trang_thai;
         private Label lb_tieu_de;
         private Panel panel1;
+        private DateTimePicker dtpThoiGianHen1;
+        //private DateTimePicker dtpThoiGianHen;
     }
 }

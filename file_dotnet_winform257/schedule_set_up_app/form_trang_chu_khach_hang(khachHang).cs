@@ -192,7 +192,7 @@ namespace schedule_set_up_app
             else
             {
                 //không có gì xảy ra cả
-                btn_close.BorderThickness=1;
+                btn_close.BorderThickness = 1;
             }
         }
 
@@ -225,8 +225,19 @@ namespace schedule_set_up_app
         //truy cập form_report khi click
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Form_Report_khachHang_ Report=new Form_Report_khachHang_();
+            Form_Report_khachHang_ Report = new Form_Report_khachHang_();
             Report.Show();
+        }
+
+        private void thêmSửaXóaProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            form_profile form_profile_tai_khoan = new form_profile();
+            form_profile_tai_khoan.ShowDialog();
+        }
+
+        private void highligh_monday_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

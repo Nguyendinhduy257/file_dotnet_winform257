@@ -52,6 +52,18 @@ namespace schedule_set_up_app
             LoadLichSuDataGridView();
             // Bật khu vực chọn (row header) và ô chọn tất cả trong DâtaGridView
             guna2DataGridView1.RowHeadersVisible = true;
+            timer1.Enabled = true;
+            timer1.Interval = 15000;
+            //resize Panel2 và hàm Panel2_Resize
+            splitContainer2.Panel2.Resize += new EventHandler(panel2_resize);
+        }
+        private void panel2_resize(object sender, EventArgs e)
+        {
+            // Căn giữa UC_QuanLyUser nếu nó đang hiển thị
+            if (ucQuanLyUser != null && ucQuanLyUser.Visible)
+            {
+                CenterUC(ucQuanLyUser);
+            }
         }
         private void LoadChartCurrentWeek()
         {
@@ -74,7 +86,7 @@ namespace schedule_set_up_app
             seriesMoi.ChartType = SeriesChartType.Column;
             seriesMoi.ChartArea = "MainArea";
 
-            // --- ĐÂY LÀ 2 DÒNG SỬA LỖI QUAN TRỌNG ---
+            
             seriesMoi.XValueType = ChartValueType.String;
             seriesMoi.IsXValueIndexed = true;             //     Ép nó phải "index" (Thứ 2, Thứ 3,...)
 
@@ -111,7 +123,8 @@ namespace schedule_set_up_app
             // 4. Thêm Series vào Chart
             chart1.Series.Add(seriesMoi);
             chart1.Legends[0].Enabled = false;
-            chart1.Titles.Add("Lịch hẹn trong tuần");
+            Title title1 = chart1.Titles.Add("Lịch hẹn trong tuần");
+            title1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
         }
         private void LoadChartBuoi()
         {
@@ -147,7 +160,8 @@ namespace schedule_set_up_app
 
             chart2.Series.Add(seriesBuoi);
             chart2.Legends[0].Enabled = true; // Bật chú thích (Legend)
-            chart2.Titles.Add("Tỷ lệ đặt lịch theo buổi");
+            Title title2 = chart2.Titles.Add("Tỷ lệ đặt lịch theo buổi");
+            title2.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
         }
         // Hàm này sẽ được gọi trong Form_Load và timer1_Tick
         private void UpdateAllStatistics()
@@ -196,6 +210,7 @@ namespace schedule_set_up_app
             //form_Quan_Ly_Users.BackColor = Color.Blue;
             //form_Quan_Ly_Users.Dock = DockStyle.Fill;
             //panel1.Controls.Add(form_Quan_Ly_Users);
+            label1.Text = "              Thông Tin Các Tài Khoản và Role";
             // 1. Ẩn panel Tổng quan đi
             button_tong_quan.BorderThickness = 1;
             btn_quan_ly_lich_hen.BorderThickness = 1;
@@ -217,8 +232,28 @@ namespace schedule_set_up_app
             // 3. Hiển thị nó và đưa lên trên cùng
             ucQuanLyUser.Visible = true;
             ucQuanLyUser.BringToFront();
+            //Căn giữa
+            CenterUC(ucQuanLyUser);
         }
+        // HÀM CenterUC() để căn giữa UserControl trong Panel2
+        private void CenterUC(UserControl uc)
+        {
+            if (uc == null) return;
 
+            // Lấy panel cha (chính là Panel2)
+            Control parent = splitContainer2.Panel2;
+
+            // Tính toán vị trí X, Y mới
+            int newX = (parent.Width - uc.Width) / 2;
+            int newY = (parent.Height - uc.Height) / 2;
+
+            // Đảm bảo không bị âm nếu panel quá nhỏ
+            if (newX < 0) newX = 0;
+            if (newY < 0) newY = 0;
+
+            // Đặt vị trí (Location)
+            uc.Location = new Point(newX, newY);
+        }
 
         private void to_report_form_main_Click(object sender, EventArgs e)
         {
@@ -256,8 +291,6 @@ namespace schedule_set_up_app
             guna2DataGridView1.DataSource = dtFullLichSu;
 
             // Sửa tên cột cho đẹp
-            // Đảm bảo DataGridView không tự động tạo cột
-            guna2DataGridView1.AutoGenerateColumns = false;
             if (dtFullLichSu.Rows.Count > 0)
             {
                 guna2DataGridView1.Columns["ID"].HeaderText = "Mã \n(Want to Sort?)";
@@ -450,6 +483,7 @@ namespace schedule_set_up_app
 
         private void button_tong_quan_Click(object sender, EventArgs e)
         {
+            label1.Text = "Thống kê luồng người dùng trong tuần hiện tại";
             button_tong_quan.BorderThickness = 3;
             btn_quan_ly_lich_hen.BorderThickness = 1;
             btn_quan_ly_user.BorderThickness = 1;
@@ -494,6 +528,12 @@ namespace schedule_set_up_app
         {
             form_profile form_profile_tai_khoan = new form_profile();
             form_profile_tai_khoan.ShowDialog();
+        }
+
+        private void xemReportUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form_Report_khachHang_ form_Report_KhachHang_ = new Form_Report_khachHang_();
+            form_Report_KhachHang_.ShowDialog();
         }
     }
 }

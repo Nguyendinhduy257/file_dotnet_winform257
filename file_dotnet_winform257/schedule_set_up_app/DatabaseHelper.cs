@@ -525,4 +525,57 @@ public static class DatabaseHelper
         }
         return rowsAffected > 0;
     }
+
+    // HÀM Lấy TOÀN BỘ thông tin tài khoản (cho Admin xem trên datagridview)
+    public static DataTable GetAllTaiKhoan()
+    {
+        DataTable dt = new DataTable();
+        // Lấy tất cả trừ mật khẩu
+        string query = "SELECT Username, Hoten, Email, Role, NgayTao FROM TaiKhoan";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải danh sách tài khoản: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
+
+    // HÀM Cập nhật VAI TRÒ (Role: User/ Admin --> do Admin thực hiện)
+    public static bool UpdateUserRole(string username, string newRole)
+    {
+        int rowsAffected = 0;
+        string query = "UPDATE TaiKhoan SET Role = @Role WHERE Username = @Username";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Role", newRole);
+                cmd.Parameters.AddWithValue("@Username", username);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật vai trò: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        return rowsAffected > 0;
+    }
 }

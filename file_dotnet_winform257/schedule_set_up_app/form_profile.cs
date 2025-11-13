@@ -12,6 +12,7 @@ namespace schedule_set_up_app
 {
     public partial class form_profile : Form
     {
+
         private string currentUsername;
         private string currentUserRole;
         // BIẾN MỚI: Để lưu thông tin ban đầu
@@ -167,8 +168,9 @@ namespace schedule_set_up_app
 
                 if (success)
                 {
-                    MessageBox.Show("Tài khoản của bạn đã được xóa. Ứng dụng sẽ đóng.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Application.Exit();
+                    MessageBox.Show("Tài khoản của bạn đã được xóa. Ứng dụng sẽ quay về Login.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //Application.Exit();
+                    Application.Restart();
                 }
                 else
                 {
