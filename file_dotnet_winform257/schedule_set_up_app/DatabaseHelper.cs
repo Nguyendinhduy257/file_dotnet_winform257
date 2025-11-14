@@ -613,4 +613,143 @@ public static class DatabaseHelper
         // Trả về true nếu chèn thành công (rowsAffected > 0)
         return (rowsAffected > 0);
     }
+
+    public static DataTable GetLichHenCaNhan(string username)
+    {
+        DataTable dt = new DataTable();
+
+        // Lấy các cột cần thiết và đổi tên (AS) cho dễ đọc trên GridView
+        // Sắp xếp theo lịch mới nhất lên trước
+        string query = @"
+        SELECT 
+            ID AS MaLich, 
+            NoiDung AS DichVu, 
+            ThoiGianBatDau AS NgayHen, 
+            TrangThai 
+        FROM 
+            LichHen 
+        WHERE 
+            Username_KhachHang = @Username
+        ORDER BY 
+            ThoiGianBatDau DESC";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                // Chỉ lấy lịch của user đang đăng nhập
+                cmd.Parameters.AddWithValue("@Username", username);
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt); // Đổ dữ liệu vào DataTable
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải lịch hẹn cá nhân: " + ex.Message);
+                }
+            }
+        }
+        return dt; // Trả về bảng dữ liệu
+    }
+
+    // HÀM Hủy lịch hẹn (do User thực hiện)
+    public static bool HuyLichHenUser(int lichHenID)
+    {
+        int rowsAffected = 0;
+        // Đây là 1 Cập nhật (UPDATE), không phải Xóa (DELETE)
+        string query = "UPDATE LichHen SET TrangThai = N'Đã hủy' WHERE ID = @ID";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ID", lichHenID);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi hủy lịch hẹn: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        // Trả về true nếu cập nhật thành công (rowsAffected > 0)
+        return rowsAffected > 0;
+    }
+
+
+    //Form_Report
+    public static bool SubmitReport(string username, string loaiBaoCao, string noiDung)
+    {
+        int rowsAffected = 0;
+        string query = @"
+        INSERT INTO BaoCao (Username_NguoiGui, LoaiBaoCao, NoiDung) 
+        VALUES (@Username, @Loai, @NoiDung)";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@Loai", loaiBaoCao);
+                cmd.Parameters.AddWithValue("@NoiDung", noiDung);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi gửi báo cáo: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        return rowsAffected > 0;
+    }
+
+
+    public static DataTable GetMyReports(string username)
+    {
+        DataTable dt = new DataTable();
+        // Sắp xếp theo ngày mới nhất lên trên
+        string query = @"
+        SELECT 
+            ID, 
+            LoaiBaoCao, 
+            NoiDung, 
+            NgayGui, 
+            TrangThai 
+        FROM 
+            BaoCao 
+        WHERE 
+            Username_NguoiGui = @Username 
+        ORDER BY 
+            NgayGui DESC";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải lịch sử báo cáo: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
+
 }
