@@ -34,12 +34,14 @@
             cboLoaiBaoCao = new ComboBox();
             label1 = new Label();
             label2 = new Label();
+            txtNoiDung = new TextBox();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvBaoCao).BeginInit();
             SuspendLayout();
             // 
             // dtpDenNgay
             // 
-            dtpDenNgay.Location = new Point(284, 91);
+            dtpDenNgay.Location = new Point(204, 85);
             dtpDenNgay.Name = "dtpDenNgay";
             dtpDenNgay.Size = new Size(193, 27);
             dtpDenNgay.TabIndex = 2;
@@ -59,7 +61,7 @@
             // dgvBaoCao
             // 
             dgvBaoCao.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvBaoCao.Location = new Point(43, 184);
+            dgvBaoCao.Location = new Point(43, 224);
             dgvBaoCao.Name = "dgvBaoCao";
             dgvBaoCao.RowHeadersWidth = 51;
             dgvBaoCao.Size = new Size(639, 188);
@@ -68,7 +70,7 @@
             // cboLoaiBaoCao
             // 
             cboLoaiBaoCao.FormattingEnabled = true;
-            cboLoaiBaoCao.Location = new Point(43, 90);
+            cboLoaiBaoCao.Location = new Point(204, 22);
             cboLoaiBaoCao.Name = "cboLoaiBaoCao";
             cboLoaiBaoCao.Size = new Size(193, 28);
             cboLoaiBaoCao.TabIndex = 7;
@@ -76,7 +78,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(43, 57);
+            label1.Location = new Point(43, 25);
             label1.Name = "label1";
             label1.Size = new Size(95, 20);
             label1.TabIndex = 8;
@@ -85,17 +87,35 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(284, 57);
+            label2.Location = new Point(43, 85);
             label2.Name = "label2";
             label2.Size = new Size(71, 20);
             label2.TabIndex = 9;
             label2.Text = "Thời gian";
+            // 
+            // txtNoiDung
+            // 
+            txtNoiDung.Location = new Point(204, 151);
+            txtNoiDung.Name = "txtNoiDung";
+            txtNoiDung.Size = new Size(193, 27);
+            txtNoiDung.TabIndex = 10;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(51, 147);
+            label3.Name = "label3";
+            label3.Size = new Size(71, 20);
+            label3.TabIndex = 11;
+            label3.Text = "Nội dung";
             // 
             // Form_Report_khachHang_
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(726, 465);
+            Controls.Add(label3);
+            Controls.Add(txtNoiDung);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(cboLoaiBaoCao);
@@ -118,5 +138,7 @@
         private ComboBox cboLoaiBaoCao;
         private Label label1;
         private Label label2;
+        private TextBox txtNoiDung;
+        private Label label3;
     }
 }

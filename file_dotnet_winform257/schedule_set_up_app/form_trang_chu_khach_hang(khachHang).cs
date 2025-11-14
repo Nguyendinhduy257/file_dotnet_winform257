@@ -225,7 +225,7 @@ namespace schedule_set_up_app
         //truy cập form_report khi click
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Form_Report_khachHang_ Report = new Form_Report_khachHang_();
+            Form_Report_khachHang_ Report = new Form_Report_khachHang_(this.tenNguoiDung);
             Report.Show();
         }
 
@@ -235,6 +235,11 @@ namespace schedule_set_up_app
             form_profile_tai_khoan.ShowDialog();
         }
 
+        private void toolStripMenuItem2_Click(object sender,EventArgs e)
+        {
+            Form_My_Booking form_My_Booking = new Form_My_Booking(this.tenNguoiDung);
+            form_My_Booking.Show();
+        }
         private void highligh_monday_Paint(object sender, PaintEventArgs e)
         {
 

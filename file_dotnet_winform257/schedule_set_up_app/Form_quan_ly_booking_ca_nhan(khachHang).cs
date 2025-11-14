@@ -12,42 +12,38 @@ namespace schedule_set_up_app
 {
     public partial class Form_My_Booking : Form
     {
-        BindingList<LichHenCaNhan> danhSachLichHen = new BindingList<LichHenCaNhan>();
+        // 1. Biến lưu trữ username của người đang đăng nhập
+        private string _username;
 
-        public Form_My_Booking()
+        // 2. Sửa hàm khởi tạo (Constructor) để nhận username
+        //    Khi bạn mở Form này từ Form_Main, bạn cần truyền username vào
+        //    Ví dụ: Form_My_Booking frm = new Form_My_Booking(TenUserDangNhap);
+        //           frm.Show();
+        public Form_My_Booking(string username)
         {
             InitializeComponent();
+            _username = username; // Lưu lại username
+        }
+
+        // 3. Tạo hàm riêng để tải/làm mới dữ liệu trên GridView
+        private void LoadData()
+        {
+            // Gọi hàm mới từ DatabaseHelper, truyền vào username
+            DataTable dt = DatabaseHelper.GetLichHenCaNhan(_username);
+            dgvLichHen.DataSource = dt;
+
+            // Tùy chỉnh hiển thị cột (nếu cần)
+            dgvLichHen.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            if (dgvLichHen.Columns["DichVu"] != null)
+            {
+                dgvLichHen.Columns["DichVu"].FillWeight = 150; // Cho cột Dịch vụ rộng hơn
+            }
         }
 
         private void Form_My_Booking_Load(object sender, EventArgs e)
         {
-            // Giả lập dữ liệu — sau này thay bằng dữ liệu từ database theo user đang đăng nhập
-            danhSachLichHen.Add(new LichHenCaNhan
-            {
-                MaLich = 1,
-                DichVu = "Cắt tóc nam",
-                NgayHen = DateTime.Now.AddHours(2), // sắp tới
-                TrangThai = "Đã đặt"
-            });
-
-            danhSachLichHen.Add(new LichHenCaNhan
-            {
-                MaLich = 2,
-                DichVu = "Massage toàn thân",
-                NgayHen = DateTime.Now.AddDays(-1), // đã qua
-                TrangThai = "Hoàn thành"
-            });
-
-            danhSachLichHen.Add(new LichHenCaNhan
-            {
-                MaLich = 3,
-                DichVu = "Trang điểm cô dâu",
-                NgayHen = DateTime.Now.AddMinutes(30), // gần giờ hẹn
-                TrangThai = "Đã đặt"
-            });
-
-            dgvLichHen.DataSource = danhSachLichHen;
-            dgvLichHen.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            // 4. Xóa toàn bộ code giả lập và gọi hàm LoadData
+            LoadData();
         }
 
         private void btnHuyLich_Click(object sender, EventArgs e)
@@ -58,40 +54,54 @@ namespace schedule_set_up_app
                 return;
             }
 
-            LichHenCaNhan lich = dgvLichHen.CurrentRow.DataBoundItem as LichHenCaNhan;
+            // 5. Lấy dữ liệu từ dòng đang chọn (dùng DataRowView vì đang bind từ DataTable)
+            DataRowView drv = (DataRowView)dgvLichHen.CurrentRow.DataBoundItem;
 
-            // Nếu lịch đã qua thì không cho hủy
-            if (lich.NgayHen < DateTime.Now)
+            int maLich = Convert.ToInt32(drv["MaLich"]);
+            DateTime ngayHen = Convert.ToDateTime(drv["NgayHen"]);
+            string dichVu = drv["DichVu"].ToString();
+            string trangThai = drv["TrangThai"].ToString();
+
+            // 6. Kiểm tra các điều kiện (logic này giữ nguyên, rất tốt)
+            if (trangThai == "Đã hủy" || trangThai == "Hoàn thành")
+            {
+                MessageBox.Show("Không thể hủy lịch ở trạng thái này.");
+                return;
+            }
+
+            if (ngayHen < DateTime.Now)
             {
                 MessageBox.Show("Không thể hủy lịch đã qua!");
                 return;
             }
 
-            // Nếu lịch còn dưới 1 giờ thì không cho hủy
-            if ((lich.NgayHen - DateTime.Now).TotalMinutes < 60)
+            if ((ngayHen - DateTime.Now).TotalMinutes < 60)
             {
                 MessageBox.Show("Không thể hủy lịch vì còn dưới 1 giờ trước giờ hẹn!");
                 return;
             }
 
-            // Xác nhận
-            DialogResult xacNhan = MessageBox.Show($"Bạn có chắc muốn hủy lịch '{lich.DichVu}' không?", "Xác nhận", MessageBoxButtons.YesNo);
+            // 7. Xác nhận và gọi DatabaseHelper
+            DialogResult xacNhan = MessageBox.Show($"Bạn có chắc muốn hủy lịch '{dichVu}' không?", "Xác nhận", MessageBoxButtons.YesNo);
+
             if (xacNhan == DialogResult.Yes)
             {
-                lich.TrangThai = "Đã hủy";
-                dgvLichHen.Refresh();
-                lblThongBao.Text = $"❌ Đã hủy lịch '{lich.DichVu}'.";
-                MessageBox.Show("Hủy lịch thành công!");
+                // 8. Gọi hàm Hủy Lịch từ DatabaseHelper
+                bool success = DatabaseHelper.HuyLichHenUser(maLich);
+
+                if (success)
+                {
+                    lblThongBao.Text = $"❌ Đã hủy lịch '{dichVu}'.";
+                    MessageBox.Show("Hủy lịch thành công!");
+
+                    // 9. Tải lại dữ liệu từ CSDL để cập nhật GridView
+                    LoadData();
+                }
+                else
+                {
+                    MessageBox.Show("Hủy lịch thất bại! (Lỗi CSDL)");
+                }
             }
         }
     }
-
-    public class LichHenCaNhan
-    {
-        public int MaLich { get; set; }
-        public string DichVu { get; set; }
-        public DateTime NgayHen { get; set; }
-        public string TrangThai { get; set; }
-    }
 }
-//can them tinh nang xem lich o qk, tl va tinh nag tim kiem 
