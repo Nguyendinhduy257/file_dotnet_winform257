@@ -578,4 +578,39 @@ public static class DatabaseHelper
         }
         return rowsAffected > 0;
     }
+    // HÀM Dành cho Form_Booking (Khách hàng tự đặt lịch)
+    public static bool TaoLichHenMoi(string username, DateTime thoiGianHen, string noiDung)
+    {
+        int rowsAffected = 0;
+
+        // Khi khách hàng tạo, TrangThai luôn mặc định là "chưa duyệt"
+        string query = @"INSERT INTO LichHen (Username_KhachHang, ThoiGianBatDau, NoiDung, TrangThai) 
+                     VALUES (@Username, @ThoiGian, @NoiDung, @TrangThai)";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                // Thêm tham số
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@ThoiGian", thoiGianHen);
+                cmd.Parameters.AddWithValue("@NoiDung", noiDung);
+                cmd.Parameters.AddWithValue("@TrangThai", "chưa duyệt"); // Trạng thái mặc định
+
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tạo lịch hẹn: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        // Trả về true nếu chèn thành công (rowsAffected > 0)
+        return (rowsAffected > 0);
+    }
 }

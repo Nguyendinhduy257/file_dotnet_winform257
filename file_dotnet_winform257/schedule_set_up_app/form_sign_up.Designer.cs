@@ -70,7 +70,7 @@
             // 
             label4.AutoSize = true;
             label4.ForeColor = Color.OrangeRed;
-            label4.Location = new Point(273, 535);
+            label4.Location = new Point(315, 536);
             label4.Name = "label4";
             label4.Size = new Size(124, 30);
             label4.TabIndex = 25;
@@ -81,7 +81,7 @@
             // 
             label3.AutoSize = true;
             label3.ForeColor = Color.OrangeRed;
-            label3.Location = new Point(273, 398);
+            label3.Location = new Point(315, 399);
             label3.Name = "label3";
             label3.Size = new Size(129, 30);
             label3.TabIndex = 24;
@@ -100,7 +100,7 @@
             guna2Button2.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             guna2Button2.Font = new Font("Segoe UI", 14F);
             guna2Button2.ForeColor = Color.White;
-            guna2Button2.Location = new Point(334, 776);
+            guna2Button2.Location = new Point(376, 777);
             guna2Button2.Name = "guna2Button2";
             guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges2;
             guna2Button2.Size = new Size(315, 79);
@@ -131,7 +131,7 @@
             // panel2
             // 
             panel2.BackColor = Color.DodgerBlue;
-            panel2.Location = new Point(181, 625);
+            panel2.Location = new Point(223, 626);
             panel2.Name = "panel2";
             panel2.Size = new Size(533, 5);
             panel2.TabIndex = 23;
@@ -139,7 +139,7 @@
             // panel1
             // 
             panel1.BackColor = Color.DodgerBlue;
-            panel1.Location = new Point(184, 502);
+            panel1.Location = new Point(226, 503);
             panel1.Name = "panel1";
             panel1.Size = new Size(530, 5);
             panel1.TabIndex = 14;
@@ -149,7 +149,7 @@
             textBox_username.AcceptsTab = true;
             textBox_username.Cursor = Cursors.Hand;
             textBox_username.Font = new Font("Segoe UI", 14F);
-            textBox_username.Location = new Point(273, 445);
+            textBox_username.Location = new Point(315, 446);
             textBox_username.Name = "textBox_username";
             textBox_username.PlaceholderText = "          TÊN ĐĂNG NHẬP";
             textBox_username.Size = new Size(442, 51);
@@ -160,7 +160,7 @@
             textBox_pass.AcceptsTab = true;
             textBox_pass.Cursor = Cursors.Hand;
             textBox_pass.Font = new Font("Segoe UI", 14F);
-            textBox_pass.Location = new Point(271, 568);
+            textBox_pass.Location = new Point(313, 569);
             textBox_pass.Name = "textBox_pass";
             textBox_pass.PlaceholderText = "                MẬT KHẨU";
             textBox_pass.Size = new Size(441, 51);
@@ -170,7 +170,7 @@
             // 
             pictureBox3.Cursor = Cursors.Hand;
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
-            pictureBox3.Location = new Point(183, 428);
+            pictureBox3.Location = new Point(225, 429);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(84, 76);
             pictureBox3.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -181,7 +181,7 @@
             // 
             pictureBox2.Cursor = Cursors.Hand;
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(181, 547);
+            pictureBox2.Location = new Point(223, 548);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(84, 80);
             pictureBox2.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -194,7 +194,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.DodgerBlue;
-            label1.Location = new Point(251, 317);
+            label1.Location = new Point(293, 318);
             label1.Name = "label1";
             label1.Size = new Size(463, 57);
             label1.TabIndex = 0;
@@ -217,7 +217,7 @@
             // 
             label2.AutoSize = true;
             label2.ForeColor = Color.OrangeRed;
-            label2.Location = new Point(276, 660);
+            label2.Location = new Point(318, 661);
             label2.Name = "label2";
             label2.Size = new Size(124, 30);
             label2.TabIndex = 29;
@@ -227,7 +227,7 @@
             // panel3
             // 
             panel3.BackColor = Color.DodgerBlue;
-            panel3.Location = new Point(184, 750);
+            panel3.Location = new Point(226, 751);
             panel3.Name = "panel3";
             panel3.Size = new Size(533, 5);
             panel3.TabIndex = 28;
@@ -237,7 +237,7 @@
             textBox_pass_confirm.AcceptsTab = true;
             textBox_pass_confirm.Cursor = Cursors.Hand;
             textBox_pass_confirm.Font = new Font("Segoe UI", 14F);
-            textBox_pass_confirm.Location = new Point(274, 693);
+            textBox_pass_confirm.Location = new Point(316, 694);
             textBox_pass_confirm.Name = "textBox_pass_confirm";
             textBox_pass_confirm.PlaceholderText = "       MẬT KHẨU XÁC THỰC";
             textBox_pass_confirm.Size = new Size(441, 51);
@@ -247,7 +247,7 @@
             // 
             pictureBox4.Cursor = Cursors.Hand;
             pictureBox4.Image = Properties.Resources.icon_lock_question;
-            pictureBox4.Location = new Point(184, 672);
+            pictureBox4.Location = new Point(226, 673);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(84, 80);
             pictureBox4.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -283,7 +283,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.icon_sign_up;
-            pictureBox1.Location = new Point(390, 104);
+            pictureBox1.Location = new Point(432, 105);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(197, 192);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;

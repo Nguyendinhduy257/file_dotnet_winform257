@@ -129,5 +129,42 @@ namespace schedule_set_up_app
         {
 
         }
+        string username;
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            // 1. Lấy dữ liệu từ 3 control của bạn
+            DateTime thoiGianHen;
+            try
+            {
+                // Nó sẽ đọc chuỗi (string) từ TextBox và chuyển thành DateTime
+                thoiGianHen = DateTime.Parse(textThoiGian.Text);
+            }
+            catch (Exception ex)
+            {
+                // Lỗi này xảy ra nếu người dùng gõ "abc" thay vì ngày tháng
+                MessageBox.Show("Thời gian hẹn không hợp lệ. Vui lòng nhập đúng định dạng (ví dụ: dd/MM/yyyy HH:mm).");
+                return;
+            }
+
+            // Lấy nội dung
+            string noiDung = $"Tên: {textTen.Text} - Mô tả: {textMoTa.Text}";
+
+            // 2. Lấy username của người đang đăng nhập
+            string username = UserSession.Username; // Lấy từ Session
+
+            // 3. Lưu vào CSDL (Duy là đã tạo hàm riêng trên DataBaseHelper.cs)
+            bool success = DatabaseHelper.TaoLichHenMoi(username, thoiGianHen, noiDung);
+
+            if (success)
+            {
+                MessageBox.Show("Đặt lịch thành công!");
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Đặt lịch thất bại. Vui lòng thử lại.");
+            }
+        }
     }
 }
