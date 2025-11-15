@@ -16,6 +16,7 @@ namespace schedule_set_up_app
     {
         // 1. Tạo một biến (field) để lưu tên người dùng
         private string tenNguoiDung;
+        private DateTime currentMonday;
         public form_trang_chu(string username)
         {
             InitializeComponent();
@@ -50,6 +51,7 @@ namespace schedule_set_up_app
 
         private void form_trang_chu_Load(object sender, EventArgs e)
         {
+            dateTimePicker1_ValueChanged(null, null);
             // Label 1
             label2.Text = "Xin chào";
             label2.AutoSize = true; // Phải AutoSize
@@ -101,6 +103,7 @@ namespace schedule_set_up_app
             UpdateHighlight(panelHomNay);
 
         }
+
 
         private void btn_monday_Click(object sender, EventArgs e)
         {
@@ -173,10 +176,68 @@ namespace schedule_set_up_app
         //double-click để mở form Booking (Đức sẽ làm)
         private void btn_monday_DoubleClick(object sender, EventArgs e)
         {
-            Form_Booking Dat_Lich_Trong_Ngay = new Form_Booking();
+            DateTime selectedDate = currentMonday; // Lấy Thứ 2
+            Form_Booking formBooking = new Form_Booking(selectedDate);
 
-            // Hiển thị Form Booking (Đức sẽ làm)
-            Dat_Lich_Trong_Ngay.Show();
+            // Dùng ShowDialog() và kiểm tra kết quả
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan(); // Tải lại 7 panel
+            }
+        }
+        // HÀM TẢI DỮ LIỆU (load lại form trang chủ ngay sau khi khách đóng form booking xong mà có dữ liệu)
+        private void LoadLichHenTuan()
+        {
+            // 1. Xóa sạch 7 panel
+            highligh_monday.Controls.Clear();
+            highlight_tuesday.Controls.Clear();
+            highlight_wednesday.Controls.Clear();
+            highlight_thurday.Controls.Clear();
+            highlight_friday.Controls.Clear();
+            highlight_saturday.Controls.Clear();
+            highlight_sunday.Controls.Clear();
+
+            // 2. Lấy username
+            string username = this.tenNguoiDung.ToUpper();
+
+            // 3. Lấy dữ liệu của CẢ TUẦN
+            DateTime startDate = currentMonday;
+            DateTime endDate = currentMonday.AddDays(7);
+
+            // (Bạn phải đảm bảo DatabaseHelper.cs có hàm này)
+            DataTable dtTuan = DatabaseHelper.GetLichHenTrongTuan(username, startDate, endDate);
+
+            // 4. "Vẽ" lịch hẹn lên 7 panel
+            foreach (DataRow row in dtTuan.Rows)
+            {
+                DateTime ngayHen = (DateTime)row["ThoiGianBatDau"];
+                string noiDung = row["NoiDung"].ToString();
+                string trangThai = row["TrangThai"].ToString();
+
+                // Tạo 1 Label mới
+                Label lblHen = new Label();
+                lblHen.Text = $"{ngayHen.ToString("HH:mm")} - {noiDung} ({trangThai})";
+
+                lblHen.AutoSize = true;
+
+                lblHen.MinimumSize = new Size(212, 100);
+                lblHen.MaximumSize = new Size(212, 300);
+                lblHen.BorderStyle = BorderStyle.FixedSingle;
+                lblHen.BackColor = Color.LightYellow;
+                lblHen.Margin = new Padding(3);
+
+                // Quyết định xem Label này thuộc về panel (là panel dóng từ thứ 2/3/4/5/6/7/CN xuống)
+                switch (ngayHen.DayOfWeek)
+                {
+                    case DayOfWeek.Monday: highligh_monday.Controls.Add(lblHen); break;
+                    case DayOfWeek.Tuesday: highlight_tuesday.Controls.Add(lblHen); break;
+                    case DayOfWeek.Wednesday: highlight_wednesday.Controls.Add(lblHen); break;
+                    case DayOfWeek.Thursday: highlight_thurday.Controls.Add(lblHen); break;
+                    case DayOfWeek.Friday: highlight_friday.Controls.Add(lblHen); break;
+                    case DayOfWeek.Saturday: highlight_saturday.Controls.Add(lblHen); break;
+                    case DayOfWeek.Sunday: highlight_sunday.Controls.Add(lblHen); break;
+                }
+            }
         }
 
         private void btn_close_Click(object sender, EventArgs e)
@@ -218,7 +279,7 @@ namespace schedule_set_up_app
             // Lấy vị trí góc dưới bên trái của PictureBox
             Point pt = new Point(0, control.Height);
 
-            // Hiển thị menu (contextMenuStrip1) của bạn tại vị trí đó
+            // Hiển thị menu (contextMenuStrip1) tại vị trí đó
             contextMenuStrip1.Show(control, pt);
         }
 
@@ -235,7 +296,7 @@ namespace schedule_set_up_app
             form_profile_tai_khoan.ShowDialog();
         }
 
-        private void toolStripMenuItem2_Click(object sender,EventArgs e)
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             Form_My_Booking form_My_Booking = new Form_My_Booking(this.tenNguoiDung);
             form_My_Booking.Show();
@@ -243,6 +304,80 @@ namespace schedule_set_up_app
         private void highligh_monday_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            // 1. Tính toán ngày Thứ 2 và lưu vào biến toàn cục
+            currentMonday = GetMondayOfWeek(dateTimePicker1.Value);
+
+            // 2. Tải lại dữ liệu cho 7 panel bên dưới các nút thứ 2,3,4,5,6,7,CN
+            LoadLichHenTuan();
+        }
+        private DateTime GetMondayOfWeek(DateTime date)
+        {
+            int diff = (7 + date.DayOfWeek - DayOfWeek.Monday) % 7;
+            return date.AddDays(-1 * diff);
+        }
+
+        private void btn_tuesday_DoubleClick(object sender, EventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(1); // Lấy Thứ 3
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void btn_wednesday_DoubleClick(object sender, EventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(2); // Lấy Thứ 4
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void btn_thursday_DoubleClick(object sender, EventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(3); // Lấy Thứ 5
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void btn_friday_DoubleClick(object sender, EventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(4); // Lấy Thứ 6
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void btn_saturday_DoubleClick(object sender, EventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(5); // Lấy Thứ 7
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void btn_sunday_DoubleClick(object sender, EventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(6); // Lấy Chủ Nhật
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();  
+            }
         }
     }
 }

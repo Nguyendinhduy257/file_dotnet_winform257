@@ -52,9 +52,9 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             panel1 = new Panel();
-            highligh_monday = new FlowLayoutPanel();
             panel10 = new Panel();
             panel4 = new Panel();
+            highligh_monday = new FlowLayoutPanel();
             highlight_sunday = new FlowLayoutPanel();
             highlight_saturday = new FlowLayoutPanel();
             highlight_friday = new FlowLayoutPanel();
@@ -104,109 +104,101 @@
             // 
             // panel1
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            panel1.AutoSize = true;
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(highligh_monday);
             panel1.Controls.Add(panel10);
             panel1.Controls.Add(panel4);
             panel1.Controls.Add(panel3);
-            panel1.Location = new Point(239, 330);
-            panel1.Margin = new Padding(2);
+            panel1.Location = new Point(19, 496);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1517, 510);
+            panel1.RightToLeft = RightToLeft.No;
+            panel1.Size = new Size(2275, 768);
             panel1.TabIndex = 1;
-            // 
-            // highligh_monday
-            // 
-            highligh_monday.FlowDirection = FlowDirection.TopDown;
-            highligh_monday.Location = new Point(133, 111);
-            highligh_monday.Margin = new Padding(2);
-            highligh_monday.Name = "highligh_monday";
-            highligh_monday.Size = new Size(165, 381);
-            highligh_monday.TabIndex = 2;
-            highligh_monday.TabStop = true;
-            highligh_monday.Paint += highligh_monday_Paint;
             // 
             // panel10
             // 
             panel10.BackColor = Color.Teal;
-            panel10.Location = new Point(2, 506);
-            panel10.Margin = new Padding(2);
+            panel10.Location = new Point(3, 759);
             panel10.Name = "panel10";
-            panel10.Size = new Size(1501, 3);
+            panel10.Size = new Size(2252, 4);
             panel10.TabIndex = 11;
             // 
             // panel4
             // 
+            panel4.AutoScroll = true;
+            panel4.Controls.Add(highligh_monday);
             panel4.Controls.Add(highlight_sunday);
             panel4.Controls.Add(highlight_saturday);
             panel4.Controls.Add(highlight_friday);
             panel4.Controls.Add(highlight_thurday);
             panel4.Controls.Add(highlight_wednesday);
             panel4.Controls.Add(highlight_tuesday);
-            panel4.Location = new Point(129, 111);
-            panel4.Margin = new Padding(2);
+            panel4.Location = new Point(194, 166);
             panel4.Name = "panel4";
-            panel4.Size = new Size(1262, 391);
+            panel4.Size = new Size(1893, 586);
             panel4.TabIndex = 1;
+            // 
+            // highligh_monday
+            // 
+            highligh_monday.AutoScroll = true;
+            highligh_monday.Location = new Point(6, 3);
+            highligh_monday.Name = "highligh_monday";
+            highligh_monday.Size = new Size(248, 572);
+            highligh_monday.TabIndex = 2;
+            highligh_monday.TabStop = true;
+            highligh_monday.Paint += highligh_monday_Paint;
             // 
             // highlight_sunday
             // 
-            highlight_sunday.FlowDirection = FlowDirection.TopDown;
-            highlight_sunday.Location = new Point(1087, 2);
-            highlight_sunday.Margin = new Padding(2);
+            highlight_sunday.AutoScroll = true;
+            highlight_sunday.Location = new Point(1630, 3);
             highlight_sunday.Name = "highlight_sunday";
-            highlight_sunday.Size = new Size(165, 381);
+            highlight_sunday.Size = new Size(248, 572);
             highlight_sunday.TabIndex = 2;
             highlight_sunday.TabStop = true;
             // 
             // highlight_saturday
             // 
-            highlight_saturday.FlowDirection = FlowDirection.TopDown;
-            highlight_saturday.Location = new Point(907, 2);
-            highlight_saturday.Margin = new Padding(2);
+            highlight_saturday.AutoScroll = true;
+            highlight_saturday.Location = new Point(1360, 3);
             highlight_saturday.Name = "highlight_saturday";
-            highlight_saturday.Size = new Size(165, 381);
+            highlight_saturday.Size = new Size(248, 572);
             highlight_saturday.TabIndex = 2;
             highlight_saturday.TabStop = true;
             // 
             // highlight_friday
             // 
-            highlight_friday.FlowDirection = FlowDirection.TopDown;
-            highlight_friday.Location = new Point(727, 2);
-            highlight_friday.Margin = new Padding(2);
+            highlight_friday.AutoScroll = true;
+            highlight_friday.Location = new Point(1090, 3);
             highlight_friday.Name = "highlight_friday";
-            highlight_friday.Size = new Size(165, 381);
+            highlight_friday.Size = new Size(248, 572);
             highlight_friday.TabIndex = 1;
             highlight_friday.TabStop = true;
             // 
             // highlight_thurday
             // 
-            highlight_thurday.FlowDirection = FlowDirection.TopDown;
-            highlight_thurday.Location = new Point(548, 2);
-            highlight_thurday.Margin = new Padding(2);
+            highlight_thurday.AutoScroll = true;
+            highlight_thurday.Location = new Point(822, 3);
             highlight_thurday.Name = "highlight_thurday";
-            highlight_thurday.Size = new Size(165, 381);
+            highlight_thurday.Size = new Size(248, 572);
             highlight_thurday.TabIndex = 1;
             highlight_thurday.TabStop = true;
             // 
             // highlight_wednesday
             // 
-            highlight_wednesday.FlowDirection = FlowDirection.TopDown;
-            highlight_wednesday.Location = new Point(367, 2);
-            highlight_wednesday.Margin = new Padding(2);
+            highlight_wednesday.AutoScroll = true;
+            highlight_wednesday.Location = new Point(550, 3);
             highlight_wednesday.Name = "highlight_wednesday";
-            highlight_wednesday.Size = new Size(165, 381);
+            highlight_wednesday.Size = new Size(248, 572);
             highlight_wednesday.TabIndex = 1;
             highlight_wednesday.TabStop = true;
             // 
             // highlight_tuesday
             // 
-            highlight_tuesday.FlowDirection = FlowDirection.TopDown;
-            highlight_tuesday.Location = new Point(187, 2);
-            highlight_tuesday.Margin = new Padding(2);
+            highlight_tuesday.AutoScroll = true;
+            highlight_tuesday.Location = new Point(280, 3);
             highlight_tuesday.Name = "highlight_tuesday";
-            highlight_tuesday.Size = new Size(165, 381);
+            highlight_tuesday.Size = new Size(248, 572);
             highlight_tuesday.TabIndex = 1;
             highlight_tuesday.TabStop = true;
             // 
@@ -224,28 +216,25 @@
             panel3.Controls.Add(btn_tuesday);
             panel3.Controls.Add(btn_monday);
             panel3.Cursor = Cursors.Hand;
-            panel3.Location = new Point(0, 14);
-            panel3.Margin = new Padding(2);
+            panel3.Location = new Point(0, 21);
             panel3.Name = "panel3";
-            panel3.Size = new Size(1513, 83);
+            panel3.Size = new Size(2270, 124);
             panel3.TabIndex = 0;
             // 
             // panel9
             // 
             panel9.BackColor = Color.Teal;
-            panel9.Location = new Point(0, 77);
-            panel9.Margin = new Padding(2);
+            panel9.Location = new Point(0, 116);
             panel9.Name = "panel9";
-            panel9.Size = new Size(1511, 3);
+            panel9.Size = new Size(2266, 4);
             panel9.TabIndex = 12;
             // 
             // panel8
             // 
             panel8.BackColor = Color.Teal;
-            panel8.Location = new Point(2, 2);
-            panel8.Margin = new Padding(2);
+            panel8.Location = new Point(3, 3);
             panel8.Name = "panel8";
-            panel8.Size = new Size(1511, 3);
+            panel8.Size = new Size(2266, 4);
             panel8.TabIndex = 11;
             // 
             // btn_next_week
@@ -260,11 +249,10 @@
             btn_next_week.FillColor = Color.FromArgb(128, 128, 255);
             btn_next_week.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_next_week.ForeColor = Color.White;
-            btn_next_week.Location = new Point(1385, 11);
-            btn_next_week.Margin = new Padding(2);
+            btn_next_week.Location = new Point(2078, 16);
             btn_next_week.Name = "btn_next_week";
             btn_next_week.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btn_next_week.Size = new Size(126, 63);
+            btn_next_week.Size = new Size(189, 94);
             btn_next_week.TabIndex = 8;
             btn_next_week.Text = "Tuần sau";
             btn_next_week.Click += btn_next_week_Click;
@@ -281,11 +269,10 @@
             btn_previous_week.FillColor = Color.FromArgb(128, 128, 255);
             btn_previous_week.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_previous_week.ForeColor = Color.White;
-            btn_previous_week.Location = new Point(4, 9);
-            btn_previous_week.Margin = new Padding(2);
+            btn_previous_week.Location = new Point(6, 14);
             btn_previous_week.Name = "btn_previous_week";
             btn_previous_week.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btn_previous_week.Size = new Size(126, 63);
+            btn_previous_week.Size = new Size(189, 94);
             btn_previous_week.TabIndex = 7;
             btn_previous_week.Text = "Tuần trước";
             btn_previous_week.Click += btn_previous_week_Click;
@@ -300,15 +287,14 @@
             btn_saturday.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_saturday.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_saturday.ForeColor = Color.White;
-            btn_saturday.Location = new Point(1035, 11);
-            btn_saturday.Margin = new Padding(2);
+            btn_saturday.Location = new Point(1552, 16);
             btn_saturday.Name = "btn_saturday";
             btn_saturday.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btn_saturday.Size = new Size(165, 63);
+            btn_saturday.Size = new Size(248, 94);
             btn_saturday.TabIndex = 6;
             btn_saturday.Text = "Thứ 7";
             btn_saturday.Click += btn_saturday_Click;
-            btn_saturday.DoubleClick += btn_monday_DoubleClick;
+            btn_saturday.DoubleClick += btn_saturday_DoubleClick;
             // 
             // btn_sunday
             // 
@@ -320,15 +306,14 @@
             btn_sunday.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_sunday.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_sunday.ForeColor = Color.White;
-            btn_sunday.Location = new Point(1215, 10);
-            btn_sunday.Margin = new Padding(2);
+            btn_sunday.Location = new Point(1822, 15);
             btn_sunday.Name = "btn_sunday";
             btn_sunday.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            btn_sunday.Size = new Size(165, 63);
+            btn_sunday.Size = new Size(248, 94);
             btn_sunday.TabIndex = 5;
             btn_sunday.Text = "Chủ Nhật";
             btn_sunday.Click += btn_sunday_Click;
-            btn_sunday.DoubleClick += btn_monday_DoubleClick;
+            btn_sunday.DoubleClick += btn_sunday_DoubleClick;
             // 
             // btn_friday
             // 
@@ -340,15 +325,14 @@
             btn_friday.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_friday.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_friday.ForeColor = Color.White;
-            btn_friday.Location = new Point(855, 9);
-            btn_friday.Margin = new Padding(2);
+            btn_friday.Location = new Point(1282, 14);
             btn_friday.Name = "btn_friday";
             btn_friday.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btn_friday.Size = new Size(165, 63);
+            btn_friday.Size = new Size(248, 94);
             btn_friday.TabIndex = 4;
             btn_friday.Text = "Thứ 6";
             btn_friday.Click += btn_friday_Click;
-            btn_friday.DoubleClick += btn_monday_DoubleClick;
+            btn_friday.DoubleClick += btn_friday_DoubleClick;
             // 
             // btn_thursday
             // 
@@ -360,15 +344,14 @@
             btn_thursday.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_thursday.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_thursday.ForeColor = Color.White;
-            btn_thursday.Location = new Point(677, 9);
-            btn_thursday.Margin = new Padding(2);
+            btn_thursday.Location = new Point(1016, 14);
             btn_thursday.Name = "btn_thursday";
             btn_thursday.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btn_thursday.Size = new Size(165, 63);
+            btn_thursday.Size = new Size(248, 94);
             btn_thursday.TabIndex = 3;
             btn_thursday.Text = "Thứ 5";
             btn_thursday.Click += btn_thursday_Click;
-            btn_thursday.DoubleClick += btn_monday_DoubleClick;
+            btn_thursday.DoubleClick += btn_thursday_DoubleClick;
             // 
             // btn_wednesday
             // 
@@ -380,15 +363,14 @@
             btn_wednesday.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_wednesday.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_wednesday.ForeColor = Color.White;
-            btn_wednesday.Location = new Point(495, 10);
-            btn_wednesday.Margin = new Padding(2);
+            btn_wednesday.Location = new Point(742, 15);
             btn_wednesday.Name = "btn_wednesday";
             btn_wednesday.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            btn_wednesday.Size = new Size(165, 63);
+            btn_wednesday.Size = new Size(248, 94);
             btn_wednesday.TabIndex = 2;
             btn_wednesday.Text = "Thứ 4";
             btn_wednesday.Click += btn_wednesday_Click;
-            btn_wednesday.DoubleClick += btn_monday_DoubleClick;
+            btn_wednesday.DoubleClick += btn_wednesday_DoubleClick;
             // 
             // btn_tuesday
             // 
@@ -400,15 +382,14 @@
             btn_tuesday.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_tuesday.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_tuesday.ForeColor = Color.White;
-            btn_tuesday.Location = new Point(315, 9);
-            btn_tuesday.Margin = new Padding(2);
+            btn_tuesday.Location = new Point(472, 14);
             btn_tuesday.Name = "btn_tuesday";
             btn_tuesday.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            btn_tuesday.Size = new Size(165, 63);
+            btn_tuesday.Size = new Size(248, 94);
             btn_tuesday.TabIndex = 1;
             btn_tuesday.Text = "Thứ 3";
             btn_tuesday.Click += btn_tuesday_Click;
-            btn_tuesday.DoubleClick += btn_monday_DoubleClick;
+            btn_tuesday.DoubleClick += btn_tuesday_DoubleClick;
             // 
             // btn_monday
             // 
@@ -420,11 +401,10 @@
             btn_monday.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btn_monday.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_monday.ForeColor = Color.White;
-            btn_monday.Location = new Point(133, 9);
-            btn_monday.Margin = new Padding(2);
+            btn_monday.Location = new Point(200, 14);
             btn_monday.Name = "btn_monday";
             btn_monday.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            btn_monday.Size = new Size(165, 63);
+            btn_monday.Size = new Size(248, 94);
             btn_monday.TabIndex = 0;
             btn_monday.Text = "Thứ 2";
             btn_monday.Click += btn_monday_Click;
@@ -435,10 +415,9 @@
             panel2.BorderStyle = BorderStyle.Fixed3D;
             panel2.Controls.Add(Btn_today);
             panel2.Controls.Add(dateTimePicker1);
-            panel2.Location = new Point(13, 245);
-            panel2.Margin = new Padding(2);
+            panel2.Location = new Point(20, 368);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1517, 83);
+            panel2.Size = new Size(2274, 122);
             panel2.TabIndex = 2;
             // 
             // Btn_today
@@ -453,11 +432,10 @@
             Btn_today.FillColor = Color.RoyalBlue;
             Btn_today.Font = new Font("Segoe UI", 14F);
             Btn_today.ForeColor = Color.White;
-            Btn_today.Location = new Point(1050, 15);
-            Btn_today.Margin = new Padding(2);
+            Btn_today.Location = new Point(1575, 22);
             Btn_today.Name = "Btn_today";
             Btn_today.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            Btn_today.Size = new Size(152, 55);
+            Btn_today.Size = new Size(228, 82);
             Btn_today.TabIndex = 1;
             Btn_today.Text = "Hiện tại";
             Btn_today.Click += Btn_today_Click;
@@ -468,11 +446,11 @@
             dateTimePicker1.CustomFormat = "dddd, 'Day 'dd, 'Month 'MM , yyyy";
             dateTimePicker1.Font = new Font("Segoe UI", 24F);
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
-            dateTimePicker1.Location = new Point(299, 15);
-            dateTimePicker1.Margin = new Padding(2);
+            dateTimePicker1.Location = new Point(448, 22);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(748, 61);
+            dateTimePicker1.Size = new Size(1120, 82);
             dateTimePicker1.TabIndex = 0;
+            dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // btn_close
             // 
@@ -488,11 +466,10 @@
             btn_close.FillColor = Color.LightCoral;
             btn_close.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             btn_close.ForeColor = Color.Black;
-            btn_close.Location = new Point(1367, 8);
-            btn_close.Margin = new Padding(2);
+            btn_close.Location = new Point(2075, 3);
             btn_close.Name = "btn_close";
             btn_close.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            btn_close.Size = new Size(143, 59);
+            btn_close.Size = new Size(214, 88);
             btn_close.TabIndex = 4;
             btn_close.Text = "Đăng Xuất";
             btn_close.Click += btn_close_Click;
@@ -502,10 +479,9 @@
             pictureBox1.BackColor = SystemColors.InactiveCaption;
             pictureBox1.BorderStyle = BorderStyle.FixedSingle;
             pictureBox1.Image = Properties.Resources.User_profile_icon;
-            pictureBox1.Location = new Point(8, 2);
-            pictureBox1.Margin = new Padding(2);
+            pictureBox1.Location = new Point(12, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(238, 101);
+            pictureBox1.Size = new Size(356, 150);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 5;
             pictureBox1.TabStop = false;
@@ -518,10 +494,9 @@
             flowLayoutPanel1.Controls.Add(label_ten_nguoi_dung);
             flowLayoutPanel1.Controls.Add(label4);
             flowLayoutPanel1.Font = new Font("Segoe UI", 14F);
-            flowLayoutPanel1.Location = new Point(249, 4);
-            flowLayoutPanel1.Margin = new Padding(2);
+            flowLayoutPanel1.Location = new Point(374, 6);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(779, 36);
+            flowLayoutPanel1.Size = new Size(1166, 52);
             flowLayoutPanel1.TabIndex = 6;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -529,10 +504,9 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 14F);
-            label2.Location = new Point(2, 0);
-            label2.Margin = new Padding(2, 0, 2, 0);
+            label2.Location = new Point(3, 0);
             label2.Name = "label2";
-            label2.Size = new Size(78, 32);
+            label2.Size = new Size(107, 45);
             label2.TabIndex = 0;
             label2.Text = "label2";
             // 
@@ -540,10 +514,9 @@
             // 
             label_ten_nguoi_dung.AutoSize = true;
             label_ten_nguoi_dung.Font = new Font("Segoe UI", 14F);
-            label_ten_nguoi_dung.Location = new Point(84, 0);
-            label_ten_nguoi_dung.Margin = new Padding(2, 0, 2, 0);
+            label_ten_nguoi_dung.Location = new Point(116, 0);
             label_ten_nguoi_dung.Name = "label_ten_nguoi_dung";
-            label_ten_nguoi_dung.Size = new Size(78, 32);
+            label_ten_nguoi_dung.Size = new Size(107, 45);
             label_ten_nguoi_dung.TabIndex = 1;
             label_ten_nguoi_dung.Text = "label3";
             // 
@@ -551,10 +524,9 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 14F);
-            label4.Location = new Point(166, 0);
-            label4.Margin = new Padding(2, 0, 2, 0);
+            label4.Location = new Point(229, 0);
             label4.Name = "label4";
-            label4.Size = new Size(78, 32);
+            label4.Size = new Size(107, 45);
             label4.TabIndex = 2;
             label4.Text = "label4";
             // 
@@ -564,10 +536,9 @@
             to_report_form_main.BorderStyle = BorderStyle.FixedSingle;
             to_report_form_main.Cursor = Cursors.Hand;
             to_report_form_main.Image = Properties.Resources.icon_arrow_to_report;
-            to_report_form_main.Location = new Point(8, 106);
-            to_report_form_main.Margin = new Padding(2);
+            to_report_form_main.Location = new Point(12, 159);
             to_report_form_main.Name = "to_report_form_main";
-            to_report_form_main.Size = new Size(238, 35);
+            to_report_form_main.Size = new Size(356, 52);
             to_report_form_main.SizeMode = PictureBoxSizeMode.CenterImage;
             to_report_form_main.TabIndex = 7;
             to_report_form_main.TabStop = false;
@@ -580,14 +551,14 @@
             contextMenuStrip1.ImageScalingSize = new Size(28, 28);
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, thêmSửaXóaProfileToolStripMenuItem, toolStripMenuItem2 });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(281, 112);
+            contextMenuStrip1.Size = new Size(356, 160);
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Font = new Font("Segoe UI", 14F);
             toolStripMenuItem1.Image = Properties.Resources.icon_form_report;
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(280, 36);
+            toolStripMenuItem1.Size = new Size(355, 52);
             toolStripMenuItem1.Text = "Report To System";
             toolStripMenuItem1.Click += toolStripMenuItem1_Click;
             // 
@@ -596,24 +567,23 @@
             thêmSửaXóaProfileToolStripMenuItem.Font = new Font("Segoe UI", 14F);
             thêmSửaXóaProfileToolStripMenuItem.Image = Properties.Resources.icon_edit;
             thêmSửaXóaProfileToolStripMenuItem.Name = "thêmSửaXóaProfileToolStripMenuItem";
-            thêmSửaXóaProfileToolStripMenuItem.Size = new Size(280, 36);
+            thêmSửaXóaProfileToolStripMenuItem.Size = new Size(355, 52);
             thêmSửaXóaProfileToolStripMenuItem.Text = "Edit profile";
             thêmSửaXóaProfileToolStripMenuItem.Click += thêmSửaXóaProfileToolStripMenuItem_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(280, 36);
+            toolStripMenuItem2.Size = new Size(355, 52);
             toolStripMenuItem2.Text = "My Booking";
             toolStripMenuItem2.Click += toolStripMenuItem2_Click;
             // 
             // panel5
             // 
             panel5.BackColor = Color.Teal;
-            panel5.Location = new Point(249, 37);
-            panel5.Margin = new Padding(2);
+            panel5.Location = new Point(374, 56);
             panel5.Name = "panel5";
-            panel5.Size = new Size(779, 3);
+            panel5.Size = new Size(1168, 4);
             panel5.TabIndex = 8;
             // 
             // label1
@@ -621,10 +591,9 @@
             label1.BorderStyle = BorderStyle.FixedSingle;
             label1.FlatStyle = FlatStyle.Flat;
             label1.Font = new Font("Segoe UI", 24F);
-            label1.Location = new Point(437, 855);
-            label1.Margin = new Padding(2, 0, 2, 0);
+            label1.Location = new Point(656, 1282);
             label1.Name = "label1";
-            label1.Size = new Size(718, 137);
+            label1.Size = new Size(1076, 204);
             label1.TabIndex = 3;
             label1.Text = "#Chủ đề: Lập Lịch họp trong công ty";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -632,38 +601,35 @@
             // panel6
             // 
             panel6.BackColor = Color.Teal;
-            panel6.Location = new Point(10, 145);
-            panel6.Margin = new Padding(2);
+            panel6.Location = new Point(15, 218);
             panel6.Name = "panel6";
-            panel6.Size = new Size(1513, 3);
+            panel6.Size = new Size(2270, 4);
             panel6.TabIndex = 9;
             // 
             // panel7
             // 
             panel7.BackColor = Color.Teal;
-            panel7.Location = new Point(10, 234);
-            panel7.Margin = new Padding(2);
+            panel7.Location = new Point(15, 351);
             panel7.Name = "panel7";
-            panel7.Size = new Size(1516, 3);
+            panel7.Size = new Size(2274, 4);
             panel7.TabIndex = 10;
             // 
             // label3
             // 
             label3.Font = new Font("Segoe UI", 24F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label3.Location = new Point(13, 168);
-            label3.Margin = new Padding(2, 0, 2, 0);
+            label3.Location = new Point(20, 252);
             label3.Name = "label3";
-            label3.Size = new Size(1501, 49);
+            label3.Size = new Size(2252, 74);
             label3.TabIndex = 11;
             label3.Text = "📅 Double Click Vào Thứ Của Ngày Bất Kỳ Để Lập Lịch 🕒";
             label3.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // form_trang_chu
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(1283, 703);
+            ClientSize = new Size(2667, 1054);
             ControlBox = false;
             Controls.Add(label3);
             Controls.Add(panel7);
@@ -676,7 +642,6 @@
             Controls.Add(label1);
             Controls.Add(panel2);
             Controls.Add(panel1);
-            Margin = new Padding(2);
             MaximizeBox = false;
             Name = "form_trang_chu";
             StartPosition = FormStartPosition.CenterScreen;
