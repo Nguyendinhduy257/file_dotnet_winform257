@@ -534,8 +534,8 @@ namespace schedule_set_up_app
 
         private void xemReportUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Form_Report_khachHang_ form_Report_KhachHang_ = new Form_Report_khachHang_(this.tenNguoiDung);
-            //form_Report_KhachHang_.ShowDialog();
+            Form_QuanLyBaoCao form_QuanLyBaoCao = new Form_QuanLyBaoCao();
+            form_QuanLyBaoCao.ShowDialog();
         }
     }
 }

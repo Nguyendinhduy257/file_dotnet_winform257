@@ -188,7 +188,15 @@ namespace schedule_set_up_app
         // HÀM TẢI DỮ LIỆU (load lại form trang chủ ngay sau khi khách đóng form booking xong mà có dữ liệu)
         private void LoadLichHenTuan()
         {
-            // 1. Xóa sạch 7 panel
+            // (Luôn ẩn tất cả link khi bắt đầu tải lại)
+            linkShowMon.Visible = false;
+            linkShowTue.Visible = false;
+            linkShowWed.Visible = false;
+            linkShowThu.Visible = false;
+            linkShowFri.Visible = false;
+            linkShowSat.Visible = false;
+            linkShowSun.Visible = false;
+            // 1. Xóa sạch 7 panel nế khung thiết kế có cho control nào vào đó
             highligh_monday.Controls.Clear();
             highlight_tuesday.Controls.Clear();
             highlight_wednesday.Controls.Clear();
@@ -220,8 +228,8 @@ namespace schedule_set_up_app
 
                 lblHen.AutoSize = true;
 
-                lblHen.MinimumSize = new Size(212, 100);
-                lblHen.MaximumSize = new Size(212, 300);
+                lblHen.MinimumSize = new Size(300, 100);
+                lblHen.MaximumSize = new Size(300, 300);
                 lblHen.BorderStyle = BorderStyle.FixedSingle;
                 lblHen.BackColor = Color.LightYellow;
                 lblHen.Margin = new Padding(3);
@@ -238,8 +246,115 @@ namespace schedule_set_up_app
                     case DayOfWeek.Sunday: highlight_sunday.Controls.Add(lblHen); break;
                 }
             }
+            // (Sau khi đã thêm hết Label, kiểm tra xem panel highlight thứ 2/3/4/5/6/7/CN nào bị tràn)
+            CheckPanelOverflow(highligh_monday, linkShowMon);
+            CheckPanelOverflow(highlight_tuesday, linkShowTue);
+            CheckPanelOverflow(highlight_wednesday, linkShowWed);
+            CheckPanelOverflow(highlight_thurday, linkShowThu);
+            CheckPanelOverflow(highlight_friday, linkShowFri);
+            CheckPanelOverflow(highlight_saturday, linkShowSat);
+            CheckPanelOverflow(highlight_sunday, linkShowSun);
         }
 
+        //kiểm tra nếu tràn thì hiển thị linklabel ở mỗi thứ 2/3/4/5/6/7/CN
+        private void CheckPanelOverflow(FlowLayoutPanel panel, LinkLabel link)
+        {
+            // 1. Tính toán tổng chiều cao
+            int totalContentHeight = 0;
+
+            // 2. Lặp qua từng Label (Control) bên trong panel
+            foreach (Control c in panel.Controls)
+            {
+                // Cộng Chiều cao (ví dụ: 100) + Lề trên (3) + Lề dưới (3)
+                totalContentHeight += c.Height + c.Margin.Top + c.Margin.Bottom;
+            }
+
+            // (Thêm 1 khoảng lề nhỏ ở cuối cho chắc chắn)
+            totalContentHeight += panel.Padding.Bottom;
+
+            // 3. So sánh
+            // (Nếu tổng chiều cao (vd: 600) > chiều cao panel (572))
+            if (totalContentHeight > panel.Height)
+            {
+                // Bị tràn -> Hiện LinkLabel
+                link.Visible = true;
+            }
+            else
+            {
+                // Không tràn -> Ẩn
+                link.Visible = false;
+            }
+        }
+        private void linkShowMon_Click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DateTime selectedDate = currentMonday; // Lấy Thứ 2
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan(); // Tải lại 7 panel
+            }
+        }
+
+        private void linkShowTue_Click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(1); // Lấy Thứ 3
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void linkShowWed_Click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(2); // Lấy Thứ 4
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void linkShowThu_Click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(3); // Lấy Thứ 5
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void linkShowFri_Click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(4); // Lấy Thứ 6
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void linkShowSat_Click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(5); // Lấy Thứ 7
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
+
+        private void linkShowSun_Click(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            DateTime selectedDate = currentMonday.AddDays(6); // Lấy Chủ Nhật
+            Form_Booking formBooking = new Form_Booking(selectedDate);
+            if (formBooking.ShowDialog() == DialogResult.OK)
+            {
+                LoadLichHenTuan();
+            }
+        }
         private void btn_close_Click(object sender, EventArgs e)
         {
             btn_close.BorderThickness = 3;
@@ -247,8 +362,9 @@ namespace schedule_set_up_app
             if (ketqua == DialogResult.Yes)
             {
                 Form1 form_login = new Form1();
-                this.Close();
                 form_login.Show();
+                this.Close();
+
             }
             else
             {
