@@ -91,7 +91,10 @@ public static class DatabaseHelper
             }
         }
     }
-
+    /// <summary>
+    /// Bắt đầu từ đây là các hàm dành cho Form trang chủ admin (Biểu đồ và Thống kê)
+    /// </summary>
+    /// <returns></returns>
     // HÀM LẤY SỐ LIỆU CHO BIỂU ĐỒ
     public static Dictionary<DateTime, int> GetAppointmentCountsForCurrentWeek()
     {
@@ -297,7 +300,6 @@ public static class DatabaseHelper
         }
         return count;
     }
-    // (Trong file DatabaseHelper.cs)
 
     // Hàm này lấy TOÀN BỘ lịch sử để hiển thị lên GridView
     public static DataTable GetLichSuDatLich()
@@ -752,4 +754,131 @@ public static class DatabaseHelper
         return dt;
     }
 
+    // Hàm này dành cho Form_Booking    
+
+    //hàm lấy lịch hẹn của 1 ngày cụ thể mà người dùng Double-click vào
+    // 1. Lấy lịch hẹn trong ngày (dành cho User khách hàng tương tác)
+    public static DataTable GetLichHenTrongNgay(string username, DateTime ngay)
+    {
+        DataTable dt = new DataTable();
+        string query = @"SELECT ID, ThoiGianBatDau, NoiDung, TrangThai 
+                     FROM LichHen 
+                     WHERE Username_KhachHang = @Username 
+                       AND CONVERT(date, ThoiGianBatDau) = @Ngay
+                     ORDER BY ThoiGianBatDau";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@Ngay", ngay.Date);
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải lịch hẹn ngày: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
+
+    // 2. Sửa lịch hẹn (tái sử dụng dành cho User khách hàng tương tác)
+    public static bool UpdateLichHen(int lichHenID, DateTime thoiGianMoi, string noiDungMoi)
+    {
+        int rowsAffected = 0;
+
+        string query = @"UPDATE LichHen 
+                     SET ThoiGianBatDau = @ThoiGian, NoiDung = @NoiDung 
+                     WHERE ID = @ID";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@ThoiGian", thoiGianMoi);
+                cmd.Parameters.AddWithValue("@NoiDung", noiDungMoi);
+                cmd.Parameters.AddWithValue("@ID", lichHenID);
+                // ... (phần try...catch giữ nguyên) ...
+            }
+        }
+        return (rowsAffected > 0);
+    }
+    // Kiểm tra trùng lịch hẹn (Ngẳn chặn ngay từ khi có ý định "thêm" lập lịch)
+    public static bool KiemTraLichTrung(string username, DateTime thoiGianHen, int lichHenID_CanLoaiTru = -1)
+    {
+        int count = 0;
+
+        // query đếm xem có lịch nào
+        // bị trùng thời gian không.
+        string query = @"SELECT COUNT(*) 
+                     FROM LichHen 
+                     WHERE Username_KhachHang = @Username 
+                       AND ThoiGianBatDau = @ThoiGian
+                       AND ID != @ID_CanLoaiTru"; 
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@ThoiGian", thoiGianHen);
+                cmd.Parameters.AddWithValue("@ID_CanLoaiTru", lichHenID_CanLoaiTru);
+                try
+                {
+                    conn.Open();
+                    // ExecuteScalar dùng để lấy 1 giá trị (số lượng)
+                    count = (int)cmd.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi kiểm tra lịch trùng: " + ex.Message);
+                }
+            }
+        }
+
+        // Nếu count > 0, nghĩa là đã tìm thấy 1 lịch khác bị trùng
+        return (count > 0);
+    }
+
+    // HÀM Lấy lịch hẹn trong 1 khoảng thời gian (1 tuần)
+    // (Hàm này dùng cho form_trang_chu)
+    public static DataTable GetLichHenTrongTuan(string username, DateTime startDate, DateTime endDate)
+    {
+        DataTable dt = new DataTable();
+
+        // Lấy các lịch hẹn trong khoảng [startDate, endDate)
+        string query = @"SELECT ID, ThoiGianBatDau, NoiDung, TrangThai 
+                     FROM LichHen 
+                     WHERE Username_KhachHang = @Username 
+                       AND ThoiGianBatDau >= @StartDate 
+                       AND ThoiGianBatDau < @EndDate
+                     ORDER BY ThoiGianBatDau";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@StartDate", startDate.Date); // Chỉ lấy ngày
+                cmd.Parameters.AddWithValue("@EndDate", endDate.Date);   // Chỉ lấy ngày
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải lịch hẹn tuần: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
 }

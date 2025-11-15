@@ -154,7 +154,7 @@
 
         private DataGridView dgvDichVu;
         private ComboBox cbLoaiDichVu;
-        private ComboBox cbKho;
+        //private ComboBox cbKho;
         private Button btnSearch;
         private TextBox txtKeyword;
         private DomainUpDown upHour;

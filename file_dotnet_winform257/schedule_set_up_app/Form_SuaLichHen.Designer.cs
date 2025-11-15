@@ -229,7 +229,7 @@
 
         private Guna.UI2.WinForms.Guna2TextBox txtUsername;
         private Guna.UI2.WinForms.Guna2TextBox txtNoiDung;
-        private Guna.UI2.WinForms.Guna2DateTimePicker dtpThoiGianHen;
+        //private Guna.UI2.WinForms.Guna2DateTimePicker dtpThoiGianHen;
         private Guna.UI2.WinForms.Guna2ComboBox cmbTrangThai;
         private Guna.UI2.WinForms.Guna2Button btnLuuThayDoi;
         private Label lb_username;

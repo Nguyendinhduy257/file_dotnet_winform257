@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,159 +13,222 @@ namespace schedule_set_up_app
 {
     public partial class Form_Booking : Form
     {
-        List<DichVu> danhSachDichVu = new List<DichVu>();
+        // BIẾN khai báo
+        private DateTime selectedDate;
+        private string currentUsername;
+        private int selectedLichHenID = -1;
+        private bool daCoThayDoi = false; //nếu có thay đổi thì load lại panel cho thứ 2/3/4/5/6/7/CN
 
-        void LoadData()
-        {
-            dgvDichVu.DataSource = null;
-            dgvDichVu.DataSource = danhSachDichVu;
-        }
-
-        public Form_Booking()
+        public Form_Booking(DateTime date)
         {
             InitializeComponent();
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnXoa_Click(object sender, EventArgs e)
-        {
-            if (dgvDichVu.CurrentRow != null)
-            {
-                // Xác nhận trước khi xóa
-                DialogResult dialogResult = MessageBox.Show(
-                    "Bạn có chắc chắn muốn xóa dịch vụ này không?",
-                    "Xác nhận Xóa",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (dialogResult == DialogResult.Yes)
-                {
-                    int index = dgvDichVu.CurrentRow.Index;
-                    danhSachDichVu.RemoveAt(index);
-                    LoadData();
-                    // Xóa nội dung trên TextBox sau khi xóa thành công
-                    ClearInputFields();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Vui lòng chọn một dịch vụ để xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        // --- CHỨC NĂNG THÊM (Đã thêm TryParse và kiểm tra rỗng) ---
-        private void btnThem_Click(object sender, EventArgs e)
-        {
-            // Kiểm tra các trường không được để trống
-            if (string.IsNullOrWhiteSpace(textTen.Text) ||
-                string.IsNullOrWhiteSpace(textThoiGian.Text))
-            {
-                MessageBox.Show("Vui lòng nhập đầy đủ Tên, Giá và Thời gian.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-
-        }
-
-        // --- CHỨC NĂNG CLICK VÀO DGV ---
-        private void dgvDichVu_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.RowIndex < danhSachDichVu.Count) // Đảm bảo không click vào dòng header hoặc dòng trống
-            {
-                var dv = danhSachDichVu[e.RowIndex];
-                textTen.Text = dv.Ten;
-                textMoTa.Text = dv.MoTa;
-                textThoiGian.Text = dv.ThoiGian;
-            }
-        }
-
-        // --- CHỨC NĂNG SỬA (Đã thêm TryParse và kiểm tra rỗng) ---
-        private void btnSua_Click(object sender, EventArgs e)
-        {
-            if (dgvDichVu.CurrentRow != null)
-            {
-                // Kiểm tra các trường không được để trống
-                if (string.IsNullOrWhiteSpace(textTen.Text) ||
-                    string.IsNullOrWhiteSpace(textThoiGian.Text))
-                {
-                    MessageBox.Show("Vui lòng nhập đầy đủ Tên, Giá và Thời gian.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-            }
+            this.selectedDate = date.Date; // Chỉ lưu ngày
+            this.currentUsername = UserSession.Username;
         }
 
         private void Form_Booking_Load(object sender, EventArgs e)
         {
-            // Thêm dữ liệu mẫu để kiểm tra ngay khi load Form
-            danhSachDichVu.Add(new DichVu { Ten = "Cắt Tóc Nam", MoTa = "Dịch vụ cắt tóc cơ bản", ThoiGian = "30 phút" });
-            danhSachDichVu.Add(new DichVu { Ten = "Gội Đầu", MoTa = "Chỉ gội đầu thư giãn", ThoiGian = "20 phút" });
+            // 1. Tạo chuỗi ngày tháng (với "Thứ" bằng tiếng Việt)
+            CultureInfo ci = new CultureInfo("vi-VN");
+            string ngayHienThi = selectedDate.ToString("dddd, 'ngày' dd 'tháng' MM 'năm' yyyy", ci);
 
-            LoadData();
+            // 2. Gán vào Label lập lịch cho ngày đó
+            lblNgayLapLich.Text = $"Lập lịch cho {ngayHienThi}";
+
+            // Cài đặt control chọn giờ (từ 0h - 24h)
+            dtpThoiGian1.Format = DateTimePickerFormat.Custom;
+            dtpThoiGian1.CustomFormat = "HH:mm"; // 24 giờ
+            dtpThoiGian1.Value = DateTime.Now.Date; // 00:00 giá trị mặc định khi load là 00:00:00
+            dtpThoiGian1.ShowUpDown = true;
+
+            dgvLichHenNgay3.MultiSelect = true;
+
+            this.Text = $"Quản lý lịch hẹn ngày: {selectedDate.ToString("dd/MM/yyyy")}";
+            LoadDataGridView();
         }
-
-        // Hàm hỗ trợ để xóa nội dung các TextBox
-        private void ClearInputFields()
+        // 3. HÀM TẢI DATAGRIDVIEW
+        private void LoadDataGridView()
         {
-            textTen.Text = "";
-            textMoTa.Text = "";
-            textThoiGian.Text = "";
-        }
+            DataTable dt = DatabaseHelper.GetLichHenTrongNgay(this.currentUsername, this.selectedDate);
+            dgvLichHenNgay3.DataSource = dt;
 
-        private void dgvDichVu_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-        string username;
-        private void guna2Button1_Click(object sender, EventArgs e)
-        {
-            // 1. Lấy dữ liệu từ 3 control của bạn
-            DateTime thoiGianHen;
-            try
+            if (dgvLichHenNgay3.Columns.Contains("ID"))
             {
-                // Nó sẽ đọc chuỗi (string) từ TextBox và chuyển thành DateTime
-                thoiGianHen = DateTime.Parse(textThoiGian.Text);
+                dgvLichHenNgay3.Columns["ID"].Visible = false;
             }
-            catch (Exception ex)
+            dgvLichHenNgay3.Columns["ThoiGianBatDau"].HeaderText = "Giờ hẹn                             📶↕️";
+            dgvLichHenNgay3.Columns["NoiDung"].HeaderText = "Nội dung                            📶↕️";
+            dgvLichHenNgay3.Columns["TrangThai"].HeaderText = "Trạng thái                           📶↕️";
+        }
+        //4. hàm sự kiện click vào datagridview
+        private void dgvLichHenNgay_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // Đảm bảo click vào hàng
             {
-                // Lỗi này xảy ra nếu người dùng gõ "abc" thay vì ngày tháng
-                MessageBox.Show("Thời gian hẹn không hợp lệ. Vui lòng nhập đúng định dạng (ví dụ: dd/MM/yyyy HH:mm).");
+                DataGridViewRow row = dgvLichHenNgay3.Rows[e.RowIndex];
+
+                // Lấy dữ liệu từ hàng
+                this.selectedLichHenID = Convert.ToInt32(row.Cells["ID"].Value);
+                DateTime thoiGianSQL = (DateTime)row.Cells["ThoiGianBatDau"].Value;
+                string noiDungSQL = row.Cells["NoiDung"].Value.ToString();
+
+                // Đổ dữ liệu lên control
+                dtpThoiGian1.Value = thoiGianSQL;
+                txtNoiDung.Text = noiDungSQL;
+            }
+        }
+        //5. hàm sự kiện click thêm,sửa,xóa,trở lại
+        private void btnThem_Click(object sender, EventArgs e)
+        {
+            DateTime time = dtpThoiGian1.Value;
+            string noiDung = txtNoiDung.Text;
+            DateTime thoiGianHen = new DateTime(
+                selectedDate.Year, selectedDate.Month, selectedDate.Day,
+                time.Hour, time.Minute, 0);
+
+            if (string.IsNullOrWhiteSpace(noiDung))
+            {
+                MessageBox.Show("Vui lòng nhập nội dung.", "Nội dung bị để là NULL", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtNoiDung.Focus();
+                return;
+            }
+            //gọi hàm kiểm tra lịch trùng từ DatabaseHelper
+            if (DatabaseHelper.KiemTraLichTrung(this.currentUsername, thoiGianHen))
+            {
+                MessageBox.Show("Lịch hẹn bị trùng! Vui lòng chọn một giờ khác.", "Cảnh báo lịch trùng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpThoiGian1.Focus(); // Chỉ vào ô chọn giờ
+                return; // Dừng lại
+            }
+            bool success = DatabaseHelper.TaoLichHenMoi(this.currentUsername, thoiGianHen, noiDung);
+            if (success)
+            {
+                LoadDataGridView();
+                this.daCoThayDoi = true;
+                txtNoiDung.Text = "";
+                txtNoiDung.PlaceholderText = "Nhập nội dung/mô tả lịch hẹn..";
+            }
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+            // 1. Kiểm tra (chỉ cho phép sửa 1)
+            if (dgvLichHenNgay3.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một lịch hẹn để sửa.");
+                return;
+            }
+            if (dgvLichHenNgay3.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Bạn chỉ có thể sửa một lịch hẹn mỗi lần.");
                 return;
             }
 
-            // Lấy nội dung
-            string noiDung = $"Tên: {textTen.Text} - Mô tả: {textMoTa.Text}";
+            // 2. Lấy ID từ hàng đã chọn (hàng 0)
+            // (Đảm bảo hàng được chọn không phải hàng rỗng nếu có)
+            if (dgvLichHenNgay3.SelectedRows[0].Cells["ID"].Value == null)
+            {
+                return;
+            }
+            this.selectedLichHenID = Convert.ToInt32(dgvLichHenNgay3.SelectedRows[0].Cells["ID"].Value);
 
-            // 2. Lấy username của người đang đăng nhập
-            string username = UserSession.Username; // Lấy từ Session
+            // 3. Logic Sửa
+            DateTime time = dtpThoiGian1.Value;
+            string noiDungMoi = txtNoiDung.Text;
+            DateTime thoiGianHenMoi = new DateTime(
+                selectedDate.Year,
+                selectedDate.Month,
+                selectedDate.Day,
+                time.Hour,
+                time.Minute,
+                0);
 
-            // 3. Lưu vào CSDL (Duy là đã tạo hàm riêng trên DataBaseHelper.cs)
-            bool success = DatabaseHelper.TaoLichHenMoi(username, thoiGianHen, noiDung);
+            //(Kiểm tra rỗng)
+            if (string.IsNullOrWhiteSpace(noiDungMoi))
+            {
+                MessageBox.Show("Nội dung không được để trống.");
+                txtNoiDung.Focus();
+                return;
+            }
 
+            //(Kiểm tra trùng)
+            if (DatabaseHelper.KiemTraLichTrung(this.currentUsername, thoiGianHenMoi, this.selectedLichHenID))
+            {
+                MessageBox.Show("Lịch hẹn bị trùng! Vui lòng chọn một giờ khác.");
+                dtpThoiGian1.Focus();
+                return;
+            }
+
+            //(Code lưu của bạn)
+            bool success = DatabaseHelper.UpdateLichHen(this.selectedLichHenID, thoiGianHenMoi, noiDungMoi);
             if (success)
             {
-                MessageBox.Show("Đặt lịch thành công!");
+                LoadDataGridView();
+                MessageBox.Show("Sửa thành công!");
+                this.selectedLichHenID = -1;
+                this.daCoThayDoi = true;
+            }
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            // 1. Kiểm tra xem có hàng nào được chọn không
+            if (dgvLichHenNgay3.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn ít nhất một lịch hẹn để xóa.");
+                return;
+            }
+
+            // 2. Xác nhận
+            int soLuongChon = dgvLichHenNgay3.SelectedRows.Count;
+            DialogResult confirm = MessageBox.Show($"Bạn có chắc chắn muốn xóa {soLuongChon} lịch hẹn đã chọn?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.Yes)
+            {
+                int successCount = 0;
+
+                // 3. Lặp qua các hàng ĐÃ CHỌN (SelectedRows)
+                foreach (DataGridViewRow row in dgvLichHenNgay3.SelectedRows)
+                {
+                    int id = Convert.ToInt32(row.Cells["ID"].Value);
+                    if (DatabaseHelper.DeleteLichHen(id))
+                    {
+                        successCount++;
+                    }
+                }
+
+                MessageBox.Show($"Đã xóa thành công {successCount} / {soLuongChon} lịch hẹn.");
+
+                LoadDataGridView();
+                this.daCoThayDoi = true;
+                this.selectedLichHenID = -1; // Reset
+            }
+        }
+
+        private void btnTroLai_Click(object sender, EventArgs e)
+        {
+            if (this.daCoThayDoi)
+            {
                 this.DialogResult = DialogResult.OK;
-                this.Close();
             }
             else
             {
-                MessageBox.Show("Đặt lịch thất bại. Vui lòng thử lại.");
+                this.DialogResult = DialogResult.Cancel;
             }
+            this.Close();
+        }
+
+        private void dgvLichHenNgay3_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                // Chọn tất cả các hàng
+                dgvLichHenNgay3.SelectAll();
+            }
+        }
+
+        private void dgvLichHenNgay3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
