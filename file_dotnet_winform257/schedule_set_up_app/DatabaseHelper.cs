@@ -301,7 +301,7 @@ public static class DatabaseHelper
         return count;
     }
 
-    // Hàm này lấy TOÀN BỘ lịch sử để hiển thị lên GridView
+    // Hàm này lấy TOÀN BỘ lịch sử để hiển thị lên dataGridView
     public static DataTable GetLichSuDatLich()
     {
         DataTable dt = new DataTable();
@@ -580,6 +580,116 @@ public static class DatabaseHelper
         }
         return rowsAffected > 0;
     }
+    // HÀM Dành cho Admin xem TOÀN BỘ báo cáo được gửi từ khách hàng (truy vấn từ Tabel BaoCao trên sql)
+    public static DataTable GetAllReportsForAdmin()
+    {
+        DataTable dt = new DataTable();
+        // Lấy tất cả các cột cần thiết, sắp xếp theo ngày gửi mới nhất lên trên
+        string query = @"
+        SELECT 
+            ID,
+            Username_NguoiGui, 
+            LoaiBaoCao, 
+            NoiDung, 
+            NgayGui, 
+            TrangThai 
+        FROM 
+            BaoCao 
+        ORDER BY 
+            NgayGui DESC";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải danh sách báo cáo: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
+    //Hàm cập nhật trạng thái báo cáo: trạng thái đã duyệt/ chưa duyệt (do Admin thực hiện)
+    public static bool UpdateReportStatus(int reportID, string newStatus)
+    {
+        int rowsAffected = 0;
+        string query = "UPDATE BaoCao SET TrangThai = @Status WHERE ID = @ID";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Status", newStatus);
+                cmd.Parameters.AddWithValue("@ID", reportID);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật trạng thái báo cáo: " + ex.Message);
+                }
+            }
+        }
+        return rowsAffected > 0;
+    }
+
+    public static DataTable SearchReportsForAdmin(string loaiBaoCaoFilter = null)
+    {
+        DataTable dt = new DataTable();
+
+        // chọn Username_NguoiGui trực tiếp từ bảng BaoCao trong sql
+        string query = @"
+        SELECT 
+            BC.ID, 
+            BC.Username_NguoiGui, -- 🚨 ĐÃ THAY ĐỔI: Lấy trực tiếp Username_NguoiGui
+            BC.LoaiBaoCao, 
+            BC.NoiDung, 
+            BC.NgayGui, 
+            BC.TrangThai 
+        FROM 
+            BaoCao AS BC 
+        WHERE 
+            (@LoaiBaoCaoFilter IS NULL OR BC.LoaiBaoCao LIKE '%' + @LoaiBaoCaoFilter + '%')
+        ORDER BY 
+            BC.NgayGui DESC";
+
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                if (string.IsNullOrWhiteSpace(loaiBaoCaoFilter))
+                {
+                    cmd.Parameters.AddWithValue("@LoaiBaoCaoFilter", DBNull.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@LoaiBaoCaoFilter", loaiBaoCaoFilter);
+                }
+
+                try
+                {
+                    conn.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi tải danh sách báo cáo: " + ex.Message);
+                }
+            }
+        }
+        return dt;
+    }
+    //Tất cả hàm danh cho Form_Booking (Khách hàng tự đặt lịch)
     // HÀM Dành cho Form_Booking (Khách hàng tự đặt lịch)
     public static bool TaoLichHenMoi(string username, DateTime thoiGianHen, string noiDung)
     {
@@ -791,7 +901,7 @@ public static class DatabaseHelper
     // 2. Sửa lịch hẹn (tái sử dụng dành cho User khách hàng tương tác)
     public static bool UpdateLichHen(int lichHenID, DateTime thoiGianMoi, string noiDungMoi)
     {
-        int rowsAffected = 0;
+        int rowsAffected = 0; // Khởi tạo
 
         string query = @"UPDATE LichHen 
                      SET ThoiGianBatDau = @ThoiGian, NoiDung = @NoiDung 
@@ -804,9 +914,21 @@ public static class DatabaseHelper
                 cmd.Parameters.AddWithValue("@ThoiGian", thoiGianMoi);
                 cmd.Parameters.AddWithValue("@NoiDung", noiDungMoi);
                 cmd.Parameters.AddWithValue("@ID", lichHenID);
-                // ... (phần try...catch giữ nguyên) ...
+
+                try
+                {
+                    conn.Open();
+                    // 🚨 ĐÂY LÀ ĐOẠN CODE BẠN BỊ THIẾU HOẶC ĐẶT SAI VỊ TRÍ 🚨
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật lịch hẹn: " + ex.Message);
+                    return false;
+                }
             }
         }
+        // rowsAffected > 0 mới được trả về TRUE
         return (rowsAffected > 0);
     }
     // Kiểm tra trùng lịch hẹn (Ngẳn chặn ngay từ khi có ý định "thêm" lập lịch)

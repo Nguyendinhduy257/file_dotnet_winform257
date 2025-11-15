@@ -80,6 +80,48 @@ namespace schedule_set_up_app
         //5. hàm sự kiện click thêm,sửa,xóa,trở lại
         private void btnThem_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void btnSua_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTroLai_Click(object sender, EventArgs e)
+        {
+            if (this.daCoThayDoi)
+            {
+                this.DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                this.DialogResult = DialogResult.Cancel;
+            }
+            this.Close();
+        }
+
+        private void dgvLichHenNgay3_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                // Chọn tất cả các hàng
+                dgvLichHenNgay3.SelectAll();
+            }
+        }
+
+        private void dgvLichHenNgay3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnThem_Click_1(object sender, EventArgs e)
+        {
             DateTime time = dtpThoiGian1.Value;
             string noiDung = txtNoiDung.Text;
             DateTime thoiGianHen = new DateTime(
@@ -109,7 +151,7 @@ namespace schedule_set_up_app
             }
         }
 
-        private void btnSua_Click(object sender, EventArgs e)
+        private void btnSua_Click_1(object sender, EventArgs e)
         {
             // 1. Kiểm tra (chỉ cho phép sửa 1)
             if (dgvLichHenNgay3.SelectedRows.Count == 0)
@@ -157,19 +199,39 @@ namespace schedule_set_up_app
                 dtpThoiGian1.Focus();
                 return;
             }
+            DialogResult confirmResult = MessageBox.Show(
+                    "Bạn có chắc chắn muốn cập nhật lịch hẹn này không?", // Nội dung thông báo
+                    "Xác Nhận Sửa Lịch Hẹn", // Tiêu đề cửa sổ
+                    MessageBoxButtons.OKCancel, // Hiển thị nút OK và Cancel
+                    MessageBoxIcon.Question // Icon hỏi
+                );
 
-            //(Code lưu của bạn)
-            bool success = DatabaseHelper.UpdateLichHen(this.selectedLichHenID, thoiGianHenMoi, noiDungMoi);
-            if (success)
+            // Kiểm tra kết quả
+            if (confirmResult == DialogResult.OK)
             {
-                LoadDataGridView();
-                MessageBox.Show("Sửa thành công!");
-                this.selectedLichHenID = -1;
-                this.daCoThayDoi = true;
+                // Người dùng chọn OK -> Tiến hành Sửa
+                bool success = DatabaseHelper.UpdateLichHen(this.selectedLichHenID, thoiGianHenMoi, noiDungMoi);
+
+                if (success)
+                {
+                    LoadDataGridView();
+                    MessageBox.Show("Sửa thành công và đã cập nhật bảng!", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.selectedLichHenID = -1; // Reset ID sau khi sửa
+                    this.daCoThayDoi = true;
+                }
+                else
+                {
+                    MessageBox.Show("Sửa thất bại! Vui lòng kiểm tra kết nối hoặc lỗi SQL.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                // Người dùng chọn Cancel -> Không làm gì cả và kết thúc hàm
+                MessageBox.Show("Thao tác sửa đã bị hủy.", "Đã Hủy", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
-        private void btnXoa_Click(object sender, EventArgs e)
+        private void btnXoa_Click_1(object sender, EventArgs e)
         {
             // 1. Kiểm tra xem có hàng nào được chọn không
             if (dgvLichHenNgay3.SelectedRows.Count == 0)
@@ -204,29 +266,7 @@ namespace schedule_set_up_app
             }
         }
 
-        private void btnTroLai_Click(object sender, EventArgs e)
-        {
-            if (this.daCoThayDoi)
-            {
-                this.DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                this.DialogResult = DialogResult.Cancel;
-            }
-            this.Close();
-        }
-
-        private void dgvLichHenNgay3_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.ColumnIndex == 0)
-            {
-                // Chọn tất cả các hàng
-                dgvLichHenNgay3.SelectAll();
-            }
-        }
-
-        private void dgvLichHenNgay3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void panel8_Paint(object sender, PaintEventArgs e)
         {
 
         }
