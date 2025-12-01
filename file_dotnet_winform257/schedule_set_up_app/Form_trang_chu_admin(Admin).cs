@@ -18,14 +18,17 @@ namespace schedule_set_up_app
         private DataTable dtFullLichSu;
         // Biến này sẽ giữ control "Quản lý User"
         private UC_QuanLyUser ucQuanLyUser;
+        private Form_quan_ly_lich_Admin_ formQuanLyLich;
         public Form_trang_chu_admin(string username)
         {
             InitializeComponent();
+            //tên chào mừng luôn để In Hoa
             this.tenNguoiDung = username.ToUpper();
         }
 
         private void Form_trang_chu_admin_Load(object sender, EventArgs e)
         {
+            //Tiêu đề chào mừng chủ tài khoản
             // Label 1
             label2.Text = "Hello Master";
             label2.AutoSize = true; // Phải AutoSize
@@ -86,7 +89,7 @@ namespace schedule_set_up_app
             seriesMoi.ChartType = SeriesChartType.Column;
             seriesMoi.ChartArea = "MainArea";
 
-            
+
             seriesMoi.XValueType = ChartValueType.String;
             seriesMoi.IsXValueIndexed = true;             //     Ép nó phải "index" (Thứ 2, Thứ 3,...)
 
@@ -204,36 +207,29 @@ namespace schedule_set_up_app
 
         private void btn_quan_ly_user_Click(object sender, EventArgs e)
         {
-            //Form_quan_ly_users form_Quan_Ly_Users = new Form_quan_ly_users();
-            //form_Quan_Ly_Users.TopLevel = false;
-            //form_Quan_Ly_Users.FormBorderStyle = FormBorderStyle.None;
-            //form_Quan_Ly_Users.BackColor = Color.Blue;
-            //form_Quan_Ly_Users.Dock = DockStyle.Fill;
-            //panel1.Controls.Add(form_Quan_Ly_Users);
             label1.Text = "              Thông Tin Các Tài Khoản và Role";
-            // 1. Ẩn panel Tổng quan đi
             button_tong_quan.BorderThickness = 1;
             btn_quan_ly_lich_hen.BorderThickness = 1;
             btn_quan_ly_user.BorderThickness = 3;
             btn_setting.BorderThickness = 1;
+
+            // 1. Ẩn Panel tổng quan
             panel_tong_quat.Visible = false;
 
-            // 2. Kiểm tra xem UC_QuanLyUser đã được tạo chưa
+            // 2. Ẩn Form Lịch đi (THÊM DÒNG NÀY)
+            if (formQuanLyLich != null) formQuanLyLich.Visible = false;
+
+            // 3. Hiện UserControl User (Code cũ của bạn)
             if (ucQuanLyUser == null)
             {
-                // Nếu chưa, tạo nó LẦN ĐẦU TIÊN
                 ucQuanLyUser = new UC_QuanLyUser();
                 ucQuanLyUser.Dock = DockStyle.Fill;
-
-                // Thêm nó vào Panel2 (nó đang bị "ẩn" đằng sau panelTongQuan)
                 splitContainer2.Panel2.Controls.Add(ucQuanLyUser);
             }
 
-            // 3. Hiển thị nó và đưa lên trên cùng
             ucQuanLyUser.Visible = true;
             ucQuanLyUser.BringToFront();
-            //Căn giữa
-            CenterUC(ucQuanLyUser);
+            // CenterUC(ucQuanLyUser); // Nếu đã Dock=Fill thì không cần CenterUC nữa
         }
         // HÀM CenterUC() để căn giữa UserControl trong Panel2
         private void CenterUC(UserControl uc)
@@ -272,7 +268,6 @@ namespace schedule_set_up_app
         {
             LoadChartCurrentWeek();
             LoadChartBuoi();
-            // LoadDataGridView();  //bảng dự phòng
             UpdateAllStatistics();
             LoadLichSuDataGridView();
         }
@@ -354,30 +349,53 @@ namespace schedule_set_up_app
 
         private void btnChinhSua_Click(object sender, EventArgs e)
         {
-            // 1. Chỉ cho phép chọn 1 hàng để sửa ,nếu chọn nhiều hơn 1 hoặc chưa chọn hàng nào cả thì báo lỗi NGAY LẬP TỨC
+            // 1. Kiểm tra nếu chưa chọn hàng nào -> Báo lỗi
             if (guna2DataGridView1.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn một hàng để chỉnh sửa.");
+                MessageBox.Show("Vui lòng chọn ít nhất một hàng để chỉnh sửa.");
                 return;
             }
-            if (guna2DataGridView1.SelectedRows.Count > 1)
+
+            // 2. TRƯỜNG HỢP 1: CHỌN ĐÚNG 1 HÀNG -> Sửa chi tiết cả trạng thai và thời gian
+            if (guna2DataGridView1.SelectedRows.Count == 1)
             {
-                MessageBox.Show("Chỉ có thể chỉnh sửa một hàng mỗi lần.");
-                return;
+                DataGridViewRow selectedRow = guna2DataGridView1.SelectedRows[0];
+
+                // Kiểm tra ID có tồn tại không
+                if (selectedRow.Cells["ID"].Value != null)
+                {
+                    int idCanSua = Convert.ToInt32(selectedRow.Cells["ID"].Value);
+
+                    // Mở Form sửa chế độ 1 dòng
+                    Form_SuaLichHen formSua = new Form_SuaLichHen(idCanSua);
+                    formSua.ShowDialog();
+                }
+            }
+            // 3. TRƯỜNG HỢP 2: CHỌN NHIỀU HÀNG -> Sửa hàng loạt. nhưng chỉ đc sửa trạng thái
+            else
+            {
+                List<int> listIDs = new List<int>();
+
+                // Lấy danh sách ID của tất cả các hàng đang bôi đen
+                foreach (DataGridViewRow row in guna2DataGridView1.SelectedRows)
+                {
+                    if (row.Cells["ID"].Value != null)
+                    {
+                        listIDs.Add(Convert.ToInt32(row.Cells["ID"].Value));
+                    }
+                }
+
+                // Mở Form sửa chế độ Nhiều dòng (truyền List ID)
+                Form_SuaLichHen formSua = new Form_SuaLichHen(listIDs);
+                formSua.ShowDialog();
             }
 
-            // 2. Lấy ID của hàng được chọn
-            DataGridViewRow selectedRow = guna2DataGridView1.SelectedRows[0];
-            int idCanSua = Convert.ToInt32(selectedRow.Cells["ID"].Value);
-
-            // Ví dụ:
-            Form_SuaLichHen formSua = new Form_SuaLichHen(idCanSua);
-            formSua.ShowDialog(); // Hiển thị form
-
-            //MessageBox.Show("Đang mở form chỉnh sửa cho ID = " + idCanSua);
-
-            // 4. Tải lại bảng sau khi formSua đóng lại
+            // 4. Tải lại dữ liệu sau khi đóng Form sửa
             LoadLichSuDataGridView();
+
+            // Cập nhật lại biểu đồ và thống kê (nếu cần thiết)
+            UpdateAllStatistics();
+            LoadChartCurrentWeek();
         }
         // Thử nghiệm tìm kiếm không phân biệt chữ có dấu
         public static string RemoveAccents(string text)
@@ -488,14 +506,11 @@ namespace schedule_set_up_app
             btn_quan_ly_lich_hen.BorderThickness = 1;
             btn_quan_ly_user.BorderThickness = 1;
             btn_setting.BorderThickness = 1;
-            // 1. Ẩn UC_QuanLyUser đi (nếu nó tồn tại)
-            if (ucQuanLyUser != null)
-            {
-                ucQuanLyUser.Visible = false;
-                ucQuanLyUser.SendToBack();
-            }
+            // Ẩn các Form con
+            if (ucQuanLyUser != null) ucQuanLyUser.Visible = false;
+            if (formQuanLyLich != null) formQuanLyLich.Visible = false; 
 
-            // 2. "Khôi phục" bằng cách hiển thị lại panelTongQuan
+            // Hiện lại Tổng quan
             panel_tong_quat.Visible = true;
             panel_tong_quat.BringToFront();
         }
@@ -507,12 +522,38 @@ namespace schedule_set_up_app
 
         private void btn_quan_ly_lich_hen_Click(object sender, EventArgs e)
         {
+            // 1. Cập nhật giao diện nút bấm (Highlight nút Lịch hẹn)
+            label1.Text = "              Quản Lý Danh Sách Lịch Hẹn";
             button_tong_quan.BorderThickness = 1;
-            btn_quan_ly_lich_hen.BorderThickness = 3;
+            btn_quan_ly_lich_hen.BorderThickness = 3; // Đậm nút này lên
             btn_quan_ly_user.BorderThickness = 1;
             btn_setting.BorderThickness = 1;
-            Form_quan_ly_lich_Admin_ form_Quan_Ly_Lich_Admin_ = new Form_quan_ly_lich_Admin_();
-            form_Quan_Ly_Lich_Admin_.ShowDialog();
+
+            // 2. Ẩn các View khác đi
+            panel_tong_quat.Visible = false;      // Ẩn form tổng quan
+            if (ucQuanLyUser != null)
+            {
+                ucQuanLyUser.Visible = false;     // Ẩn form  Quản lý User
+            }
+
+            // 3. Kiểm tra Form Lịch đã tạo chưa (hoặc đã bị tắt chưa)
+            if (formQuanLyLich == null || formQuanLyLich.IsDisposed)
+            {
+                // Tạo mới
+                formQuanLyLich = new Form_quan_ly_lich_Admin_();
+
+                // NHÚNG FORM
+                formQuanLyLich.TopLevel = false;              // Cho phép form con nằm trong form cha
+                formQuanLyLich.FormBorderStyle = FormBorderStyle.None; // Bỏ viền, nút X, Minimize
+                formQuanLyLich.Dock = DockStyle.Fill;         // Tự động lấp đầy Panel
+
+                // Thêm vào Panel2
+                splitContainer2.Panel2.Controls.Add(formQuanLyLich);
+            }
+
+            // 4. Hiển thị form
+            formQuanLyLich.Visible = true;
+            formQuanLyLich.BringToFront();
         }
 
         private void btn_setting_Click(object sender, EventArgs e)
@@ -536,6 +577,56 @@ namespace schedule_set_up_app
         {
             Form_QuanLyBaoCao form_QuanLyBaoCao = new Form_QuanLyBaoCao();
             form_QuanLyBaoCao.ShowDialog();
+        }
+
+        private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void guna2DataGridView1_Sorted(object sender, EventArgs e)
+        {
+            // 1. DỪNG TIMER
+            // Ngăn chặn việc làm mới ngay lập tức
+            timer1.Stop();
+
+            // 2. KHỞI ĐỘNG LẠI TIMER NGAY LẬP TỨC
+            // Điều này sẽ reset chu kỳ đếm ngược của Timer (ví dụ: nếu Interval là 15s)
+            timer1.Start();
+        }
+        //highlight hàng nào của bảng lịch sử mà nó đang ở trạng thái: "Chưa duyệt";
+        private void guna2DataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            DataGridView dgv = (DataGridView)sender;
+
+            // 1. SỬA LỖI: Dùng tên cột "TrangThai" (tên trong SQL), KHÔNG dùng "Trạng Thái"
+            if (dgv.Columns[e.ColumnIndex].Name == "TrangThai")
+            {
+                if (e.RowIndex >= 0)
+                {
+                    // Lấy giá trị từ cột "TrangThai"
+                    object trangThaiValue = e.Value;
+
+                    if (trangThaiValue != null && trangThaiValue != DBNull.Value)
+                    {
+                        string trangThai = trangThaiValue.ToString().Trim().ToLower();
+
+                        // 3. Kiểm tra
+                        if (trangThai == "chưa duyệt")
+                        {
+                            // 4. Highlight
+                            dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 230, 204);
+                            dgv.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.DarkRed;
+                        }
+                        else
+                        {
+                            // 5. Reset màu
+                            dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = dgv.DefaultCellStyle.BackColor;
+                            dgv.Rows[e.RowIndex].DefaultCellStyle.ForeColor = dgv.DefaultCellStyle.ForeColor;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     internal class DichVu
     {
-        public string Ten { get; set; }
-        public string MoTa { get; set; }
-        public string ThoiGian { get; set; }
+        //public string Ten { get; set; }
+        //public string MoTa { get; set; }
+        //public string ThoiGian { get; set; }
     }
 }

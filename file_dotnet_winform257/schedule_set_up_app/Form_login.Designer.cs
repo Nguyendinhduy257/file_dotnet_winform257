@@ -82,6 +82,7 @@
             // 
             // pictureBox2
             // 
+            pictureBox2.BackColor = Color.LightGray;
             pictureBox2.Cursor = Cursors.Hand;
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
             pictureBox2.Location = new Point(219, 556);
@@ -91,9 +92,12 @@
             pictureBox2.TabIndex = 2;
             pictureBox2.TabStop = false;
             pictureBox2.Click += pictureBox2_Click;
+            pictureBox2.MouseEnter += pictureBox2_MouseEnter;
+            pictureBox2.MouseLeave += pictureBox2_MouseLeave;
             // 
             // pictureBox3
             // 
+            pictureBox3.BackColor = Color.LightGray;
             pictureBox3.Cursor = Cursors.Hand;
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
             pictureBox3.Location = new Point(221, 437);
@@ -106,7 +110,7 @@
             // textBox_pass
             // 
             textBox_pass.AcceptsTab = true;
-            textBox_pass.Cursor = Cursors.Hand;
+            textBox_pass.Cursor = Cursors.IBeam;
             textBox_pass.Font = new Font("Segoe UI", 14F);
             textBox_pass.Location = new Point(309, 577);
             textBox_pass.Name = "textBox_pass";
@@ -117,7 +121,7 @@
             // textBox_username
             // 
             textBox_username.AcceptsTab = true;
-            textBox_username.Cursor = Cursors.Hand;
+            textBox_username.Cursor = Cursors.IBeam;
             textBox_username.Font = new Font("Segoe UI", 14F);
             textBox_username.Location = new Point(311, 454);
             textBox_username.Name = "textBox_username";
@@ -154,6 +158,7 @@
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
+            linkLabel1.Cursor = Cursors.Hand;
             linkLabel1.Font = new Font("Segoe UI", 12F);
             linkLabel1.Location = new Point(546, 753);
             linkLabel1.Name = "linkLabel1";
@@ -173,6 +178,7 @@
             guna2Button1.Animated = true;
             guna2Button1.BorderRadius = 10;
             guna2Button1.BorderThickness = 1;
+            guna2Button1.Cursor = Cursors.Hand;
             guna2Button1.CustomizableEdges = customizableEdges1;
             guna2Button1.DisabledState.BorderColor = Color.DarkGray;
             guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -194,6 +200,7 @@
             guna2Button2.Animated = true;
             guna2Button2.BorderRadius = 15;
             guna2Button2.BorderThickness = 2;
+            guna2Button2.Cursor = Cursors.Hand;
             guna2Button2.CustomizableEdges = customizableEdges3;
             guna2Button2.DisabledState.BorderColor = Color.DarkGray;
             guna2Button2.DisabledState.CustomBorderColor = Color.DarkGray;

@@ -233,7 +233,25 @@ namespace schedule_set_up_app
                 lblHen.BorderStyle = BorderStyle.FixedSingle;
                 lblHen.BackColor = Color.LightYellow;
                 lblHen.Margin = new Padding(3);
+                //hightlight màu theo trạng thái    
+                // Chuyển về chữ thường để so sánh cho chính xác
+                string trangThaiCheck = trangThai.ToLower();
 
+                if (trangThaiCheck.Contains("đã duyệt") || trangThaiCheck.Contains("đã đặt"))
+                {
+                    // 1. MÀU TƯƠI XANH (Cho đã duyệt)
+                    lblHen.BackColor = Color.LightGreen;
+                }
+                else if (trangThaiCheck.Contains("chưa duyệt"))
+                {
+                    // 2. MÀU KHÁC (Ví dụ: Vàng nhạt/Cam nhạt cho chưa duyệt)
+                    lblHen.BackColor = Color.LightYellow;
+                }
+                else
+                {
+                    // Màu mặc định cho các trạng thái lạ
+                    lblHen.BackColor = Color.White;
+                }
                 // Quyết định xem Label này thuộc về panel (là panel dóng từ thứ 2/3/4/5/6/7/CN xuống)
                 switch (ngayHen.DayOfWeek)
                 {
@@ -269,14 +287,13 @@ namespace schedule_set_up_app
                 totalContentHeight += c.Height + c.Margin.Top + c.Margin.Bottom;
             }
 
-            // (Thêm 1 khoảng lề nhỏ ở cuối cho chắc chắn)
             totalContentHeight += panel.Padding.Bottom;
 
             // 3. So sánh
             // (Nếu tổng chiều cao (vd: 600) > chiều cao panel (572))
             if (totalContentHeight > panel.Height)
             {
-                // Bị tràn -> Hiện LinkLabel
+                // Bị tràn -> Hiện LinkLabel (show more)
                 link.Visible = true;
             }
             else

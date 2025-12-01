@@ -65,11 +65,11 @@ namespace schedule_set_up_app
         private void guna2Button1_Click(object sender, EventArgs e)
         {
             guna2Button1.BorderThickness = 3;
-            DialogResult result = MessageBox.Show("Bạn muốn thoát Form Login?", "Xác Nhận Thoát?", MessageBoxButtons.YesNo, MessageBoxIcon.Information,MessageBoxDefaultButton.Button2);
-            if (result ==DialogResult.Yes)
+            DialogResult result = MessageBox.Show("Bạn muốn thoát Form Login?", "Xác Nhận Thoát?", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            if (result == DialogResult.Yes)
             {
                 this.Close();
-                
+
             }
             else
             {
@@ -77,98 +77,119 @@ namespace schedule_set_up_app
                 guna2Button1.BorderThickness = 1;
             }
         }
-
+        //khi ấn nuts đăng nhập, kiểm tra thông tin đăng nhập
         private void guna2Button2_Click(object sender, EventArgs e)
         {
-            // 1. Xóa mọi thông báo lỗi cũ (nếu có)
+            // 1. Xóa mọi thông báo lỗi cũ
             errorProvider1.Clear();
-            errorProvider2.Clear(); // Thêm cho errorProvider2
-            label3.Visible = false; // mặc định Ẩn label lỗi
-            label4.Visible = false; // mặc định Ẩn label lỗi
+            errorProvider2.Clear();
+            label3.Visible = false;
+            label4.Visible = false;
 
-            // 2. Tạo các biến cờ để kiểm tra
-            //bool isUsernameValid = true;
-            //bool isPasswordValid = true;
             bool isErrorFound = false;
 
-            // 3. KIỂM TRA TÊN NGƯỜI DÙNG (USERNAME)
-
-            // 3a. Kiểm tra xem có trống không
+            // 3. KIỂM TRA VALIDATE trong window form login
+            // 3a. Kiểm tra User
             if (string.IsNullOrWhiteSpace(textBox_username.Text))
             {
                 errorProvider1.SetError(textBox_username, "Vui lòng nhập tên người dùng!");
                 label3.Text = "Vui lòng nhập tên người dùng";
                 label3.Visible = true;
-                //isUsernameValid = false;
                 isErrorFound = true;
             }
-            // 3b. (Chỉ kiểm tra nếu không trống) Kiểm tra có dấu cách không
             else if (textBox_username.Text.Contains(" "))
             {
                 errorProvider1.SetError(textBox_username, "Tên người dùng không được chứa dấu cách!");
                 label3.Text = "Tên người dùng không được chứa SPACE";
                 label3.Visible = true;
-                //isUsernameValid = false;
                 isErrorFound = true;
             }
 
-            // 4. KIỂM TRA MẬT KHẨU (PASSWORD)
-
-            // Kiểm tra xem có khoảng trống SPACE không
+            // 4. KIỂM TRA PASSWORD 
             if (string.IsNullOrWhiteSpace(textBox_pass.Text))
             {
                 errorProvider2.SetError(textBox_pass, "Vui lòng nhập mật khẩu!");
                 label4.Text = "Vui lòng nhập mật khẩu";
                 label4.Visible = true;
-                //isPasswordValid = false;
                 isErrorFound = true;
             }
 
-            // 5. NẾU CÓ LỖI VALIDATE (Lỗi trống/dấu cách) -> DỪNG LẠI
+            // 5. NẾU CÓ LỖI VALIDATE -> DỪNG
             if (isErrorFound == true)
             {
-                // Nếu CÓ LỖI -> Bắt đầu đếm 8 giây, sau đó tắt thông báo lỗi
                 timer1.Start();
-                return; // Dừng lại, không chạy code kiểm tra CSDL
+                return;
             }
 
-            // 6. NẾU KHÔNG CÓ LỖI VALIDATE -> TIẾN HÀNH KIỂM TRA CSDL
-            // Lấy dữ liệu từ TextBox
+            // 6. KIỂM TRA ngoài winfow form login --> kiểm tra CSDL
             string username = textBox_username.Text;
-            string password = textBox_pass.Text; // Lấy mật khẩu
+            string password = textBox_pass.Text;
 
-            // GỌI HÀM KIỂM TRA (từ DatabaseHelper.cs)
-            string role = DatabaseHelper.CheckLogin(username, password);
+            // GỌI HÀM KIỂM TRA
+            string rawResult = DatabaseHelper.CheckLogin(username, password);
 
-            // Xử lý kết quả trả về
-            if (role == "User")
-            {
-                //lưu tên đăng nhập
-                UserSession.SetUser(username);
-                // ĐĂNG NHẬP thành công có ROLE="User"
+            // --- BƯỚC MỚI: TÁCH CHUỖI ĐỂ LẤY THÔNG TIN ---
+            // Ví dụ: nhận được "WrongPass|3" -> tách thành parts[0]="WrongPass", parts[1]="3"
+            string[] parts = rawResult.Split('|');
+            string status = parts[0]; // Lấy trạng thái chính (User, Admin, WrongPass...)
 
-                // Mở Form trang chủ của khách hàng
-                form_trang_chu form_Khach = new form_trang_chu(username);
-                form_Khach.Show();
-                this.Hide();
-            }
-            else if (role == "Admin")
+            switch (status)
             {
-                //lưu tên đăng nhập
-                UserSession.SetUser(username);
-                // ĐĂNG NHẬP ADMIN
-                Form_trang_chu_admin form_Trang_Chu_Admin = new Form_trang_chu_admin(username);
-                form_Trang_Chu_Admin.Show();
-                this.Hide();
-            }
-            else
-            {
-                MessageBox.Show("Sai Tên Đăng Nhập Hoặc Mật Khẩu","Thông báo Sai",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                //nếu đúng thì vào trang chủ tương ứng với user hoặc admin
+                case "User":
+                    UserSession.SetUser(username);
+                    form_trang_chu form_Khach = new form_trang_chu(username);
+                    form_Khach.Show();
+                    this.Hide();
+                    break;
+
+                case "Admin":
+                    UserSession.SetUser(username);
+                    Form_trang_chu_admin form_Trang_Chu_Admin = new Form_trang_chu_admin(username);
+                    form_Trang_Chu_Admin.Show();
+                    this.Hide();
+                    break;
+                //nếu sai mật khẩu quá 5 lần thì khóa tài khoản
+                case "Locked":
+                    MessageBox.Show("Tài khoản này đang bị KHÓA do nhập sai quá 5 lần.\nVui lòng liên hệ Admin.",
+                                    "Tài khoản bị khóa", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    break;
+                //nếu vừa sai lần thứ 5 thì thông báo khóa ngay là mới bị khóa tài khoản
+                case "LockedNow":
+                    MessageBox.Show("Bạn đã nhập sai 5/5 lần.\nTài khoản CHÍNH THỨC BỊ KHÓA ngay bây giờ!",
+                                    "Đã khóa tài khoản", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                //nếu sai mật khẩu thì thông báo số lần đã sai ví dụ: bạn sai 3/5 lần
+                case "WrongPass":
+                    // --- XỬ LÝ HIỂN THỊ SỐ LẦN SAI ---
+                    string soLan = "0";
+                    if (parts.Length > 1) soLan = parts[1]; // Lấy con số sau dấu |
+
+                    if (soLan == "Admin")
+                    {
+                        // Admin thì không hiện số lần
+                        MessageBox.Show("Sai mật khẩu Admin!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        // User thường thì hiện số lần: "Bạn đã nhập sai 3/5 lần"
+                        MessageBox.Show($"Sai mật khẩu!\nBạn đã nhập sai {soLan}/5 lần.\n(Tài khoản sẽ bị khóa nếu sai 5 lần)",
+                                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    break;
+
+                case "Invalid":
+                    MessageBox.Show("Tài khoản không tồn tại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+
+                default:
+                    MessageBox.Show("Lỗi hệ thống: " + rawResult);
+                    break;
             }
         }
 
 
-    //tắt thông báo sau 8s thông báo
+        //tắt thông báo sau 8s thông báo
         private void timer1_Tick(object sender, EventArgs e)
         {
             //tắt timer1
@@ -177,8 +198,18 @@ namespace schedule_set_up_app
             errorProvider1.Clear();
             errorProvider2.Clear();
             //tắt label thông báo lỗi sau 1 thời gian (8 giây) thông báo
-            label3.Visible=false;
-            label4.Visible=false;
+            label3.Visible = false;
+            label4.Visible = false;
+        }
+
+        private void pictureBox2_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox2.BackColor = Color.DarkGray;
+        }
+
+        private void pictureBox2_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox2.BackColor = Color.LightGray;
         }
     }
 }

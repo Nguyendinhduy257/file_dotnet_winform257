@@ -56,6 +56,7 @@
             guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             panel3 = new Panel();
             timerSearch = new System.Windows.Forms.Timer(components);
+            panel5 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvBaoCao).BeginInit();
             SuspendLayout();
             // 
@@ -82,11 +83,11 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvBaoCao.DefaultCellStyle = dataGridViewCellStyle3;
             dgvBaoCao.GridColor = Color.FromArgb(231, 229, 255);
-            dgvBaoCao.Location = new Point(21, 402);
+            dgvBaoCao.Location = new Point(22, 405);
             dgvBaoCao.Name = "dgvBaoCao";
             dgvBaoCao.RowHeadersVisible = false;
             dgvBaoCao.RowHeadersWidth = 72;
-            dgvBaoCao.Size = new Size(1934, 584);
+            dgvBaoCao.Size = new Size(1934, 429);
             dgvBaoCao.TabIndex = 0;
             dgvBaoCao.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvBaoCao.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -142,6 +143,7 @@
             txtTimKiemLoaiBaoCao.Animated = true;
             txtTimKiemLoaiBaoCao.AutoSize = true;
             txtTimKiemLoaiBaoCao.BorderRadius = 20;
+            txtTimKiemLoaiBaoCao.Cursor = Cursors.IBeam;
             txtTimKiemLoaiBaoCao.CustomizableEdges = customizableEdges1;
             txtTimKiemLoaiBaoCao.DefaultText = "";
             txtTimKiemLoaiBaoCao.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -172,6 +174,7 @@
             btnTimKiem.Animated = true;
             btnTimKiem.AutoRoundedCorners = true;
             btnTimKiem.BorderRadius = 43;
+            btnTimKiem.Cursor = Cursors.Hand;
             btnTimKiem.CustomizableEdges = customizableEdges3;
             btnTimKiem.DisabledState.BorderColor = Color.DarkGray;
             btnTimKiem.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -192,6 +195,7 @@
             // 
             btnTaiLai.Animated = true;
             btnTaiLai.AutoRoundedCorners = true;
+            btnTaiLai.Cursor = Cursors.Hand;
             btnTaiLai.CustomizableEdges = customizableEdges5;
             btnTaiLai.DisabledState.BorderColor = Color.DarkGray;
             btnTaiLai.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -214,6 +218,7 @@
             // 
             btnXuLy.Animated = true;
             btnXuLy.AutoRoundedCorners = true;
+            btnXuLy.Cursor = Cursors.Hand;
             btnXuLy.CustomizableEdges = customizableEdges7;
             btnXuLy.DisabledState.BorderColor = Color.DarkGray;
             btnXuLy.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -252,6 +257,7 @@
             guna2Button1.Animated = true;
             guna2Button1.AutoRoundedCorners = true;
             guna2Button1.BorderRadius = 43;
+            guna2Button1.Cursor = Cursors.Hand;
             guna2Button1.CustomizableEdges = customizableEdges9;
             guna2Button1.DisabledState.BorderColor = Color.DarkGray;
             guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -282,12 +288,21 @@
             timerSearch.Interval = 3000;
             timerSearch.Tick += timerSearch_Tick;
             // 
+            // panel5
+            // 
+            panel5.BackColor = Color.Teal;
+            panel5.Location = new Point(26, 394);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(1929, 5);
+            panel5.TabIndex = 41;
+            // 
             // Form_QuanLyBaoCao
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(2026, 838);
+            ClientSize = new Size(1966, 849);
+            Controls.Add(panel5);
             Controls.Add(panel3);
             Controls.Add(guna2Button1);
             Controls.Add(panel1);
@@ -326,5 +341,6 @@
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
         private Panel panel3;
         private System.Windows.Forms.Timer timerSearch;
+        private Panel panel5;
     }
 }

@@ -189,7 +189,7 @@
             // 
             txtHoten.Animated = true;
             txtHoten.BorderRadius = 15;
-            txtHoten.Cursor = Cursors.Hand;
+            txtHoten.Cursor = Cursors.IBeam;
             txtHoten.CustomizableEdges = customizableEdges6;
             txtHoten.DefaultText = "";
             txtHoten.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -273,7 +273,7 @@
             // 
             txtEmail.Animated = true;
             txtEmail.BorderRadius = 15;
-            txtEmail.Cursor = Cursors.Hand;
+            txtEmail.Cursor = Cursors.IBeam;
             txtEmail.CustomizableEdges = customizableEdges10;
             txtEmail.DefaultText = "";
             txtEmail.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -295,7 +295,7 @@
             // txtConfirmPassword
             // 
             txtConfirmPassword.Animated = true;
-            txtConfirmPassword.Cursor = Cursors.Hand;
+            txtConfirmPassword.Cursor = Cursors.IBeam;
             txtConfirmPassword.CustomizableEdges = customizableEdges12;
             txtConfirmPassword.DefaultText = "";
             txtConfirmPassword.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -317,7 +317,7 @@
             // txtPassword
             // 
             txtPassword.Animated = true;
-            txtPassword.Cursor = Cursors.Hand;
+            txtPassword.Cursor = Cursors.IBeam;
             txtPassword.CustomizableEdges = customizableEdges14;
             txtPassword.DefaultText = "";
             txtPassword.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -340,6 +340,7 @@
             // 
             txtUsername.Animated = true;
             txtUsername.BorderRadius = 15;
+            txtUsername.Cursor = Cursors.IBeam;
             txtUsername.CustomizableEdges = customizableEdges16;
             txtUsername.DefaultText = "";
             txtUsername.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -362,8 +363,10 @@
             // 
             // btn_hide_pass_confirm
             // 
+            btn_hide_pass_confirm.Animated = true;
             btn_hide_pass_confirm.BorderRadius = 20;
             btn_hide_pass_confirm.BorderThickness = 1;
+            btn_hide_pass_confirm.Cursor = Cursors.Hand;
             btn_hide_pass_confirm.CustomizableEdges = customizableEdges18;
             btn_hide_pass_confirm.DisabledState.BorderColor = Color.DarkGray;
             btn_hide_pass_confirm.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -383,8 +386,10 @@
             // 
             // btn_hide_pass
             // 
+            btn_hide_pass.Animated = true;
             btn_hide_pass.BorderRadius = 20;
             btn_hide_pass.BorderThickness = 1;
+            btn_hide_pass.Cursor = Cursors.Hand;
             btn_hide_pass.CustomizableEdges = customizableEdges20;
             btn_hide_pass.DisabledState.BorderColor = Color.DarkGray;
             btn_hide_pass.DisabledState.CustomBorderColor = Color.DarkGray;

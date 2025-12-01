@@ -94,7 +94,6 @@
             contextMenuStrip1 = new ContextMenuStrip(components);
             toolStripMenuItem1 = new ToolStripMenuItem();
             thêmSửaXóaProfileToolStripMenuItem = new ToolStripMenuItem();
-            toolStripMenuItem2 = new ToolStripMenuItem();
             panel5 = new Panel();
             panel6 = new Panel();
             panel7 = new Panel();
@@ -120,7 +119,7 @@
             panel1.Location = new Point(19, 496);
             panel1.Name = "panel1";
             panel1.RightToLeft = RightToLeft.No;
-            panel1.Size = new Size(2617, 1144);
+            panel1.Size = new Size(2617, 1058);
             panel1.TabIndex = 1;
             // 
             // panel4
@@ -674,9 +673,9 @@
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new Size(28, 28);
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, thêmSửaXóaProfileToolStripMenuItem, toolStripMenuItem2 });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1, thêmSửaXóaProfileToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(356, 160);
+            contextMenuStrip1.Size = new Size(356, 108);
             // 
             // toolStripMenuItem1
             // 
@@ -695,13 +694,6 @@
             thêmSửaXóaProfileToolStripMenuItem.Size = new Size(355, 52);
             thêmSửaXóaProfileToolStripMenuItem.Text = "Edit profile";
             thêmSửaXóaProfileToolStripMenuItem.Click += thêmSửaXóaProfileToolStripMenuItem_Click;
-            // 
-            // toolStripMenuItem2
-            // 
-            toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(355, 52);
-            toolStripMenuItem2.Text = "My Booking";
-            toolStripMenuItem2.Click += toolStripMenuItem2_Click;
             // 
             // panel5
             // 
@@ -820,7 +812,6 @@
         private Panel panel9;
         private Panel panel8;
         private Label label3;
-        private ToolStripMenuItem toolStripMenuItem2;
         private LinkLabel linkShowMon;
         private LinkLabel linkShowSun;
         private LinkLabel linkShowSat;

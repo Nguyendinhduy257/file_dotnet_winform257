@@ -312,6 +312,7 @@
             button_tong_quan.Animated = true;
             button_tong_quan.BorderRadius = 10;
             button_tong_quan.BorderThickness = 1;
+            button_tong_quan.Cursor = Cursors.Hand;
             button_tong_quan.CustomizableEdges = customizableEdges3;
             button_tong_quan.DisabledState.BorderColor = Color.DarkGray;
             button_tong_quan.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -336,6 +337,7 @@
             btn_quan_ly_lich_hen.Animated = true;
             btn_quan_ly_lich_hen.BorderRadius = 10;
             btn_quan_ly_lich_hen.BorderThickness = 1;
+            btn_quan_ly_lich_hen.Cursor = Cursors.Hand;
             btn_quan_ly_lich_hen.CustomizableEdges = customizableEdges5;
             btn_quan_ly_lich_hen.DisabledState.BorderColor = Color.DarkGray;
             btn_quan_ly_lich_hen.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -358,6 +360,7 @@
             btn_quan_ly_user.Animated = true;
             btn_quan_ly_user.BorderRadius = 10;
             btn_quan_ly_user.BorderThickness = 1;
+            btn_quan_ly_user.Cursor = Cursors.Hand;
             btn_quan_ly_user.CustomizableEdges = customizableEdges7;
             btn_quan_ly_user.DisabledState.BorderColor = Color.DarkGray;
             btn_quan_ly_user.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -380,6 +383,7 @@
             btn_setting.Animated = true;
             btn_setting.BorderRadius = 10;
             btn_setting.BorderThickness = 1;
+            btn_setting.Cursor = Cursors.Hand;
             btn_setting.CustomizableEdges = customizableEdges9;
             btn_setting.DisabledState.BorderColor = Color.DarkGray;
             btn_setting.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -477,6 +481,7 @@
             btn_thong_ke_tai_khoan_moi.BorderRadius = 10;
             btn_thong_ke_tai_khoan_moi.BorderThickness = 1;
             btn_thong_ke_tai_khoan_moi.CheckedState.FillColor = Color.Green;
+            btn_thong_ke_tai_khoan_moi.Cursor = Cursors.Hand;
             btn_thong_ke_tai_khoan_moi.CustomizableEdges = customizableEdges11;
             btn_thong_ke_tai_khoan_moi.DisabledState.BorderColor = Color.DarkGray;
             btn_thong_ke_tai_khoan_moi.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -486,7 +491,7 @@
             btn_thong_ke_tai_khoan_moi.Font = new Font("Segoe UI", 30F, FontStyle.Bold);
             btn_thong_ke_tai_khoan_moi.ForeColor = Color.White;
             btn_thong_ke_tai_khoan_moi.HoverState.FillColor = Color.Green;
-            btn_thong_ke_tai_khoan_moi.Location = new Point(1334, 8);
+            btn_thong_ke_tai_khoan_moi.Location = new Point(1331, 8);
             btn_thong_ke_tai_khoan_moi.Name = "btn_thong_ke_tai_khoan_moi";
             btn_thong_ke_tai_khoan_moi.PressedColor = Color.Transparent;
             btn_thong_ke_tai_khoan_moi.ShadowDecoration.CustomizableEdges = customizableEdges12;
@@ -500,6 +505,7 @@
             btn_thong_ke_lap_lich.BorderRadius = 10;
             btn_thong_ke_lap_lich.BorderThickness = 1;
             btn_thong_ke_lap_lich.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
+            btn_thong_ke_lap_lich.Cursor = Cursors.Hand;
             btn_thong_ke_lap_lich.CustomizableEdges = customizableEdges13;
             btn_thong_ke_lap_lich.DisabledState.BorderColor = Color.DarkGray;
             btn_thong_ke_lap_lich.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -508,7 +514,7 @@
             btn_thong_ke_lap_lich.Font = new Font("Segoe UI", 30F, FontStyle.Bold);
             btn_thong_ke_lap_lich.ForeColor = Color.White;
             btn_thong_ke_lap_lich.HoverState.FillColor = Color.FromArgb(94, 148, 255);
-            btn_thong_ke_lap_lich.Location = new Point(14, 8);
+            btn_thong_ke_lap_lich.Location = new Point(11, 8);
             btn_thong_ke_lap_lich.Name = "btn_thong_ke_lap_lich";
             btn_thong_ke_lap_lich.ShadowDecoration.CustomizableEdges = customizableEdges14;
             btn_thong_ke_lap_lich.Size = new Size(642, 245);
@@ -529,6 +535,7 @@
             btn_thong_ke_danh_sach_cho_duyet.BorderRadius = 10;
             btn_thong_ke_danh_sach_cho_duyet.BorderThickness = 1;
             btn_thong_ke_danh_sach_cho_duyet.CheckedState.FillColor = Color.DarkOrange;
+            btn_thong_ke_danh_sach_cho_duyet.Cursor = Cursors.Hand;
             btn_thong_ke_danh_sach_cho_duyet.CustomizableEdges = customizableEdges15;
             btn_thong_ke_danh_sach_cho_duyet.DisabledState.BorderColor = Color.DarkGray;
             btn_thong_ke_danh_sach_cho_duyet.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -538,7 +545,7 @@
             btn_thong_ke_danh_sach_cho_duyet.Font = new Font("Segoe UI", 30F, FontStyle.Bold);
             btn_thong_ke_danh_sach_cho_duyet.ForeColor = Color.White;
             btn_thong_ke_danh_sach_cho_duyet.HoverState.FillColor = Color.DarkOrange;
-            btn_thong_ke_danh_sach_cho_duyet.Location = new Point(674, 8);
+            btn_thong_ke_danh_sach_cho_duyet.Location = new Point(671, 8);
             btn_thong_ke_danh_sach_cho_duyet.Name = "btn_thong_ke_danh_sach_cho_duyet";
             btn_thong_ke_danh_sach_cho_duyet.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btn_thong_ke_danh_sach_cho_duyet.Size = new Size(642, 245);
@@ -570,11 +577,11 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             guna2DataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             guna2DataGridView1.GridColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.Location = new Point(12, 1343);
+            guna2DataGridView1.Location = new Point(31, 1343);
             guna2DataGridView1.Name = "guna2DataGridView1";
             guna2DataGridView1.RowHeadersVisible = false;
             guna2DataGridView1.RowHeadersWidth = 72;
-            guna2DataGridView1.Size = new Size(1948, 509);
+            guna2DataGridView1.Size = new Size(1965, 509);
             guna2DataGridView1.TabIndex = 3;
             guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -597,6 +604,9 @@
             guna2DataGridView1.ThemeStyle.RowsStyle.Height = 37;
             guna2DataGridView1.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             guna2DataGridView1.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            guna2DataGridView1.CellContentClick += guna2DataGridView1_CellContentClick;
+            guna2DataGridView1.CellFormatting += guna2DataGridView1_CellFormatting;
+            guna2DataGridView1.Sorted += guna2DataGridView1_Sorted;
             // 
             // panel12
             // 
@@ -668,6 +678,7 @@
             // 
             guna2Button1.Animated = true;
             guna2Button1.AutoRoundedCorners = true;
+            guna2Button1.Cursor = Cursors.Hand;
             guna2Button1.CustomizableEdges = customizableEdges17;
             guna2Button1.DisabledState.BorderColor = Color.DarkGray;
             guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -691,6 +702,7 @@
             txtTimKiem.Animated = true;
             txtTimKiem.AutoSize = true;
             txtTimKiem.BorderRadius = 20;
+            txtTimKiem.Cursor = Cursors.IBeam;
             txtTimKiem.CustomizableEdges = customizableEdges19;
             txtTimKiem.DefaultText = "";
             txtTimKiem.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -722,6 +734,7 @@
             btnTimKiem.Animated = true;
             btnTimKiem.AutoRoundedCorners = true;
             btnTimKiem.BorderRadius = 43;
+            btnTimKiem.Cursor = Cursors.Hand;
             btnTimKiem.CustomizableEdges = customizableEdges21;
             btnTimKiem.DisabledState.BorderColor = Color.DarkGray;
             btnTimKiem.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -743,6 +756,7 @@
             // 
             btn_reload.Animated = true;
             btn_reload.AutoRoundedCorners = true;
+            btn_reload.Cursor = Cursors.Hand;
             btn_reload.CustomizableEdges = customizableEdges23;
             btn_reload.DisabledState.BorderColor = Color.DarkGray;
             btn_reload.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -765,6 +779,7 @@
             // 
             btnChinhSua.Animated = true;
             btnChinhSua.AutoRoundedCorners = true;
+            btnChinhSua.Cursor = Cursors.Hand;
             btnChinhSua.CustomizableEdges = customizableEdges25;
             btnChinhSua.DisabledState.BorderColor = Color.DarkGray;
             btnChinhSua.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -787,6 +802,7 @@
             // 
             btnXoa.Animated = true;
             btnXoa.AutoRoundedCorners = true;
+            btnXoa.Cursor = Cursors.Hand;
             btnXoa.CustomizableEdges = customizableEdges27;
             btnXoa.DisabledState.BorderColor = Color.DarkGray;
             btnXoa.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -824,7 +840,7 @@
             contextMenuStrip1.ImageScalingSize = new Size(28, 28);
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { profileToolStripMenuItem, xemReportUserToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(349, 146);
+            contextMenuStrip1.Size = new Size(349, 108);
             // 
             // profileToolStripMenuItem
             // 

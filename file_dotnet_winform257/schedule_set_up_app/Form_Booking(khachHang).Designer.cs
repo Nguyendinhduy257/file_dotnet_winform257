@@ -283,7 +283,7 @@
             // 
             // dtpThoiGian1
             // 
-            dtpThoiGian1.Cursor = Cursors.Hand;
+            dtpThoiGian1.Cursor = Cursors.IBeam;
             dtpThoiGian1.Font = new Font("Segoe UI", 14F);
             dtpThoiGian1.Format = DateTimePickerFormat.Time;
             dtpThoiGian1.Location = new Point(548, 168);
@@ -366,6 +366,7 @@
             // txtNoiDung
             // 
             txtNoiDung.BorderRadius = 20;
+            txtNoiDung.Cursor = Cursors.IBeam;
             txtNoiDung.CustomizableEdges = customizableEdges9;
             txtNoiDung.DefaultText = "";
             txtNoiDung.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);

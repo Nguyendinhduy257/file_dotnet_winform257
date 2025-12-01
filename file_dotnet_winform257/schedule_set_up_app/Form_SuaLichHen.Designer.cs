@@ -52,6 +52,7 @@
             // txtUsername
             // 
             txtUsername.BorderRadius = 20;
+            txtUsername.Cursor = Cursors.IBeam;
             txtUsername.CustomizableEdges = customizableEdges1;
             txtUsername.DefaultText = "";
             txtUsername.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -74,6 +75,7 @@
             // txtNoiDung
             // 
             txtNoiDung.BorderRadius = 20;
+            txtNoiDung.Cursor = Cursors.IBeam;
             txtNoiDung.CustomizableEdges = customizableEdges3;
             txtNoiDung.DefaultText = "";
             txtNoiDung.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
@@ -98,7 +100,7 @@
             // 
             cmbTrangThai.BackColor = Color.Transparent;
             cmbTrangThai.BorderRadius = 20;
-            cmbTrangThai.Cursor = Cursors.Hand;
+            cmbTrangThai.Cursor = Cursors.IBeam;
             cmbTrangThai.CustomizableEdges = customizableEdges5;
             cmbTrangThai.DrawMode = DrawMode.OwnerDrawFixed;
             cmbTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -118,6 +120,7 @@
             // 
             btnLuuThayDoi.BorderRadius = 20;
             btnLuuThayDoi.BorderThickness = 1;
+            btnLuuThayDoi.Cursor = Cursors.Hand;
             btnLuuThayDoi.CustomizableEdges = customizableEdges7;
             btnLuuThayDoi.DisabledState.BorderColor = Color.DarkGray;
             btnLuuThayDoi.DisabledState.CustomBorderColor = Color.DarkGray;
@@ -193,7 +196,7 @@
             // 
             // dtpThoiGianHen1
             // 
-            dtpThoiGianHen1.Cursor = Cursors.Hand;
+            dtpThoiGianHen1.Cursor = Cursors.IBeam;
             dtpThoiGianHen1.CustomFormat = "dd/MM/yyyy HH:mm";
             dtpThoiGianHen1.Font = new Font("Segoe UI", 22F);
             dtpThoiGianHen1.Format = DateTimePickerFormat.Custom;
@@ -220,6 +223,7 @@
             Controls.Add(txtNoiDung);
             Controls.Add(txtUsername);
             Name = "Form_SuaLichHen";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form_SuaLichHen";
             Load += Form_SuaLichHen_Load_1;
             ResumeLayout(false);

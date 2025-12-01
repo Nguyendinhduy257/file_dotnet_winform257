@@ -22,18 +22,12 @@ namespace schedule_set_up_app
             _username = username; // Lưu lại username
 
             // Thêm lựa chọn vào combobox (Giữ nguyên)
-            cboLoaiBaoCao.Items.Add("Hỗ trợ");
-            cboLoaiBaoCao.Items.Add("Lỗi");
-            cboLoaiBaoCao.Items.Add("Khác");
+            cboLoaiBaoCao.Items.Add("Hỗ trợ khách hàng");
+            cboLoaiBaoCao.Items.Add("Lỗi ứng dụng");
+            cboLoaiBaoCao.Items.Add("Lý do khác?");
             cboLoaiBaoCao.SelectedIndex = 0;
 
             // dtpDenNgay.Value = DateTime.Today; (Không cần thiết lắm, có thể xóa)
-        }
-
-        // 3. Thêm sự kiện Form_Load
-        private void Form_Report_khachHang__Load(object sender, EventArgs e)
-        {
-            LoadData();
         }
 
         // 4. Tạo hàm tải dữ liệu (Lịch sử báo cáo)
@@ -79,6 +73,11 @@ namespace schedule_set_up_app
             {
                 MessageBox.Show("Gửi báo cáo thất bại! (Lỗi CSDL)");
             }
+        }
+        // 3. Thêm sự kiện Form_Load
+        private void Form_Report_khachHang__Load_1(object sender, EventArgs e)
+        {
+            LoadData();
         }
     }
 }

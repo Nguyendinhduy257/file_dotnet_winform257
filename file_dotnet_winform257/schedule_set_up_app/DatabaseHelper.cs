@@ -22,37 +22,129 @@ public static class DatabaseHelper
     // Sẽ trả về "User", "Admin", hoặc "Invalid"
     public static string CheckLogin(string username, string password)
     {
-        string role = "Invalid"; // Mặc định là sai
-
-        string query = "SELECT Role FROM TaiKhoan WHERE Username = @User AND Password = @Pass";
+        // 1. Lấy thông tin của Username đó (Chưa cần kiểm tra password vội)
+        string query = "SELECT Password, Role, SoLanSai FROM TaiKhoan WHERE Username = @User";
 
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@User", username);
-                cmd.Parameters.AddWithValue("@Pass", password); 
-
                 try
                 {
                     conn.Open();
-                    object result = cmd.ExecuteScalar(); // Lấy 1 ô duy nhất (Role)
-
-                    if (result != null)
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        role = result.ToString();
+                        // A. NẾU USERNAME KHÔNG TỒN TẠI
+                        if (!reader.Read())
+                        {
+                            return "Invalid"; // Không tìm thấy user
+                        }
+
+                        // Lấy dữ liệu từ CSDL
+                        string dbPassword = reader["Password"].ToString();
+                        string dbRole = reader["Role"].ToString();
+                        int soLanSai = (reader["SoLanSai"] != DBNull.Value) ? Convert.ToInt32(reader["SoLanSai"]) : 0;
+
+                        // B. KIỂM TRA XEM TÀI KHOẢN CÓ BỊ KHÓA KHÔNG?
+                        if (dbRole == "Đã khóa")
+                        {
+                            return "Locked"; // Tài khoản đang bị khóa
+                        }
+
+                        // C. KIỂM TRA MẬT KHẨU
+                        if (dbPassword == password)
+                        {
+                            // --- ĐĂNG NHẬP THÀNH CÔNG ---
+                            reader.Close(); // Đóng reader để thực hiện lệnh Update khác
+
+                            // Reset số lần sai về 0
+                            ResetLoginAttempts(username);
+
+                            return dbRole; // Trả về Role (Admin/User)
+                        }
+                        else
+                        {
+                            // --- ĐĂNG NHẬP THẤT BẠI (SAI PASS) ---
+                            reader.Close(); // Đóng reader
+
+
+                            //Admin chỉ báo sai pass, không tăng số lần sai và không khóa tài khoản của Admin
+                            if (dbRole == "Admin")
+                            {
+                                return "WrongPass|Admin"; // Báo sai pass nhưng không làm gì thêm
+                            }
+                            // Tăng số lần sai
+                            soLanSai++;
+                            UpdateLoginAttempts(username, soLanSai);
+
+                            // Kiểm tra nếu sai quá 5 lần
+                            if (soLanSai >= 5)
+                            {
+                                LockUserAccount(username);
+                                return "LockedNow"; // Vừa mới bị khóa tức thì
+                            }
+
+                            return "WrongPass|"+soLanSai; // Sai pass nhưng chưa bị khóa
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi CSDL khi đăng nhập: " + ex.Message);
+                    MessageBox.Show("Lỗi đăng nhập: " + ex.Message);
+                    return "Error";
                 }
             }
         }
-        return role;
+    }
+    // Hàm reset số lần sai về 0
+    private static void ResetLoginAttempts(string username)
+    {
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            string query = "UPDATE TaiKhoan SET SoLanSai = 0 WHERE Username = @User";
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@User", username);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 
+    // Hàm cập nhật số lần sai, +1 với mỗi lần sai
+    private static void UpdateLoginAttempts(string username, int count)
+    {
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            string query = "UPDATE TaiKhoan SET SoLanSai = @Count WHERE Username = @User";
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Count", count);
+                cmd.Parameters.AddWithValue("@User", username);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    // Hàm khóa tài khoản (Đổi Role thành "Đã khóa")
+    private static void LockUserAccount(string username)
+    {
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            string query = "UPDATE TaiKhoan SET Role = N'Đã khóa' WHERE Username = @User";
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@User", username);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+    //=============================================================
     // HÀM ĐĂNG KÝ TÀI KHOẢN (CHO Form_sign_up)
+    //=============================================================
     // Sẽ trả về true (thành công) hoặc false (thất bại)
     public static string RegisterUser(string username, string password, string role)
     {
@@ -91,11 +183,10 @@ public static class DatabaseHelper
             }
         }
     }
-    /// <summary>
-    /// Bắt đầu từ đây là các hàm dành cho Form trang chủ admin (Biểu đồ và Thống kê)
-    /// </summary>
-    /// <returns></returns>
-    // HÀM LẤY SỐ LIỆU CHO BIỂU ĐỒ
+    //=============================================================
+    // HÀM DÀNH CHO Form_trang_chu_admin
+    //=============================================================
+    // HÀM LẤY SỐ LIỆU CHO BIỂU ĐỒ Cho trang chu Admin
     public static Dictionary<DateTime, int> GetAppointmentCountsForCurrentWeek()
     {
         var counts = new Dictionary<DateTime, int>();
@@ -145,6 +236,8 @@ public static class DatabaseHelper
         }
         return counts;
     }
+    // Biểu đồ tròn hiển thị số lượng lịch hẹn theo buổi trong ngày (sáng, chiều, tối)
+    //trong form _trang_chu Admin
     public static Dictionary<string, int> GetAppointmentCountsByTimeOfDay()
     {
         var counts = new Dictionary<string, int>();
@@ -209,6 +302,7 @@ public static class DatabaseHelper
         return counts;
     }
     // 1. ĐẾM TỔNG SỐ LỊCH HẸN TRONG TUẦN HIỆN TẠI
+    // (Hàm này dùng cho form_trang_chu_admin)
     public static int GetTotalAppointmentsCurrentWeek()
     {
         int count = 0;
@@ -242,8 +336,8 @@ public static class DatabaseHelper
         return count;
     }
 
-
     // 2. ĐẾM SỐ LỊCH HẸN CHỜ DUYỆT (TRẠNG THÁI KHÔNG PHẢI LÀ 'Đã đặt (đã duyệt)')
+    //trong form_trang_chu_admin
     public static int GetPendingAppointmentCount()
     {
         int count = 0;
@@ -268,6 +362,7 @@ public static class DatabaseHelper
 
 
     // 3. ĐẾM SỐ TÀI KHOẢN MỚI TRONG TUẦN NÀY
+    // (Hàm này dùng cho form_trang_chu_admin)
     public static int GetNewAccountsCurrentWeek()
     {
         int count = 0;
@@ -302,6 +397,7 @@ public static class DatabaseHelper
     }
 
     // Hàm này lấy TOÀN BỘ lịch sử để hiển thị lên dataGridView
+    //cho form_trang_chu_admin
     public static DataTable GetLichSuDatLich()
     {
         DataTable dt = new DataTable();
@@ -317,7 +413,11 @@ public static class DatabaseHelper
         FROM 
             LichHen 
         ORDER BY 
-            ThoiGianBatDau DESC"; // Sắp xếp theo ngày mới nhất
+            -- 1. Ưu tiên 'chưa duyệt' lên đầu (Gán giá trị 0, các cái khác là 1)
+            CASE WHEN TrangThai = N'chưa duyệt' THEN 0 ELSE 1 END ASC,
+        
+            -- 2. Sau đó mới sắp xếp theo ngày mới nhất
+            ThoiGianBatDau DESC";
 
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
@@ -339,6 +439,7 @@ public static class DatabaseHelper
         return dt; // Trả về bảng dữ liệu
     }
     //xóa dữ liệu trong bảng
+    // HÀM XÓA LỊCH HẸN (CHO Form_trang_chu_admin)
     public static bool DeleteLichHen(int lichHenID)
     {
         int rowsAffected = 0;
@@ -363,7 +464,11 @@ public static class DatabaseHelper
         }
         return rowsAffected > 0;
     }
+    //=============================================================
+    // HÀM DÀNH CHO Form_Profile
+    //=============================================================
     //Lấy các thông tin Họ tên, pass,... từ CSDL để tự động hiện lên form_profile
+    // HÀM LẤY CHI TIẾT TÀI KHOẢN (CHO Form_Profile)
     public static DataTable GetTaiKhoanDetails(string username)
     {
         DataTable dt = new DataTable();
@@ -390,6 +495,8 @@ public static class DatabaseHelper
     }
 
     // HÀM Cập nhật tài khoản (cho Form_Profile)
+    //cho phép thay đổi Password, Họ tên, Email, không cho đổi Username
+    //cho form_profile
     public static bool UpdateTaiKhoan(string username, string newPassword, string newHoten, string newEmail)
     {
         int rowsAffected = 0;
@@ -421,6 +528,7 @@ public static class DatabaseHelper
         return rowsAffected > 0;
     }
     //đếm tài khoản Admin, nếu chỉ còn lại duy nhất 1 tài khoản thuộc Role Admin --> tuyệt đối cấm xóa
+    //cho form_profile
     public static int GetAdminAccountCount()
     {
         int count = 0;
@@ -496,6 +604,8 @@ public static class DatabaseHelper
         return dt;
     }
     // HÀM cập nhật lịch hẹn (quyền hạn cho Admin)
+    //chỉ có quyền sửa ThoiGianBatDau và TrangThai, còn NoiDung thì không được sửa
+    //trong form_trang_chu_admin
     public static bool UpdateLichHen_Admin(int lichHenID, DateTime thoiGianMoi, string trangThaiMoi)
     {
         int rowsAffected = 0;
@@ -527,7 +637,33 @@ public static class DatabaseHelper
         }
         return rowsAffected > 0;
     }
+    // HÀM Chỉ cập nhật trạng thái (Dùng cho sửa hàng loạt)
+    public static bool UpdateStatusOnly(int id, string trangThaiMoi)
+    {
+        int rowsAffected = 0;
+        string query = "UPDATE LichHen SET TrangThai = @TrangThai WHERE ID = @ID";
 
+        using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+        {
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@TrangThai", trangThaiMoi);
+                cmd.Parameters.AddWithValue("@ID", id);
+                try
+                {
+                    conn.Open();
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    // Thông báo lỗi nếu cần thiết
+                    MessageBox.Show("Lỗi cập nhật trạng thái: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+        return rowsAffected > 0;
+    }
     // HÀM Lấy TOÀN BỘ thông tin tài khoản (cho Admin xem trên datagridview)
     public static DataTable GetAllTaiKhoan()
     {
@@ -581,6 +717,7 @@ public static class DatabaseHelper
         return rowsAffected > 0;
     }
     // HÀM Dành cho Admin xem TOÀN BỘ báo cáo được gửi từ khách hàng (truy vấn từ Tabel BaoCao trên sql)
+    // trong form_trang_chu_admin, Admin có quyền duyệt báo cáo (duyệt xem phản hồi của khách hàng đã được giải quyết chưa?)
     public static DataTable GetAllReportsForAdmin()
     {
         DataTable dt = new DataTable();
@@ -596,7 +733,7 @@ public static class DatabaseHelper
         FROM 
             BaoCao 
         ORDER BY 
-            NgayGui DESC";
+            NgayGui DESC"; // Sắp xếp theo ngày mới nhất
 
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
@@ -647,10 +784,11 @@ public static class DatabaseHelper
         DataTable dt = new DataTable();
 
         // chọn Username_NguoiGui trực tiếp từ bảng BaoCao trong sql
+        //BC là: được khai báo ở SQL: FROM BaoCao AS BC (là bí danh)
         string query = @"
         SELECT 
             BC.ID, 
-            BC.Username_NguoiGui, -- 🚨 ĐÃ THAY ĐỔI: Lấy trực tiếp Username_NguoiGui
+            BC.Username_NguoiGui,
             BC.LoaiBaoCao, 
             BC.NoiDung, 
             BC.NgayGui, 
@@ -689,7 +827,9 @@ public static class DatabaseHelper
         }
         return dt;
     }
+    //=============================================================
     //Tất cả hàm danh cho Form_Booking (Khách hàng tự đặt lịch)
+    //=============================================================
     // HÀM Dành cho Form_Booking (Khách hàng tự đặt lịch)
     public static bool TaoLichHenMoi(string username, DateTime thoiGianHen, string noiDung)
     {
@@ -725,7 +865,8 @@ public static class DatabaseHelper
         // Trả về true nếu chèn thành công (rowsAffected > 0)
         return (rowsAffected > 0);
     }
-
+    // HÀM Lấy lịch hẹn cá nhân của User đang đăng nhập (cho Form_Booking)
+    //tài khoản của ai thì chỉ lấy lịch của người đó, không lấy lịch của người khác chèn vào
     public static DataTable GetLichHenCaNhan(string username)
     {
         DataTable dt = new DataTable();
@@ -796,6 +937,7 @@ public static class DatabaseHelper
 
 
     //Form_Report
+    // HÀM Gửi báo cáo (do User thực hiện), báo cáo sẽ được lưu vào bảng BaoCao, sau đó Admin sẽ xem và xử lý
     public static bool SubmitReport(string username, string loaiBaoCao, string noiDung)
     {
         int rowsAffected = 0;
@@ -825,7 +967,7 @@ public static class DatabaseHelper
         return rowsAffected > 0;
     }
 
-
+    // HÀM Lấy lịch sử báo cáo của User đang đăng nhập (cho Form_Report), chỉ lấy báo cáo của chính người đó
     public static DataTable GetMyReports(string username)
     {
         DataTable dt = new DataTable();
@@ -848,6 +990,7 @@ public static class DatabaseHelper
         {
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                // Chỉ lấy báo cáo của user đang đăng nhập, tài khoản của ai thì chỉ lấy của người đó
                 cmd.Parameters.AddWithValue("@Username", username);
                 try
                 {
@@ -863,11 +1006,11 @@ public static class DatabaseHelper
         }
         return dt;
     }
-
+    //=============================================================
     // Hàm này dành cho Form_Booking    
-
+    //=============================================================
     //hàm lấy lịch hẹn của 1 ngày cụ thể mà người dùng Double-click vào
-    // 1. Lấy lịch hẹn trong ngày (dành cho User khách hàng tương tác)
+    // 1. Lấy lịch hẹn trong ngày được Double-click (dành cho User khách hàng tương tác)
     public static DataTable GetLichHenTrongNgay(string username, DateTime ngay)
     {
         DataTable dt = new DataTable();
@@ -881,6 +1024,7 @@ public static class DatabaseHelper
         {
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //lấy theo username và ngày cụ thể đang được Click
                 cmd.Parameters.AddWithValue("@Username", username);
                 cmd.Parameters.AddWithValue("@Ngay", ngay.Date);
                 try
@@ -911,6 +1055,7 @@ public static class DatabaseHelper
         {
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //lấy theo ID lịch hẹn cần sửa, được phép sửa ThoiGianBatDau và NoiDung
                 cmd.Parameters.AddWithValue("@ThoiGian", thoiGianMoi);
                 cmd.Parameters.AddWithValue("@NoiDung", noiDungMoi);
                 cmd.Parameters.AddWithValue("@ID", lichHenID);
@@ -918,7 +1063,6 @@ public static class DatabaseHelper
                 try
                 {
                     conn.Open();
-                    // 🚨 ĐÂY LÀ ĐOẠN CODE BẠN BỊ THIẾU HOẶC ĐẶT SAI VỊ TRÍ 🚨
                     rowsAffected = cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -932,12 +1076,12 @@ public static class DatabaseHelper
         return (rowsAffected > 0);
     }
     // Kiểm tra trùng lịch hẹn (Ngẳn chặn ngay từ khi có ý định "thêm" lập lịch)
+    //Nếu có lịch trùng thì trả về TRUE, không cho phép tạo lịch đến khi không bị trùng nữa
     public static bool KiemTraLichTrung(string username, DateTime thoiGianHen, int lichHenID_CanLoaiTru = -1)
     {
         int count = 0;
 
-        // query đếm xem có lịch nào
-        // bị trùng thời gian không.
+        // query đếm xem có lịch nào bị trùng thời gian không.
         string query = @"SELECT COUNT(*) 
                      FROM LichHen 
                      WHERE Username_KhachHang = @Username 
@@ -948,6 +1092,7 @@ public static class DatabaseHelper
         {
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //lấy theo username và thời gian lịch hẹn, loại trừ ID nếu có
                 cmd.Parameters.AddWithValue("@Username", username);
                 cmd.Parameters.AddWithValue("@ThoiGian", thoiGianHen);
                 cmd.Parameters.AddWithValue("@ID_CanLoaiTru", lichHenID_CanLoaiTru);
@@ -969,7 +1114,7 @@ public static class DatabaseHelper
     }
 
     // HÀM Lấy lịch hẹn trong 1 khoảng thời gian (1 tuần)
-    // (Hàm này dùng cho form_trang_chu)
+    // (Hàm này dùng cho form_trang_chu khach hang?)
     public static DataTable GetLichHenTrongTuan(string username, DateTime startDate, DateTime endDate)
     {
         DataTable dt = new DataTable();
@@ -987,8 +1132,8 @@ public static class DatabaseHelper
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@Username", username);
-                cmd.Parameters.AddWithValue("@StartDate", startDate.Date); // Chỉ lấy ngày
-                cmd.Parameters.AddWithValue("@EndDate", endDate.Date);   // Chỉ lấy ngày
+                cmd.Parameters.AddWithValue("@StartDate", startDate.Date); // Chỉ lấy ngày, không lấy tháng, năm, giờ, phút
+                cmd.Parameters.AddWithValue("@EndDate", endDate.Date);   // Chỉ lấy ngày, không lấy tháng, năm, giờ, phút
                 try
                 {
                     conn.Open();

@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_sign_up));
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             label4 = new Label();
             label3 = new Label();
             guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
@@ -93,7 +93,7 @@
             guna2Button2.Animated = true;
             guna2Button2.BorderRadius = 15;
             guna2Button2.BorderThickness = 2;
-            guna2Button2.CustomizableEdges = customizableEdges1;
+            guna2Button2.CustomizableEdges = customizableEdges7;
             guna2Button2.DisabledState.BorderColor = Color.DarkGray;
             guna2Button2.DisabledState.CustomBorderColor = Color.DarkGray;
             guna2Button2.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -102,7 +102,7 @@
             guna2Button2.ForeColor = Color.White;
             guna2Button2.Location = new Point(376, 777);
             guna2Button2.Name = "guna2Button2";
-            guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges8;
             guna2Button2.Size = new Size(315, 79);
             guna2Button2.TabIndex = 6;
             guna2Button2.Text = "Sign-up";
@@ -113,7 +113,7 @@
             guna2Button1.Animated = true;
             guna2Button1.BorderRadius = 10;
             guna2Button1.BorderThickness = 1;
-            guna2Button1.CustomizableEdges = customizableEdges3;
+            guna2Button1.CustomizableEdges = customizableEdges9;
             guna2Button1.DisabledState.BorderColor = Color.DarkGray;
             guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
             guna2Button1.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -123,7 +123,7 @@
             guna2Button1.ForeColor = Color.Black;
             guna2Button1.Location = new Point(601, -164);
             guna2Button1.Name = "guna2Button1";
-            guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges10;
             guna2Button1.Size = new Size(172, 70);
             guna2Button1.TabIndex = 20;
             guna2Button1.Text = "Close";
@@ -147,7 +147,7 @@
             // textBox_username
             // 
             textBox_username.AcceptsTab = true;
-            textBox_username.Cursor = Cursors.Hand;
+            textBox_username.Cursor = Cursors.IBeam;
             textBox_username.Font = new Font("Segoe UI", 14F);
             textBox_username.Location = new Point(315, 446);
             textBox_username.Name = "textBox_username";
@@ -158,7 +158,7 @@
             // textBox_pass
             // 
             textBox_pass.AcceptsTab = true;
-            textBox_pass.Cursor = Cursors.Hand;
+            textBox_pass.Cursor = Cursors.IBeam;
             textBox_pass.Font = new Font("Segoe UI", 14F);
             textBox_pass.Location = new Point(313, 569);
             textBox_pass.Name = "textBox_pass";
@@ -168,6 +168,7 @@
             // 
             // pictureBox3
             // 
+            pictureBox3.BackColor = Color.LightGray;
             pictureBox3.Cursor = Cursors.Hand;
             pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
             pictureBox3.Location = new Point(225, 429);
@@ -179,6 +180,7 @@
             // 
             // pictureBox2
             // 
+            pictureBox2.BackColor = Color.LightGray;
             pictureBox2.Cursor = Cursors.Hand;
             pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
             pictureBox2.Location = new Point(223, 548);
@@ -188,6 +190,8 @@
             pictureBox2.TabIndex = 16;
             pictureBox2.TabStop = false;
             pictureBox2.Click += pictureBox2_Click;
+            pictureBox2.MouseEnter += pictureBox2_MouseEnter;
+            pictureBox2.MouseLeave += pictureBox2_MouseLeave;
             // 
             // label1
             // 
@@ -235,7 +239,7 @@
             // textBox_pass_confirm
             // 
             textBox_pass_confirm.AcceptsTab = true;
-            textBox_pass_confirm.Cursor = Cursors.Hand;
+            textBox_pass_confirm.Cursor = Cursors.IBeam;
             textBox_pass_confirm.Font = new Font("Segoe UI", 14F);
             textBox_pass_confirm.Location = new Point(316, 694);
             textBox_pass_confirm.Name = "textBox_pass_confirm";
@@ -245,6 +249,7 @@
             // 
             // pictureBox4
             // 
+            pictureBox4.BackColor = Color.LightGray;
             pictureBox4.Cursor = Cursors.Hand;
             pictureBox4.Image = Properties.Resources.icon_lock_question;
             pictureBox4.Location = new Point(226, 673);
@@ -254,6 +259,8 @@
             pictureBox4.TabIndex = 26;
             pictureBox4.TabStop = false;
             pictureBox4.Click += pictureBox4_Click;
+            pictureBox4.MouseEnter += pictureBox4_MouseEnter;
+            pictureBox4.MouseLeave += pictureBox4_MouseLeave;
             // 
             // errorProvider3
             // 
@@ -264,7 +271,7 @@
             btn_close_sign_up.Animated = true;
             btn_close_sign_up.BorderRadius = 10;
             btn_close_sign_up.BorderThickness = 1;
-            btn_close_sign_up.CustomizableEdges = customizableEdges5;
+            btn_close_sign_up.CustomizableEdges = customizableEdges11;
             btn_close_sign_up.DisabledState.BorderColor = Color.DarkGray;
             btn_close_sign_up.DisabledState.CustomBorderColor = Color.DarkGray;
             btn_close_sign_up.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -274,7 +281,7 @@
             btn_close_sign_up.ForeColor = Color.Black;
             btn_close_sign_up.Location = new Point(793, 12);
             btn_close_sign_up.Name = "btn_close_sign_up";
-            btn_close_sign_up.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btn_close_sign_up.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btn_close_sign_up.Size = new Size(172, 70);
             btn_close_sign_up.TabIndex = 1;
             btn_close_sign_up.Text = "Close";
@@ -296,7 +303,7 @@
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(976, 836);
+            ClientSize = new Size(963, 868);
             Controls.Add(pictureBox1);
             Controls.Add(btn_close_sign_up);
             Controls.Add(label2);

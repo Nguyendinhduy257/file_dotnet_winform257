@@ -145,7 +145,6 @@
             dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvUsers.DefaultCellStyle = dataGridViewCellStyle3;
-            dgvUsers.Dock = DockStyle.Bottom;
             dgvUsers.GridColor = Color.FromArgb(231, 229, 255);
             dgvUsers.Location = new Point(0, 192);
             dgvUsers.Name = "dgvUsers";

@@ -36,9 +36,10 @@
             // 
             // btnHuyLich
             // 
-            btnHuyLich.Location = new Point(157, 339);
+            btnHuyLich.Location = new Point(236, 508);
+            btnHuyLich.Margin = new Padding(4, 4, 4, 4);
             btnHuyLich.Name = "btnHuyLich";
-            btnHuyLich.Size = new Size(94, 29);
+            btnHuyLich.Size = new Size(141, 44);
             btnHuyLich.TabIndex = 0;
             btnHuyLich.Text = "Huỷ";
             btnHuyLich.UseVisualStyleBackColor = true;
@@ -46,30 +47,32 @@
             // lblThongBao
             // 
             lblThongBao.AutoSize = true;
-            lblThongBao.Location = new Point(444, 343);
+            lblThongBao.Font = new Font("Segoe UI", 39F);
+            lblThongBao.Location = new Point(407, 200);
+            lblThongBao.Margin = new Padding(4, 0, 4, 0);
             lblThongBao.Name = "lblThongBao";
-            lblThongBao.Size = new Size(75, 20);
+            lblThongBao.Size = new Size(331, 120);
             lblThongBao.TabIndex = 1;
-            lblThongBao.Text = "Trạng thái";
+            lblThongBao.Text = "Khai tử";
             // 
             // dgvLichHen
             // 
             dgvLichHen.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvLichHen.Location = new Point(65, 39);
+            dgvLichHen.Location = new Point(141, 77);
+            dgvLichHen.Margin = new Padding(4, 4, 4, 4);
             dgvLichHen.Name = "dgvLichHen";
             dgvLichHen.RowHeadersWidth = 51;
-            dgvLichHen.Size = new Size(609, 241);
+            dgvLichHen.Size = new Size(914, 362);
             dgvLichHen.TabIndex = 2;
             // 
             // Form_My_Booking
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(745, 419);
-            Controls.Add(dgvLichHen);
+            ClientSize = new Size(1118, 628);
             Controls.Add(lblThongBao);
+            Controls.Add(dgvLichHen);
             Controls.Add(btnHuyLich);
-            Margin = new Padding(2, 2, 2, 2);
             Name = "Form_My_Booking";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form_My_Booking";

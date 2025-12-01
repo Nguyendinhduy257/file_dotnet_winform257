@@ -109,9 +109,9 @@ namespace schedule_set_up_app
             else if (registrationStatus == "EXISTED")
             {
                 // ĐÂY LÀ YÊU CẦU CỦA BẠN: TÀI KHOẢN ĐÃ TỒN TẠI
-                DialogResult result = MessageBox.Show("Tên đăng nhập này đã tồn tại.\nBạn có muốn quay lại trang Login không?","Tài khoản đã tồn tại",
-                    MessageBoxButtons.OKCancel,  
-                    MessageBoxIcon.Warning);    
+                DialogResult result = MessageBox.Show("Tên đăng nhập này đã tồn tại.\nBạn có muốn quay lại trang Login không?", "Tài khoản đã tồn tại",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
 
                 // Kiểm tra xem người dùng nhấn OK hay Cancel
                 if (result == DialogResult.OK)
@@ -218,6 +218,26 @@ namespace schedule_set_up_app
             //đặt mã hóa mật khẩu ngay khi khởi chạy
             textBox_pass.UseSystemPasswordChar = true;
             textBox_pass_confirm.UseSystemPasswordChar = true;
+        }
+
+        private void pictureBox2_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox2.BackColor = Color.DarkGray;
+        }
+
+        private void pictureBox2_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox2.BackColor = Color.LightGray;
+        }
+
+        private void pictureBox4_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox4.BackColor = Color.DarkGray;
+        }
+
+        private void pictureBox4_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox4.BackColor = Color.LightGray;
         }
     }
 
