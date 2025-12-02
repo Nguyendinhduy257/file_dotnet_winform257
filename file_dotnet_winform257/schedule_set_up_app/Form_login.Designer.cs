@@ -34,6 +34,8 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             pictureBox1 = new PictureBox();
             label1 = new Label();
@@ -52,6 +54,7 @@
             errorProvider2 = new ErrorProvider(components);
             label3 = new Label();
             label4 = new Label();
+            guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -246,12 +249,37 @@
             label4.Text = "label error 2";
             label4.Visible = false;
             // 
+            // guna2Button3
+            // 
+            guna2Button3.Animated = true;
+            guna2Button3.BorderRadius = 10;
+            guna2Button3.BorderThickness = 1;
+            guna2Button3.Cursor = Cursors.Hand;
+            guna2Button3.CustomizableEdges = customizableEdges5;
+            guna2Button3.DisabledState.BorderColor = Color.DarkGray;
+            guna2Button3.DisabledState.CustomBorderColor = Color.DarkGray;
+            guna2Button3.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            guna2Button3.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            guna2Button3.FillColor = Color.MediumTurquoise;
+            guna2Button3.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            guna2Button3.ForeColor = Color.Black;
+            guna2Button3.Image = Properties.Resources.Assistant;
+            guna2Button3.ImageSize = new Size(60, 60);
+            guna2Button3.Location = new Point(12, 12);
+            guna2Button3.Name = "guna2Button3";
+            guna2Button3.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            guna2Button3.Size = new Size(189, 70);
+            guna2Button3.TabIndex = 12;
+            guna2Button3.Text = "Hỗ trợ";
+            guna2Button3.Click += guna2Button3_Click;
+            // 
             // Form1
             // 
             AcceptButton = guna2Button2;
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(976, 836);
+            Controls.Add(guna2Button3);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(guna2Button2);
@@ -300,5 +328,6 @@
         private ErrorProvider errorProvider2;
         private Label label4;
         private Label label3;
+        private Guna.UI2.WinForms.Guna2Button guna2Button3;
     }
 }

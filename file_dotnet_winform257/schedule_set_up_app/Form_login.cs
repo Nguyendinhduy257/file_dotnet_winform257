@@ -211,5 +211,17 @@ namespace schedule_set_up_app
         {
             pictureBox2.BackColor = Color.LightGray;
         }
+
+        private void guna2Button3_Click(object sender, EventArgs e)
+        {
+            //Form_Report_khachHang_ Report = new Form_Report_khachHang_(this.tenNguoiDung);
+            //Report.Show();
+            string currentUsername = textBox_username.Text.Trim();
+
+            // Gọi Constructor 2: Truyền thêm true (là Guest)
+            Form_Report_khachHang_ formHoTro = new Form_Report_khachHang_(currentUsername, true);
+            formHoTro.Height = 600;
+            formHoTro.ShowDialog();
+        }
     }
 }

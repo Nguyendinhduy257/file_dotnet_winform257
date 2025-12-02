@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using schedule_set_up_app;
 using System;
 using System.Data;
 using System.IO;
@@ -17,9 +18,29 @@ public static class DatabaseHelper
         IConfigurationRoot configuration = builder.Build();
         return configuration.GetConnectionString("MyConnectionString");
     }
-
+    //=============================================================
     // HÀM KIỂM TRA ĐĂNG NHẬP (CHO Form1)
-    // Sẽ trả về "User", "Admin", hoặc "Invalid"
+    // Sẽ trả về "User", "Admin", hoặc "Invalid" hoặc "Bị khóa"
+    //=============================================================
+    // Hàm hỗ trợ mã hóa nhanh bằng MyRSA giải thuật mã hóa RSA
+    public static string EncryptPassword(string password)
+    {
+        // 1. Khởi tạo RSA (Nó sẽ tự dùng p, q cứng mà bạn đã cài)
+        MyRSA rsa = new MyRSA();
+
+        // 2. Mã hóa mật khẩu
+        try
+        {
+            return rsa.Encrypt(password);
+        }
+        catch (Exception ex)
+        {
+            // Nếu mật khẩu quá dài so với khóa n, báo lỗi
+            MessageBox.Show("Mật khẩu quá dài để mã hóa! " + ex.Message);
+            return null;
+        }
+    }
+    //Kiểm tra định dạng đăng nhập, bắt đầu kiểm tra ở form_login, sau đó kiểm tra trên CSDL
     public static string CheckLogin(string username, string password)
     {
         // 1. Lấy thông tin của Username đó (Chưa cần kiểm tra password vội)
@@ -52,11 +73,17 @@ public static class DatabaseHelper
                             return "Locked"; // Tài khoản đang bị khóa
                         }
 
-                        // C. KIỂM TRA MẬT KHẨU
-                        if (dbPassword == password)
+                        // C. KIỂM TRA MẬT KHẨU (DÙNG RSA)
+
+                        // 1. Mã hóa mật khẩu người dùng vừa nhập bằng RSA
+                        string inputPasswordHash = EncryptPassword(password);
+
+                        // 2. So sánh chuỗi vừa mã hóa với chuỗi trong Database
+                        // (Lưu ý: Nếu inputPasswordHash là null do lỗi quá dài, coi như sai pass)
+                        if (inputPasswordHash != null && dbPassword == inputPasswordHash)
                         {
                             // --- ĐĂNG NHẬP THÀNH CÔNG ---
-                            reader.Close(); // Đóng reader để thực hiện lệnh Update khác
+                            reader.Close();
 
                             // Reset số lần sai về 0
                             ResetLoginAttempts(username);
@@ -169,11 +196,16 @@ public static class DatabaseHelper
                 using (SqlCommand cmdRegister = new SqlCommand(queryRegister, conn))
                 {
                     cmdRegister.Parameters.AddWithValue("@User", username);
-                    cmdRegister.Parameters.AddWithValue("@Pass", password);
+                    //cmdRegister.Parameters.AddWithValue("@Pass", password);
+                    // 1. Mã hóa trước
+                    string encryptedPass = EncryptPassword(password);
+
+                    // 2. Lưu chuỗi đã mã hóa vào SQL
+                    cmdRegister.Parameters.AddWithValue("@Pass", encryptedPass);
                     cmdRegister.Parameters.AddWithValue("@Role", role);
 
                     int rows = cmdRegister.ExecuteNonQuery();
-                    return rows > 0 ? "SUCCESS" : "FAILED";
+                    return rows > 0 ? "SUCCESS" : "FAILED"; //>0 là thành công, con lại là thất bại
                 }
             }
             catch (Exception ex)
@@ -493,7 +525,7 @@ public static class DatabaseHelper
         }
         return dt;
     }
-
+    //sửa tài khoản
     // HÀM Cập nhật tài khoản (cho Form_Profile)
     //cho phép thay đổi Password, Họ tên, Email, không cho đổi Username
     //cho form_profile
@@ -510,7 +542,24 @@ public static class DatabaseHelper
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@Username", username);
-                cmd.Parameters.AddWithValue("@Password", newPassword);
+
+                // LOGIC kiểm tra:
+                //+độ dài mật khẩu < 100: Chắc chắn là người dùng mới nhập mật khẩu mới -> Mã hóa ngay
+                //+độ dài mật khẩu >=100: Chắc chắn là chuỗi RSA cũ -> Giữ nguyên không mã hóa lại
+                string passwordToSave = newPassword;
+
+                // Kiểm tra: Nếu chuỗi nhập vào KHÔNG RỖNG và ĐỘ DÀI < 100 ký tự
+                // -> Nghĩa là đây là mật khẩu thường (Plain text) -> CẦN MÃ HÓA
+                if (!string.IsNullOrEmpty(newPassword) && newPassword.Length < 100)
+                {
+                    passwordToSave = EncryptPassword(newPassword);
+                }
+                // Ngược lại: Nếu độ dài >= 100 -> Đây là chuỗi RSA cũ -> Giữ nguyên
+                // độ dài của RSA hiện tại là 128 ký tự
+
+                cmd.Parameters.AddWithValue("@Password", passwordToSave);
+                // -----------------------------------------------------
+
                 cmd.Parameters.AddWithValue("@Hoten", newHoten);
                 cmd.Parameters.AddWithValue("@Email", newEmail);
                 try

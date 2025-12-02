@@ -67,10 +67,10 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             splitContainer1 = new SplitContainer();
-            panel11 = new Panel();
             label1 = new Label();
             to_report_form_main = new PictureBox();
             btn_close = new Guna.UI2.WinForms.Guna2Button();
+            panel15 = new Panel();
             panel5 = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
             label2 = new Label();
@@ -143,10 +143,10 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(panel11);
             splitContainer1.Panel1.Controls.Add(label1);
             splitContainer1.Panel1.Controls.Add(to_report_form_main);
             splitContainer1.Panel1.Controls.Add(btn_close);
+            splitContainer1.Panel1.Controls.Add(panel15);
             splitContainer1.Panel1.Controls.Add(panel5);
             splitContainer1.Panel1.Controls.Add(flowLayoutPanel1);
             splitContainer1.Panel1.Controls.Add(pictureBox1);
@@ -154,17 +154,9 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(splitContainer2);
-            splitContainer1.Size = new Size(2397, 1123);
-            splitContainer1.SplitterDistance = 214;
+            splitContainer1.Size = new Size(2397, 1304);
+            splitContainer1.SplitterDistance = 248;
             splitContainer1.TabIndex = 0;
-            // 
-            // panel11
-            // 
-            panel11.BackColor = Color.Teal;
-            panel11.Location = new Point(12, 215);
-            panel11.Name = "panel11";
-            panel11.Size = new Size(2368, 5);
-            panel11.TabIndex = 15;
             // 
             // label1
             // 
@@ -213,6 +205,14 @@
             btn_close.Text = "Đăng Xuất";
             btn_close.Click += btn_close_Click;
             // 
+            // panel15
+            // 
+            panel15.BackColor = Color.Teal;
+            panel15.Location = new Point(10, 235);
+            panel15.Name = "panel15";
+            panel15.Size = new Size(2354, 5);
+            panel15.TabIndex = 3;
+            // 
             // panel5
             // 
             panel5.BackColor = Color.Teal;
@@ -231,7 +231,7 @@
             flowLayoutPanel1.Font = new Font("Segoe UI", 20F);
             flowLayoutPanel1.Location = new Point(364, 12);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(1167, 255);
+            flowLayoutPanel1.Size = new Size(1786, 85);
             flowLayoutPanel1.TabIndex = 10;
             flowLayoutPanel1.WrapContents = false;
             // 
@@ -291,7 +291,7 @@
             // 
             splitContainer2.Panel2.AutoScroll = true;
             splitContainer2.Panel2.Controls.Add(panel_tong_quat);
-            splitContainer2.Size = new Size(2397, 905);
+            splitContainer2.Size = new Size(2397, 1052);
             splitContainer2.SplitterDistance = 364;
             splitContainer2.TabIndex = 0;
             // 
@@ -304,7 +304,7 @@
             flowLayoutPanel2.Dock = DockStyle.Fill;
             flowLayoutPanel2.Location = new Point(0, 0);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(364, 905);
+            flowLayoutPanel2.Size = new Size(364, 1052);
             flowLayoutPanel2.TabIndex = 0;
             // 
             // button_tong_quan
@@ -392,8 +392,8 @@
             btn_setting.FillColor = Color.CornflowerBlue;
             btn_setting.Font = new Font("Segoe UI", 14F);
             btn_setting.ForeColor = Color.White;
-            btn_setting.Location = new Point(10, 763);
-            btn_setting.Margin = new Padding(10, 325, 3, 3);
+            btn_setting.Location = new Point(10, 913);
+            btn_setting.Margin = new Padding(10, 475, 3, 3);
             btn_setting.Name = "btn_setting";
             btn_setting.ShadowDecoration.CustomizableEdges = customizableEdges10;
             btn_setting.Size = new Size(346, 128);
@@ -432,7 +432,7 @@
             panel_tong_quat.Dock = DockStyle.Fill;
             panel_tong_quat.Location = new Point(0, 0);
             panel_tong_quat.Name = "panel_tong_quat";
-            panel_tong_quat.Size = new Size(2029, 905);
+            panel_tong_quat.Size = new Size(2029, 1052);
             panel_tong_quat.TabIndex = 6;
             // 
             // panel14
@@ -889,8 +889,9 @@
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2397, 1123);
+            ClientSize = new Size(2397, 1304);
             Controls.Add(splitContainer1);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "Form_trang_chu_admin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form_trang_chu_admin";
@@ -968,5 +969,6 @@
         private Panel panel8;
         private Panel panel9;
         private Panel panel14;
+        private Panel panel15;
     }
 }

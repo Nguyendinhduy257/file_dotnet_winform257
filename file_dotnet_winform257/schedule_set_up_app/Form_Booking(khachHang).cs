@@ -46,7 +46,7 @@ namespace schedule_set_up_app
             this.Text = $"Quản lý lịch hẹn ngày: {selectedDate.ToString("dd/MM/yyyy")}";
             LoadDataGridView();
         }
-        // 3. HÀM TẢI DATAGRIDVIEW
+        // 3. HÀM TẢI DATAGRIDVIEW, lấy
         private void LoadDataGridView()
         {
             DataTable dt = DatabaseHelper.GetLichHenTrongNgay(this.currentUsername, this.selectedDate);
@@ -56,6 +56,7 @@ namespace schedule_set_up_app
             {
                 dgvLichHenNgay3.Columns["ID"].Visible = false;
             }
+            //thêm các cột tiêu đề với thông tin lấy được từ SQL
             dgvLichHenNgay3.Columns["ThoiGianBatDau"].HeaderText = "Giờ hẹn                             📶↕️";
             dgvLichHenNgay3.Columns["NoiDung"].HeaderText = "Nội dung                            📶↕️";
             dgvLichHenNgay3.Columns["TrangThai"].HeaderText = "Trạng thái                           📶↕️";
@@ -78,21 +79,21 @@ namespace schedule_set_up_app
             }
         }
         //5. hàm sự kiện click thêm,sửa,xóa,trở lại
-        private void btnThem_Click(object sender, EventArgs e)
-        {
+        //private void btnThem_Click(object sender, EventArgs e)
+        //{
 
-        }
+        //}
 
-        private void btnSua_Click(object sender, EventArgs e)
-        {
+        //private void btnSua_Click(object sender, EventArgs e)
+        //{
 
-        }
+        //}
 
-        private void btnXoa_Click(object sender, EventArgs e)
-        {
+        //private void btnXoa_Click(object sender, EventArgs e)
+        //{
 
-        }
-
+        //}
+        //quay trở lại Form trang chu Khach Hang
         private void btnTroLai_Click(object sender, EventArgs e)
         {
             if (this.daCoThayDoi)
@@ -173,7 +174,7 @@ namespace schedule_set_up_app
             }
             this.selectedLichHenID = Convert.ToInt32(dgvLichHenNgay3.SelectedRows[0].Cells["ID"].Value);
 
-            // 3. Logic Sửa
+            // 3. Logic Sửa (sửa tất cả thông tin Date ngày đó)
             DateTime time = dtpThoiGian1.Value;
             string noiDungMoi = txtNoiDung.Text;
             DateTime thoiGianHenMoi = new DateTime(
@@ -192,7 +193,7 @@ namespace schedule_set_up_app
                 return;
             }
 
-            //(Kiểm tra trùng)
+            //(Kiểm tra trùng thời gian)
             if (DatabaseHelper.KiemTraLichTrung(this.currentUsername, thoiGianHenMoi, this.selectedLichHenID))
             {
                 MessageBox.Show("Lịch hẹn bị trùng! Vui lòng chọn một giờ khác.");
