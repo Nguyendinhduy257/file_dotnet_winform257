@@ -120,7 +120,7 @@
             panel2.Controls.Add(txtNoiDung);
             panel2.Location = new Point(32, 214);
             panel2.Name = "panel2";
-            panel2.Size = new Size(2140, 630);
+            panel2.Size = new Size(2140, 900);
             panel2.TabIndex = 13;
             // 
             // panel9
@@ -406,8 +406,7 @@
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoScroll = true;
-            ClientSize = new Size(2184, 882);
+            ClientSize = new Size(2187, 1131);
             Controls.Add(panel4);
             Controls.Add(panel3);
             Controls.Add(panel2);

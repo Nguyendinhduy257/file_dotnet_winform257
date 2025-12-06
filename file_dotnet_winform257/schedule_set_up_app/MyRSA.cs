@@ -13,12 +13,12 @@ namespace schedule_set_up_app
             // khóa công khai (n,e)
             public BigInteger n { get; private set; }
             public BigInteger e { get; private set; }
-            // khóa bí mật (d)
+            // khóa bí mật (n, d)
             private BigInteger d;
         public MyRSA()
         {
             // 1. HARDCODE 2 SỐ NGUYÊN TỐ LỚN (P và Q)
-            // dài như vạn lý trường thành để đảm bảo an toàn
+            // dài như vạn lý trường thành để đảm bảo an toàn (p và q đáng ra được giữ bí mật tuyệt đối)
 
             // Số P (Khoảng 77 chữ số)
             BigInteger p = BigInteger.Parse("9296615740417937402016480838198305739810899125740356525143329381657613767");
@@ -40,7 +40,7 @@ namespace schedule_set_up_app
             // Hàm ModInverse bạn giữ nguyên ở phía dưới class
             d = FindD_ByLoop(e, phi);
         }
-        // HÀM TÌM D BẰNG CÁCH THỬ K=1,2,3,4,...==> cho đến khi D == số nguyên không có phân số
+        // HÀM TÌM D BẰNG CÁCH THỬ K=1,2,3,4,...==> Lặp lại cho đến khi D == số nguyên không có phân số
         // Công thức: d = (k * phi + 1) / e
         private BigInteger FindD_ByLoop(BigInteger e, BigInteger phi)
         {
@@ -85,18 +85,19 @@ namespace schedule_set_up_app
                 return c.ToString(); // Trả về chuỗi số đã mã hóa
             }
 
-            // --- HÀM GIẢI MÃ (DECRYPT) ---
-            // Công thức: M = C^d mod n
-            public string Decrypt(string cipherText)
+        // --- HÀM GIẢI MÃ (DECRYPT) ---
+        // Công thức: M = C^d mod n
+        //Giải mã để tìm ra bản rõ
+        public string Decrypt(string cipherText)
             {
-                BigInteger c = BigInteger.Parse(cipherText);
+                BigInteger c = BigInteger.Parse(cipherText); // Chuyển chuỗi số thành BigInteger
 
-                // Tính toán giải mã
-                BigInteger m = BigInteger.ModPow(c, d, n);
+            // Tính toán giải mã bằng công thức M = C^d mod n
+            BigInteger m = BigInteger.ModPow(c, d, n); //tính lũy thừa module
 
-                // Chuyển số ngược lại thành chuỗi
-                byte[] bytes = m.ToByteArray();
-                return Encoding.UTF8.GetString(bytes);
-            }
+            // Chuyển số ngược lại thành chuỗi
+            byte[] bytes = m.ToByteArray();
+                return Encoding.UTF8.GetString(bytes);//trả về bản rõ
+        }
         }
     }

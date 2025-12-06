@@ -157,12 +157,12 @@ namespace schedule_set_up_app
             // 1. Kiểm tra (chỉ cho phép sửa 1)
             if (dgvLichHenNgay3.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn một lịch hẹn để sửa.");
+                MessageBox.Show("Vui lòng chọn một lịch hẹn để sửa.","Chưa chọn lịch hẹn cần sửa",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return;
             }
             if (dgvLichHenNgay3.SelectedRows.Count > 1)
             {
-                MessageBox.Show("Bạn chỉ có thể sửa một lịch hẹn mỗi lần.");
+                MessageBox.Show("Bạn chỉ có thể sửa một lịch hẹn mỗi lần.","Chỉ sửa được 1 lịch hẹn cùng lúc",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 return;
             }
 
@@ -188,7 +188,7 @@ namespace schedule_set_up_app
             //(Kiểm tra rỗng)
             if (string.IsNullOrWhiteSpace(noiDungMoi))
             {
-                MessageBox.Show("Nội dung không được để trống.");
+                MessageBox.Show("Nội dung không được để trống.","Nội dung bị trống NULL",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 txtNoiDung.Focus();
                 return;
             }
@@ -196,7 +196,7 @@ namespace schedule_set_up_app
             //(Kiểm tra trùng thời gian)
             if (DatabaseHelper.KiemTraLichTrung(this.currentUsername, thoiGianHenMoi, this.selectedLichHenID))
             {
-                MessageBox.Show("Lịch hẹn bị trùng! Vui lòng chọn một giờ khác.");
+                MessageBox.Show("Lịch hẹn bị trùng! Vui lòng chọn một giờ khác.","Phát hiện lịch trùng",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 dtpThoiGian1.Focus();
                 return;
             }

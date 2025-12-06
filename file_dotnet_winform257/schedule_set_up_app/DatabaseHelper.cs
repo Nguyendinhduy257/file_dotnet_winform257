@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 public static class DatabaseHelper
 {
-    // HÀM LẤY CHUỖI KẾT NỐI (TỪ appsettings.json)
+    // HÀM LẤY Path CHUỖI KẾT NỐI (TỪ appsettings.json)
     private static string GetConnectionString()
     {
         var builder = new ConfigurationBuilder()
@@ -19,19 +19,19 @@ public static class DatabaseHelper
         return configuration.GetConnectionString("MyConnectionString");
     }
     //=============================================================
-    // HÀM KIỂM TRA ĐĂNG NHẬP (CHO Form1)
+    // HÀM KIỂM TRA ĐĂNG NHẬP (CHO Form1- Login)
     // Sẽ trả về "User", "Admin", hoặc "Invalid" hoặc "Bị khóa"
     //=============================================================
     // Hàm hỗ trợ mã hóa nhanh bằng MyRSA giải thuật mã hóa RSA
     public static string EncryptPassword(string password)
     {
-        // 1. Khởi tạo RSA (Nó sẽ tự dùng p, q cứng mà bạn đã cài)
+        // 1. Khởi tạo RSA
         MyRSA rsa = new MyRSA();
 
         // 2. Mã hóa mật khẩu
         try
         {
-            return rsa.Encrypt(password);
+            return rsa.Encrypt(password); //hàm Encrypt lấy từ Class MyRSA
         }
         catch (Exception ex)
         {
@@ -45,15 +45,17 @@ public static class DatabaseHelper
     {
         // 1. Lấy thông tin của Username đó (Chưa cần kiểm tra password vội)
         string query = "SELECT Password, Role, SoLanSai FROM TaiKhoan WHERE Username = @User";
-
+        //a.khởi tạo kết nối vật lý đến CSDL "conn"; truy cập vào đường dẫn "GetConnectionString()"
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //b.tạo câu lệnh chứa đựng Query để thực thi trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@User", username);
                 try
                 {
                     conn.Open();
+                    //c. "SqlDataReader" đọc, tìm kiếm và lấy dữ liệu từ CSDL về
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         // A. NẾU USERNAME KHÔNG TỒN TẠI
@@ -124,7 +126,7 @@ public static class DatabaseHelper
             }
         }
     }
-    // Hàm reset số lần sai về 0
+    // Hàm reset số lần sai về 0, ngay khi đăng nhập thành công
     private static void ResetLoginAttempts(string username)
     {
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
@@ -132,6 +134,7 @@ public static class DatabaseHelper
             string query = "UPDATE TaiKhoan SET SoLanSai = 0 WHERE Username = @User";
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@User", username);
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -147,6 +150,7 @@ public static class DatabaseHelper
             string query = "UPDATE TaiKhoan SET SoLanSai = @Count WHERE Username = @User";
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@Count", count);
                 cmd.Parameters.AddWithValue("@User", username);
                 conn.Open();
@@ -158,11 +162,15 @@ public static class DatabaseHelper
     // Hàm khóa tài khoản (Đổi Role thành "Đã khóa")
     private static void LockUserAccount(string username)
     {
+        //1.Kết nối đến Server name SQL qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //2. Tạo câu lệnh Query để thực thi trên CSDL
             string query = "UPDATE TaiKhoan SET Role = N'Đã khóa' WHERE Username = @User";
+            //3. cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@User", username);
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -175,32 +183,36 @@ public static class DatabaseHelper
     // Sẽ trả về true (thành công) hoặc false (thất bại)
     public static string RegisterUser(string username, string password, string role)
     {
-        string queryCheck = "SELECT COUNT(*) FROM TaiKhoan WHERE Username = @User";
-        string queryRegister = "INSERT INTO TaiKhoan (Username, Password, Role) VALUES (@User, @Pass, @Role)";
+        string queryCheck = "SELECT COUNT(*) FROM TaiKhoan WHERE Username = @User"; //lệnh Query kiểm tra username đã tồn tại chưa
+        string queryRegister = "INSERT INTO TaiKhoan (Username, Password, Role) VALUES (@User, @Pass, @Role)"; //lệnh Query đăng ký tài khoản mới
 
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
             try
             {
+                //mở kết nối
                 conn.Open();
-
+                //cmdCheck: cmd thực thi câu lệnh query trên CSDL
                 using (SqlCommand cmdCheck = new SqlCommand(queryCheck, conn))
                 {
+                    //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                     cmdCheck.Parameters.AddWithValue("@User", username);
                     int userCount = (int)cmdCheck.ExecuteScalar();
 
                     if (userCount > 0)
                         return "EXISTED";
                 }
-
+                //cmdRegister: cmd thực thi câu lệnh query trên CSDL
                 using (SqlCommand cmdRegister = new SqlCommand(queryRegister, conn))
                 {
+                    //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                     cmdRegister.Parameters.AddWithValue("@User", username);
                     //cmdRegister.Parameters.AddWithValue("@Pass", password);
                     // 1. Mã hóa trước
                     string encryptedPass = EncryptPassword(password);
 
                     // 2. Lưu chuỗi đã mã hóa vào SQL
+                    //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                     cmdRegister.Parameters.AddWithValue("@Pass", encryptedPass);
                     cmdRegister.Parameters.AddWithValue("@Role", role);
 
@@ -226,11 +238,12 @@ public static class DatabaseHelper
         // tạo logic chỉ tính ngày trong tuần hiện tại
         DateTime homNay = DateTime.Today;
         int daysToSubtract = 0;
-        if (homNay.DayOfWeek == DayOfWeek.Sunday) { daysToSubtract = 6; }
-        else { daysToSubtract = (int)homNay.DayOfWeek - (int)DayOfWeek.Monday; }
+        if (homNay.DayOfWeek == DayOfWeek.Sunday) { daysToSubtract = 6; } //nếu hôm nay là chủ nhật, thì lùi về 6 ngày
+        else { daysToSubtract = (int)homNay.DayOfWeek - (int)DayOfWeek.Monday; } //nếu không phải chủ nhật, thì lùi về số ngày tương ứng để đến thứ 2
         DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract); // (Thứ 2)
-        DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7); // (Thứ 2 tuần sau)
-
+        DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7); // (Thứ 2 tuần sau), để biết đâu là hết tuần hiện tại
+        //lệnh Query với điều kiện chỉ lấy dữ liệu trong 7 ngày của tuần hiện tại
+        // CAST: loại bỏ phần thời gian giờ phút, chỉ lấy phần ngày,tháng,năm
         string query = @"
         SELECT 
             CAST(ThoiGianBatDau AS DATE) AS Ngay, 
@@ -242,16 +255,19 @@ public static class DatabaseHelper
         GROUP BY 
             CAST(ThoiGianBatDau AS DATE);
         ";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@NgayDauTuan", ngayDauTuan);
                 cmd.Parameters.AddWithValue("@NgaySauChuNhat", ngaySauChuNhat);
                 try
                 {
                     conn.Open();
+                    //reader: đọc, tìm kiếm và lấy dữ liệu từ CSDL về
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -306,16 +322,19 @@ public static class DatabaseHelper
                 ELSE 'BuoiToi'
             END;
         ";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@NgayDauTuan", ngayDauTuan);
                 cmd.Parameters.AddWithValue("@NgaySauChuNhat", ngaySauChuNhat);
                 try
                 {
                     conn.Open();
+                    //reader: đọc, tìm kiếm và lấy dữ liệu từ CSDL về
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -335,26 +354,30 @@ public static class DatabaseHelper
     }
     // 1. ĐẾM TỔNG SỐ LỊCH HẸN TRONG TUẦN HIỆN TẠI
     // (Hàm này dùng cho form_trang_chu_admin)
+    //Dùng để hiển thị dữ liệu trong Label Tổng số lịch hẹn trong tuần
     public static int GetTotalAppointmentsCurrentWeek()
     {
         int count = 0;
 
         // Logic lấy ngày đầu tuần
+        //nếu là chủ nhật thì lùi về 6 ngày, nếu không phải chủ nhật thì lùi về số ngày tương ứng để đến thứ 2
         DateTime homNay = DateTime.Today;
         int daysToSubtract = (homNay.DayOfWeek == DayOfWeek.Sunday) ? 6 : (int)homNay.DayOfWeek - (int)DayOfWeek.Monday;
-        DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract);
-        DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7);
+        DateTime ngayDauTuan = homNay.AddDays(-daysToSubtract);// (Thứ 2)
+        DateTime ngaySauChuNhat = ngayDauTuan.AddDays(7);// (Thứ 2 tuần sau) --> cho biết đâu là hết tuần hiện tại
 
         string query = @"
         SELECT COUNT(*) 
         FROM LichHen
         WHERE ThoiGianBatDau >= @NgayDauTuan AND ThoiGianBatDau < @NgaySauChuNhat;
     ";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@NgayDauTuan", ngayDauTuan);
                 cmd.Parameters.AddWithValue("@NgaySauChuNhat", ngaySauChuNhat);
                 try
@@ -370,6 +393,7 @@ public static class DatabaseHelper
 
     // 2. ĐẾM SỐ LỊCH HẸN CHỜ DUYỆT (TRẠNG THÁI KHÔNG PHẢI LÀ 'Đã đặt (đã duyệt)')
     //trong form_trang_chu_admin
+    //dùng để hiển thị dữ liệu trong Label Số lịch chờ duyệt
     public static int GetPendingAppointmentCount()
     {
         int count = 0;
@@ -395,6 +419,7 @@ public static class DatabaseHelper
 
     // 3. ĐẾM SỐ TÀI KHOẢN MỚI TRONG TUẦN NÀY
     // (Hàm này dùng cho form_trang_chu_admin)
+    //dùng để hiển thị dữ liệu trong Label Số tài khoản mới trong tuần
     public static int GetNewAccountsCurrentWeek()
     {
         int count = 0;
@@ -582,9 +607,10 @@ public static class DatabaseHelper
     {
         int count = 0;
         string query = "SELECT COUNT(*) FROM TaiKhoan WHERE Role = 'Admin'";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 try
@@ -598,7 +624,7 @@ public static class DatabaseHelper
                 }
             }
         }
-        return count;
+        return count;// Trả về số lượng tài khoản Admin
     }
 
     // HÀM thực hiện Xóa tài khoản (cho Form_Profile)
@@ -606,15 +632,18 @@ public static class DatabaseHelper
     {
         int rowsAffected = 0;
         string query = "DELETE FROM TaiKhoan WHERE Username = @Username";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@Username", username);
                 try
                 {
                     conn.Open();
+                    //rowsAffected: số hàng bị ảnh hưởng (bị xóa)
                     rowsAffected = cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -629,18 +658,25 @@ public static class DatabaseHelper
     //Hàm lấy chi tiết lịch hẹn theo ID (lấy tất cả từ LichHen)
     public static DataTable GetLichHenDetailsByID(int lichHenID)
     {
+        //khai báo bảng dữ liệu DataTable dt
         DataTable dt = new DataTable();
         // Lấy tất cả thông tin
         string query = "SELECT * FROM LichHen WHERE ID = @ID";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@ID", lichHenID);
                 try
                 {
                     conn.Open();
+                    // Dùng SqlDataAdapter để lấy dữ liệu về DataTable
+                    //SqlDataReader: phải giữ kết nối mở trong suốt quá trình đọc dữ liệu
+                    // SqlDataAdapter tự động mở và đóng kết nối khi cần thiết
+                    //SqlDataAdapter gửi ngược lại các lệnh SELECT, INSERT, UPDATE, DELETE cho SqlCommand để thực thi trên CSDL
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     da.Fill(dt);
                 }
@@ -650,7 +686,7 @@ public static class DatabaseHelper
                 }
             }
         }
-        return dt;
+        return dt;//trả về bảng dữ liệu dt
     }
     // HÀM cập nhật lịch hẹn (quyền hạn cho Admin)
     //chỉ có quyền sửa ThoiGianBatDau và TrangThai, còn NoiDung thì không được sửa
@@ -664,18 +700,20 @@ public static class DatabaseHelper
             ThoiGianBatDau = @ThoiGian, 
             TrangThai = @TrangThai 
         WHERE ID = @ID";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@ThoiGian", thoiGianMoi);
                 cmd.Parameters.AddWithValue("@TrangThai", trangThaiMoi);
                 cmd.Parameters.AddWithValue("@ID", lichHenID);
                 try
                 {
                     conn.Open();
-                    rowsAffected = cmd.ExecuteNonQuery();
+                    rowsAffected = cmd.ExecuteNonQuery();//số hàng bị ảnh hưởng
                 }
                 catch (Exception ex)
                 {
@@ -684,24 +722,26 @@ public static class DatabaseHelper
                 }
             }
         }
-        return rowsAffected > 0;
+        return rowsAffected > 0;//nếu có hàng bị ảnh hưởng thì trả về true (thành công)
     }
-    // HÀM Chỉ cập nhật trạng thái (Dùng cho sửa hàng loạt)
+    // HÀM Chỉ cập nhật trạng thái (Dùng cho sửa hàng loạt - admin chon hàng loat để sửa thì chỉ cho phép sửa duy nhất trạng thái của lịch hẹn)
     public static bool UpdateStatusOnly(int id, string trangThaiMoi)
     {
         int rowsAffected = 0;
         string query = "UPDATE LichHen SET TrangThai = @TrangThai WHERE ID = @ID";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
+                //tham số "Parameters" dùng để xác thực giá trị được gửi đến SQL 1 cách toàn vẹn mà không bị tấn công SQL Injection trong quá trình truyền dữ liệu
                 cmd.Parameters.AddWithValue("@TrangThai", trangThaiMoi);
                 cmd.Parameters.AddWithValue("@ID", id);
                 try
                 {
                     conn.Open();
-                    rowsAffected = cmd.ExecuteNonQuery();
+                    rowsAffected = cmd.ExecuteNonQuery();//số hàng bị ảnh hưởng
                 }
                 catch (Exception ex)
                 {
@@ -711,24 +751,30 @@ public static class DatabaseHelper
                 }
             }
         }
-        return rowsAffected > 0;
+        return rowsAffected > 0;//nếu có hàng bị ảnh hưởng thì trả về true (thành công)
     }
     // HÀM Lấy TOÀN BỘ thông tin tài khoản (cho Admin xem trên datagridview)
     public static DataTable GetAllTaiKhoan()
     {
+        //khai báo bảng dữ liệu DataTable dt
         DataTable dt = new DataTable();
         // Lấy tất cả trừ mật khẩu
         string query = "SELECT Username, Hoten, Email, Role, NgayTao FROM TaiKhoan";
-
+        //conn: tạo kết nối vật lý kết nối đến CSDL thông qua đường dẫn GetConnectionString()
         using (SqlConnection conn = new SqlConnection(GetConnectionString()))
         {
+            //cmd: cmd thực thi câu lệnh query trên CSDL
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 try
                 {
                     conn.Open();
+                    // Dùng SqlDataAdapter để lấy dữ liệu về DataTable
+                    //SqlDataReader: phải giữ kết nối mở trong suốt quá trình đọc dữ liệu
+                    // SqlDataAdapter tự động mở và đóng kết nối khi cần thiết
+                    //SqlDataAdapter gửi ngược lại các lệnh SELECT, INSERT, UPDATE, DELETE cho SqlCommand để thực thi trên CSDL
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.Fill(dt);
+                    da.Fill(dt);// Đổ dữ liệu vào dt
                 }
                 catch (Exception ex)
                 {
@@ -736,7 +782,7 @@ public static class DatabaseHelper
                 }
             }
         }
-        return dt;
+        return dt;//trả về bảng dữ liệu dt
     }
 
     // HÀM Cập nhật VAI TRÒ (Role: User/ Admin --> do Admin thực hiện)
